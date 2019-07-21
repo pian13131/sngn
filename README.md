@@ -1,2 +1,2 @@
-# ssnn
-Self Study Needs Notes
+# sngn
+Study Needs Good Notes
