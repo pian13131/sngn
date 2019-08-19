@@ -396,3 +396,38 @@ The join() method waits for a thread to die. In other words, it causes the curre
 
 The daemon threads are the low priority threads that provide the background support and services to the user threads. Daemon thread gets automatically terminated by the JVM if the program remains with the daemon thread only, and all other user threads are ended/died. 
 
+####  What are the main differences between array and collection
+
+- Arrays are always of fixed size, i.e., a user can not increase or decrease the length of the array according to their requirement or at runtime, but In Collection, size can be changed dynamically as per need.
+- Arrays can only store homogeneous or similar type objects, but in Collection, heterogeneous objects can be stored.
+- Arrays cannot provide the ?ready-made? methods for user requirements as sorting, searching, etc. but Collection includes readymade methods to use.
+
+#### What is the difference between HashSet and TreeSet
+
+- HashSet maintains no order whereas TreeSet maintains ascending order.
+- HashSet impended by hash table whereas TreeSet implemented by a Tree structure.
+- HashSet performs faster than TreeSet.
+- HashSet is backed by HashMap whereas TreeSet is backed by TreeMap.
+
+#### What is the difference between HashMap and TreeMap
+
+- HashMap maintains no order, but TreeMap maintains ascending order.
+- HashMap is implemented by hash table whereas TreeMap is implemented by a Tree structure.
+- HashMap can be sorted by Key or value whereas TreeMap can be sorted by Key.
+- HashMap may contain a null key with multiple null values whereas TreeMap cannot hold a null key but can have multiple null values.
+
+#### What does the hashCode() method
+
+The hashCode() method returns a hash code value (an integer number).
+
+The hashCode() method returns the same integer number if two keys (by calling equals() method) are identical.
+
+However, it is possible that two hash code numbers can have different or the same keys.
+
+If two objects do not produce an equal result by using the equals() method, then the hashcode() method will provide the different integer result for both the objects.
+
+#### Why we override equals() method
+
+The equals method is used to check whether two objects are the same or not. It needs to be overridden if we want to check the objects based on the property.
+
+For example, Employee is a class that has 3 data members: id, name, and salary. However, we want to check the equality of employee object by the salary. Then, we need to override the equals() method.

@@ -154,6 +154,69 @@ class newClass implements anInterface {
 }
 ```
 
+### Hashmap
+
+```java
+HashMap<String, String> capitalCities = new HashMap<String, String>();
+capitalCities.put("England", "London");
+capitalCities.get("England");
+capitalCities.remove("England");
+capitalCities.clear();
+capitalCities.size();
+for (String i : capitalCities.keySet()) {
+  System.out.println(i);
+}
+```
+
+### Treemap
+
+```java
+TreeMap<String, Double> tm = new TreeMap<>(new TreeCompare());
+
+boolean containsKey(Object key)
+boolean containsValue(Object value)
+Object firstKey()
+Object lastKey()
+void putAll(Map map)
+Set entrySet() // Returns a set view of the mappings contained in this map.
+SortedMap headMap(Object key_value) // The method returns a view of the portion of the map strictly less than the parameter key_value.
+Set keySet() // The method returns a Set view of the keys contained in the treemap.
+```
+
+
+
+### Hashset
+
+```java
+HashSet<String> h = new HashSet<String>(); 
+
+Iterator<String> i = h.iterator(); 
+while (i.hasNext()) 
+    System.out.println(i.next());
+boolean add(E e)
+void clear()
+boolean contains(Object o)
+boolean remove(Object o)
+boolean isEmpty()
+int size()
+Object clone()
+```
+
+### TreeSet
+
+```java
+TreeSet<String> ts1 = new TreeSet<String>();
+
+boolean addAll(Collection c)
+Object first()
+Object last()
+SortedSet headSet(Object toElement) // This method will return elements of TreeSet which are less than the specified element.
+SortedSet tailSet(Object fromElement) // This method will return elements of TreeSet which are greater than or equal to the specified element.
+SortedSet subSet(Object fromElement, Object toElement) // This method will return elements ranging from fromElement to toElement. fromElement is inclusive and toElement is exclusive.
+```
+
+
+
 ### Abstract class
 
 - Some methods are not defined
