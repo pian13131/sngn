@@ -225,12 +225,12 @@ String pool is the space reserved in the heap memory that can be used to store t
 
 #### What is the purpose of `toString()` method in Java
 
-The toString() method returns the string representation of an object. If you print any object, java compiler internally invokes the toString() method on the object. So overriding the toString() method, returns the desired output, it can be the state of an object.
+The `toString()` method returns the string representation of an object. If you print any object, java compiler internally invokes the `toString()` method on the object. 
 
 #### What are the advantages of Java inner classes
 
-- Nested classes represent a special type of relationship that is it can access all the members (data members and methods) of the outer class including private.
-- Nested classes are used to develop a more readable and maintainable code because it logically groups classes and interfaces in one place only.
+- Nested classes represent a special type of relationship that is it can **access all the members** (data members and methods) of the outer class including private.
+- Nested classes are used to develop a more **readable and maintainable** code because it logically groups classes and interfaces in one place only.
 - **Code Optimization:** It requires less code to write.
 
 | Type                  | Description                                                  |
@@ -241,9 +241,9 @@ The toString() method returns the string representation of an object. If you pri
 
 #### What is Garbage Collection
 
-Garbage collection is a process of reclaiming the unused runtime objects. It is performed for memory management. In other words, we can say that It is the process of removing unused objects from the memory to free up space and make this space available for Java Virtual Machine. 
+Garbage collection is a process of **reclaiming the unused runtime objects**. It is performed for memory management. In other words, we can say that It is the process of removing unused objects from the memory to free up space and make this space available for Java Virtual Machine. 
 
-Garbage collection is managed by JVM. It is performed when there is not enough space in the memory and memory is running low. 
+Garbage collection is managed by JVM. It is performed when there is **not enough space in the memory** and **memory is running low**. 
 
 `System.gc(); `
 
@@ -264,7 +264,7 @@ The finalize() method is invoked just before the object is garbage collected. It
 
 #### What do you understand by an IO stream
 
-The stream is a sequence of data that flows from source to destination. It is composed of bytes. In Java, three streams are created for us automatically.
+The stream is a sequence of **data** that **flows from source to destination**. It is composed of bytes. In Java, three streams are created for us automatically.
 
 - System.out: standard output stream
 - System.in: standard input stream
@@ -276,35 +276,35 @@ The Reader/Writer class hierarchy is character-oriented, and the InputStream/Out
 
 #### What is serialization
 
-Serialization in Java is a mechanism of writing the state of an object into a byte stream.
+Serialization in Java is a mechanism of **writing the state of an object into a byte stream**.
 
 To make a class serializable in Java by implementing the Serializable interface.
 
 #### What is Deserialization
 
-Deserialization is the process of reconstructing the object from the serialized state. It is the reverse operation of serialization. 
+Deserialization is the process of **reconstructing the object from the serialized state**. It is the reverse operation of serialization. 
 
-#### What is the transient keyword
+#### What is the `transient` keyword
 
 If you define any data member as transient, it will not be serialized. By determining transient keyword, the value of variable need not persist when it is restored.
 
-#### What is Externalizable
+#### What is `Externalizable`
 
-The Externalizable interface is used to write the state of an object into a byte stream in a compressed format. 
+The `Externalizable` interface is used to write the state of an object into a byte stream in a compressed format. 
 
 #### What is Marker interface
 
-It is an empty interface (no field or methods). Examples of marker interface are Serializable, Clonnable and Remote interface.
+It is an **empty** interface (no field or methods). Examples of marker interface are Serializable, Clonnable and Remote interface.
 
 **Marker interface** is used as a tag to inform a message to the **Java** compiler so that it can add special behaviour to the class implementing it. 
 
 #### Give a brief description of Java socket programming
 
-Java Socket programming is used for communication between the applications running on different JRE. 
+Java Socket programming is used for **communication** between the applications running on **different JRE**. 
 
 #### What is the reflection
 
-Reflection is the process of examining or modifying the runtime behavior of a class at runtime. 
+Reflection is the process of **examining or modifying** the runtime behavior of a class at **runtime**. 
 
 #### What is the purpose of using java.lang.Class class
 
@@ -356,50 +356,52 @@ A native method is a method that is implemented in a language other than Java. N
 
 #### Differentiate between process and thread
 
-- A Program in the execution is called the process whereas; A thread is a subset of the process
+- A Program in the execution is called the process whereas; A thread is a **subset** of the process
 - Processes are independent whereas threads are the subset of process.
 - Process have different address space in memory, while threads contain a shared address space.
 - Context switching can be faster between the threads as compared to context switching between the threads.
 - Inter-process communication is slower and expensive than inter-thread communication.
 - Any change in Parent process doesn't affect the child process whereas changes in parent thread can affect the child thread.
 
-#### What is the purpose of wait() method in Java
+#### What is the purpose of `wait()` method in Java
 
-The wait() method is provided by the Object class in Java. This method is used for inter-thread communication in Java. The java.lang.Object.wait() is used to pause the current thread, and wait until another thread does not call the notify() or notifyAll() method. Its syntax is given below.
+The wait() method is provided by the Object class in Java. This method is used for inter-thread communication in Java. The `java.lang.Object.wait()` is used to pause the current thread, and wait until another thread does not call the `notify()` or `notifyAll()` method. Its syntax is given below.
 
 #### What are the advantages of multithreading
 
-- Multithreading allows an application/program to be always reactive for input, even already running with some background tasks
-- Multithreading allows the faster execution of tasks, as threads execute independently.
-- Multithreading provides better utilization of cache memory as threads share the common memory resources.
+- Multithreading allows an application/program to be always **reactive for input**, even already running with some background tasks
+- Multithreading allows the **faster** execution of tasks, as threads **execute independently**.
+- Multithreading provides better **utilization of cache** memory as threads share the common memory resources.
 - Multithreading reduces the number of the required server as one server can execute multiple threads at a time.
 
 #### What are the states in the lifecycle of a Thread
 
-- **New:** In this state, a Thread class object is created using a new operator, but the thread is not alive. Thread doesn't start until we call the start() method.
+- **New:** In this state, a Thread class object is created using a new operator, but the thread is not alive. Thread doesn't start until we call the `start()` method.
 
-- **Runnable:** In this state, the thread is ready to run after calling the start() method. However, the thread is not yet selected by the thread scheduler.
+- **Runnable:** In this state, the thread is ready to run after calling the `start()` method. However, the thread is not yet selected by the thread scheduler.
 
 - **Running:** In this state, the thread scheduler picks the thread from the ready state, and the thread is running.
 - **Waiting/Blocked:** In this state, a thread is not running but still alive, or it is waiting for the other thread to finish.
-- **Dead/Terminated:** A thread is in terminated or dead state when the run() method exits.
+- **Dead/Terminated:** A thread is in terminated or dead state when the `run()` method exits.
 
 #### What is the difference between preemptive scheduling and time slicing
 
-Under preemptive scheduling, the highest priority task executes until it enters the waiting or dead states or a higher priority task comes into existence. Under time slicing, a task executes for a predefined slice of time and then reenters the pool of ready tasks. The scheduler then determines which task should execute next, based on priority and other factors.
+Under preemptive scheduling, the highest priority task **executes until** it enters the waiting or dead states or a higher priority task comes into existence. 
 
-#### What does join() method
+Under time slicing, a task executes for a predefined slice of time and then reenters the pool of ready tasks. The scheduler then determines which task should execute next, based on priority and other factors.
 
-The join() method waits for a thread to die. In other words, it causes the currently running threads to stop executing until the thread it joins with completes its task. 
+#### What does `join()` method
+
+The` join()` method waits for a thread to die. In other words, it causes the currently running threads to stop executing until the thread it joins with completes its task. 
 
 #### What about the daemon threads
 
-The daemon threads are the low priority threads that provide the background support and services to the user threads. Daemon thread gets automatically terminated by the JVM if the program remains with the daemon thread only, and all other user threads are ended/died. 
+The daemon threads are the **low priority threads** that provide the background support and services to the user threads. Daemon thread gets automatically terminated by the JVM if the program remains with the daemon thread only, and all other user threads are ended/died. 
 
 ####  What are the main differences between array and collection
 
-- Arrays are always of fixed size, i.e., a user can not increase or decrease the length of the array according to their requirement or at runtime, but In Collection, size can be changed dynamically as per need.
-- Arrays can only store homogeneous or similar type objects, but in Collection, heterogeneous objects can be stored.
+- Arrays are always of fixed size, but In Collection, size can be changed dynamically as per need.
+- Arrays can only store similar type objects, but in Collection, heterogeneous objects can be stored.
 - Arrays cannot provide the ?ready-made? methods for user requirements as sorting, searching, etc. but Collection includes readymade methods to use.
 
 #### What is the difference between HashSet and TreeSet
@@ -431,3 +433,42 @@ If two objects do not produce an equal result by using the equals() method, then
 The equals method is used to check whether two objects are the same or not. It needs to be overridden if we want to check the objects based on the property.
 
 For example, Employee is a class that has 3 data members: id, name, and salary. However, we want to check the equality of employee object by the salary. Then, we need to override the equals() method.
+
+#### Override `hashCode()` and `equals()`
+
+```java
+public class User {
+    private String name;
+    private int age;
+    private String passport;
+
+	//getters and setters, constructor
+
+    @Override
+    public boolean equals(Object o) {
+
+        if (o == this) return true;
+        if (!(o instanceof User)) {
+            return false;
+        }
+
+        User user = (User) o;
+
+        return user.name.equals(name) &&
+                user.age == age &&
+                user.passport.equals(passport);
+    }
+
+    //Idea from effective Java : Item 9
+    @Override
+    public int hashCode() {
+        int result = 17;
+        result = 31 * result + name.hashCode();
+        result = 31 * result + age;
+        result = 31 * result + passport.hashCode();
+        return result;
+    }
+
+}
+```
+
