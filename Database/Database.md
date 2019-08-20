@@ -183,3 +183,48 @@ atleast one of the following conditions for every non-trivial function dependenc
 - A relation is in 5NF if it is in 4NF and not contains any join dependency and joining should be lossless. 
 - 5NF is satisfied when all the tables are broken into as many tables as possible in order to avoid redundancy. 
 - 5NF is also known as Project-join normal form (PJ/NF).
+
+### Indexing
+
+- Indexing is used to optimize the performance of a database by minimizing the number of disk accesses required when a query is processed. 
+- The index is a type of data structure. It is used to locate and access the data in a database table quickly.
+- The first column of the database is the search key that contains a copy of the primary key or candidate key of the table. The values of the primary key are stored in sorted order so that the corresponding data can be accessed easily. 
+- The second column of the database is the data reference. It contains a set of pointers holding the address of the disk block where the value of the particular key can be found.
+
+##### Ordered indices
+
+The indices are usually sorted to make searching faster.
+
+##### Primary Index
+
+- If the index is created on the basis of the primary key of the table, then it is known as primary indexing. These primary keys are unique to each record and contain 1:1 relation between the records.
+- As primary keys are stored in sorted order, the performance of the searching operation is quite efficient.
+  - Dense index : The dense index contains an index record for every search key value in the data file. 
+  - Sparse index : In the data file, index record appears only for a few items. 
+
+##### Clustering Index
+
+- A clustered index can be defined as an ordered data file. Sometimes the index is created on non-primary key columns which may not be unique for each record.
+- In this case, to identify the record faster, we will group two or more columns to get the unique value and create index out of them. This method is called a clustering index.
+- The records which have similar characteristics are grouped, and indexes are created for these group.
+
+##### Secondary Index
+
+- to reduce the size of mapping, another level of indexing is introduced. 
+
+### B+ Tree (TODO)
+
+- The B+ tree is a balanced binary search tree. It follows a multi-level index format.
+- In the B+ tree, leaf nodes denote actual data pointers. B+ tree ensures that all leaf nodes remain at the same height.
+- In the B+ tree, the leaf nodes are linked using a link list. Therefore, a B+ tree can support random access as well as sequential access.
+
+##### Internal node
+
+- An internal node of the B+ tree can contain at least n/2 record pointers except the root node.
+- At most, an internal node of the tree contains n pointers.
+
+##### Leaf node
+
+- The leaf node of the B+ tree can contain at least n/2 record pointers and n/2 key values.
+- At most, a leaf node contains n record pointer and n key values.
+- Every leaf node of the B+ tree contains one block pointer P to point to next leaf node.
