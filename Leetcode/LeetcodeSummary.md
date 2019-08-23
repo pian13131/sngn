@@ -1,4 +1,4 @@
-# Backtracking
+# **Backtracking**
 
 ### Combination, Permutation
 
@@ -11,37 +11,45 @@
 - **46  Permutations** (pm, using `nums`)
 - **47  Permutations II** (pm, using `nums`, duplicate)
 
+#### Three key steps
+
+1. **Choice: `enumerate()` and `recurssion()`**
+
+2. **Constrain: `if someRuleMet`**
+
+3. **Goal: `res.append()`**
+
 ```python
 def func(self, nums, target, k):
   	res = []
   	n = len(nums)
   	def find(t, cb):
-    	if appendRuleMet:
+    	if appendRuleMet:  # goal
       		res.append(cb)
       		return
-    	for i in range(n):
-      		if skipRuleMet:
+    	for i in range(n): # enumerate
+      		if skipRuleMet: # rule
         		continue
       		if breakRuleMet:
         		break
-      		find(t-nums[i], cb+[nums[i]])
+      		find(t-nums[i], cb+[nums[i]]) # recursion
   	find(target, [])
   	return res
 ```
 
-##### `nums.sort()` and `i>0 and nums[i]==nums[i-1]`
+`nums.sort()` and `i>0 and nums[i]==nums[i-1]`
 
 It is a `skipRule` when duplicate number in `nums`
 
-##### `start from` 
+`start from` 
 
 When the order does **not** matter, you may need require `for loop` start from current number
 
-##### `appendRule`
+`appendRule`
 
 Depends on different problems, sometimes the rule is always met
 
-##### `breakRule`
+`breakRule`
 
 Most of the time required in **Sum** related problems
 
@@ -72,7 +80,41 @@ def combinationSum4(self, nums: List[int], target: int) -> int:
       return find(target)
 ```
 
-##### 
+### Parentheses
+
+- 20   Valid Parentheses     
+- 22   Generate Parentheses     
+- 32   Longest Valid Parentheses     
+- 241   Different Ways to Add Parentheses     
+- 301   Remove Invalid Parentheses    
+
+One case of **combination**, which has special **constrain**:
+
+**The number of `(`should equal than `)`**
+
+As a special case, **stack** is useful for **Parentheses** problem
+
+# Divide and Conquer
+
+### Operators(TODO)
+
+- 241 Different Ways to Add Parentheses
+
+- 224 Basic Calculator
+- 282 Expression Add Operators
+
+```python
+def dac(arr):
+    if endRuleMet:
+        return unitResult # set the end
+    for i in range(len(arr)):
+        res1 = dac(arr[:i]) # divide
+        res2 = dac(arr[i+1:])
+        res = doSomething(res1, res2, arr[i]) # conquer
+    return res
+```
+
+
 
 # Dynamic Programming
 
@@ -95,11 +137,10 @@ def climbStairs(self, n: int) -> int:
     return dp[n]
 ```
 
-
-
 #### String DP
 
 - 139   Word Break (`words` combine to `string`)
+- 10 Regular Expression Matching
 
 ### Two Dimension
 
@@ -135,9 +176,19 @@ for i in range(m):
 return dp[-1][-1]
 ```
 
+### Stock (TODO)
+
+- 121 Best Time to Buy and Sell Stock
+- 122 Best Time to Buy and Sell Stock II
+- 123 Best Time to Buy and Sell Stock III
+- 188 Best Time to Buy and Sell Stock IV
+- 309 Best Time to Buy and Sell Stock with Cooldown
+
+
+
 # Linked List
 
-#### NodeModify
+### NodeModify
 
 - 206   Reverse Linked List 
 - 92   Reverse Linked List II (reverse between)
@@ -188,7 +239,7 @@ In the **CHANGE** step, the pointer still point to the current node before the *
 
 The `while check` should stop ASAP to avoid null pointer, even if you stop before the final node, you can add extra operation to finish the modifying
 
-#### CycleLink/FsPointer
+### CycleLink/FsPointer
 
 - 141   Linked List Cycle    
 - 142   Linked List Cycle II
@@ -255,10 +306,6 @@ split() # split by matches, rtype: list
 sub() # replace, rtype: list
 ```
 
-### Tricks
-
-- `''.join(string)`
-
 ### Palindrome
 
 - 125 Valid Palindrome
@@ -297,14 +344,21 @@ for i in range(n):
             break
 ```
 
-### Sliding Window/Sub String
+```python
+# utilize the divide trick
+N = len(S)
+ans = 0
+for center in range(2*N - 1): # 2*N-1 kinds of center, both odd and even
+    left = center // 2
+    right = left + center % 2
+    while left >= 0 and right < N and S[left] == S[right]:
+        ans += 1
+        left -= 1
+        right += 1
+return ans
+```
 
-- 76 Minimum Window Substring
-- 30 Substring with Concatenation of All Words
-- 3 Longest Substring Without Repeating Characters
-- 340 Longest Substring with At Most K Distinct Characters
-- 395 Longest Substring with At Least K Repeating Characters
-- 159 Longest Substring with At Most Two Distinct Characters
+
 
 # Tree
 
@@ -364,6 +418,8 @@ while l<r:
 
 You may need handle some edge situations, just avoid add code in the while loop
 
+- 4 Median of Two Sorted Arrays
+
 ### Rotate
 
 - 33   Search in Rotated Sorted Array     
@@ -377,14 +433,36 @@ Check if `nums[m]` and `target` are on the same side of `nums[0]`
 (nums[m]>nums[0])==(target>nums[0])
 ```
 
-- 162   Find Peak Element     
-- 374   Guess Number Higher or Lower     
-- 34   Search for a Range     
-- 349   Intersection of Two Arrays     
-- 350   Intersection of Two Arrays II     
-- 315   Count of Smaller Numbers After Self     
-- 300   Longest Increasing Subsequence     
-- 354   Russian Doll Envelopes    
+### Cuts
+
+- 875 Koko Eating Bananas
+774. 774 Minimize Max Distance to Gas Station
+774. 1011 Capacity To Ship Packages Within D Days
+
+```python
+def cutIntoGroups(self, W: List[int], D: int) -> int:
+    l = max(W)
+    r = sum(W)
+    def meetRule():
+        s = 0
+        cnt = 1
+        for w in W:
+            if s+w>m:
+                s = 0
+                cnt+=1
+            s+=w
+        return cnt<=D
+    
+    while l<r:
+        m =  (l+r)//2
+        if not meetRule():
+            l = m+1
+        else:
+            r = m
+    return l
+```
+
+
 
 # Math
 
@@ -424,6 +502,8 @@ return results
 
 You may find it quiet similar with some **combination** problem. Both of them require the same method to avoid duplicate. So **NSum** may also be kind of **Backtracking**
 
+Also related with **Divide and Conquer**
+
 ```python
 resList = []
 def findNSum(nums, t, N, res):
@@ -443,12 +523,13 @@ return resList
 - 200   Number of Islands     
 - 130   Surrounded Regions     
 - 364   Nested List Weight Sum II     
-- 127   Word Ladder    
 - 51   N-Queens     
 - 52   N-Queens II     
 - 126   Word Ladder II    
 
-**BFS** is to use a **queue** to record which nodes that we want to visit in the future, and also we record the places that we have visited, so that we don't visit them anymore. Take the front element from queue, do some calculation. Then we get its neighbors, push them to the queue.
+**BFS** is to use a **deque** to record which nodes that we want to visit in the future, and also we record the places that we have visited, so that we don't visit them anymore. Take the front element from queue, do some calculation. Then we get its neighbors, push them to the queue.
+
+Some case you can only use **BFS**, lets call it **relation spread problem** (127 Word Ladder). Define a kind of **relation**, **spread** from one set of points to others till reach the **End point**
 
 ```python
 def bfs(i, j):
@@ -491,7 +572,7 @@ In fact, most them are used to **dye**, the common loop is used to count
 ### Interval
 
 - 57   Insert Interval    
--  56   Merge Intervals 
+- 56   Merge Intervals 
 - 352   Data Stream as Disjoint Intervals    
 
 ```python
@@ -510,4 +591,554 @@ class Solution:
         return res
 ```
 
-#### 
+### Sliding Window/Sub String
+
+- 76 Minimum Window Substring
+- 30 Substring with Concatenation of All Words
+- 3 Longest Substring Without Repeating Characters
+- 209 Minimum Size Subarray Sum
+- 340 Longest Substring with At Most K Distinct Characters
+- 395 Longest Substring with At Least K Repeating Characters
+- 159 Longest Substring with At Most Two Distinct Characters
+
+Contains two moves: `toBeValid()`, `toMinimize()/toMaximize()`
+
+```python
+# Minimize
+i = 0
+for j, c in enumerate(s): # Move right pointer, toBeValid()
+    update(state)
+    if isValid(state):
+        while isValid(state): # Move left pointer, toMinimize()
+            update(state)
+            i+=1
+        updateResult()
+```
+
+```python
+# Maximize
+i = 0
+for j, c in enumerate(s): # Move right pointer, toMaximize()
+    update(state)
+    if isNotValid(state):
+        updateResult()
+        while isNotValid(state): # Move left pointer, toBeValid()
+            update(state)
+            i+=1
+updateResult()
+```
+
+
+
+### Water
+
+- 11 Container With Most Water
+
+- ```python
+    while i < j:
+        water = max(water, (j - i) * min(height[i], height[j]))
+        if height[i] < height[j]:
+            i += 1
+        else:
+            j -= 1
+    ```
+
+- 42 Trapping Rain Water
+
+- ```python
+    while l < r:
+        lh, rh = max(lh, ht[l]), max(rh, ht[r])
+        if lh <= rh:
+            res += lh - ht[l]
+            l+=1
+        else:
+            res += rh - ht[r]
+            r-=1
+    ```
+
+
+
+# Queue(TODO)
+
+### Monoqueue
+
+```python
+'''
+Monoqueue:
+push: push an element into the queue; O (1) (amortized)
+pop: pop an element out of the queue; O(1) (pop = remove, it can't report this element)
+max: report the max element in queue;O(1)
+'''
+class Monoq:
+    def __init__(self):
+        self.que = []
+    def pushq(self, v):
+        c = 0
+        while self.que and self.que[-1][0]<v:
+            c += self.que[-1][1] + 1
+            self.que.pop()
+        self.que.append([v, c])
+    def maxval(self):
+        return self.que[0][0]
+    def popq(self):
+        if self.que[0][1]>0:
+            self.que[0][1]-=1
+            return
+        self.que = self.que[1:]
+```
+
+### Deque
+
+```python
+from collections import deque
+dq = deque('item')
+dq.pop()
+dq.append()
+dq.popleft()
+dq.appendleft()
+```
+
+# Heap/PriorityQueue
+
+- 23 Merge k Sorted Lists
+- 347 Top K Frequent Elements
+- 253 Meeting Rooms II
+- 973 K Closest Points to Origin
+- 215 Kth Largest Element in an Array
+
+```python
+from heapq import *
+heap = []
+heappush(heap, item)
+heappop(heap)
+heappushpop(heap, item) # push and then pop
+heapreplace(heap, item) # pop and then push
+heapify(heap) # convert into heap
+heap[0] # the smallest one
+```
+
+The items in the heap is sorted in **binary search tree** not in normal order
+
+If you want to access sorted items make sure use `nlargest(n, heap, key=None)` or `nsmallest(n, heap, key=None)` 
+
+When you need sort **fix number of items** , you may need heap
+
+When you only care about the **max** or **min** that kind of edge value
+
+When the item of **Heap** is like **(cnt, val)**, it becomes **PriorityQueue**
+
+The **one key point** of heap is that you need **doSomething** during the sort (**merge k sorted list**), otherwhise, you can just use `sort(key=lambda x:fun(x))`. **Another one** is you want to fix the size
+
+- 218 The Skyline Problem
+
+```python
+def getSkyline(self, buildings):
+    # add start-building events
+    # also add end-building events(acts as buildings with 0 height)
+    # and sort the events in left -> right order
+    events = [(L, -H, R) for L, R, H in buildings]
+    events += list({(R, 0, 0) for _, R, _ in buildings})
+    events.sort()
+
+    # res: result, [x, height]
+    # live: heap, [-height, ending position]
+    res = [[0, 0]]
+    live = [(0, float("inf"))]
+    for pos, negH, R in events:
+        # 1, pop buildings that are already ended
+        # 2, if it's the start-building event, make the building alive
+        # 3, if previous keypoint height != current highest height, edit the result
+        while live[0][1] <= pos: heappop(live)
+        if negH: heappush(live, (negH, R))
+        if res[-1][1] != -live[0][0]:
+            res += [ [pos, -live[0][0]] ]
+    return res[1:]
+```
+
+- 295 Find Median from Data Stream
+
+```python
+class MedianFinder:
+    def __init__(self):
+        """
+        initialize your data structure here.
+        """
+        self.hp = [],[]
+
+    def addNum(self, num: int) -> None:
+        sm, lg = self.hp
+        heappush(sm, -heappushpop(lg, num)) # always get the max val in lg into sm
+        if len(lg) < len(sm): # key len(sm)-len(lg) <= 1
+            heappush(lg, -heappop(sm))
+
+    def findMedian(self) -> float:
+        sm, lg = self.hp
+        if len(lg) > len(sm):
+            return lg[0]
+        else:
+            return (lg[0] - sm[0])/2
+```
+
+
+
+# Stack
+
+### Largest Rectangle in Histogram
+
+```python
+s = [-1] # stack store the increasing index
+res = 0 # largest area
+H+=[0] # digest all remains in stack
+for i in range(len(H)):
+    while s[-1] != -1 and H[s[-1]] >= H[i]: # 1. push in 1st index 2. when decrease:
+        									# pop, cal area
+        res = max(res, H[s.pop()]*(i-s[-1]-1))
+    s.append(i) # keep push in index
+```
+
+# Graph
+
+### Shortest Path Problem
+
+- **Dijkstra's**
+    Shortest path from **one node** to all nodes
+
+- ```python
+    # dist[u] = distance from s to u
+    graph = collections.defaultdict(list)
+    for u, v, w in times:
+        graph[u].append((v, w))
+    
+    pq = [(0, s)]
+    dist = {}
+    while pq:
+        d, node = heapq.heappop(pq)
+        if node in dist: continue
+        dist[node] = d
+        for nei, d2 in graph[node]:
+            if nei not in dist:
+                heapq.heappush(pq, (d+d2, nei))
+    return prev
+    ```
+
+- **Bellman-Ford**
+    Shortest path from **one node** to all nodes, negative edges allowed
+
+- ```python
+    dist[K-1] = 0
+    for i in range(N):
+        for u,v,w in V:
+            dist[v] = min(dist[v], dist[u]+w)
+    ```
+
+- **Floyd-Warshall**
+    Shortest path between **all pairs** of vertices, negative edges allowed
+
+- ```python
+    # V = vertices in graph
+    # dist = n x n array of minimum distances
+    for v in range(v1, vn):
+    	dist[v][v] = 0
+    for u,v,w in V:
+    	dist[u][v] = w
+    for k in range(v1, vn):
+    	for i in range(v1, vn):
+            for j in range(v1, vn):
+    			dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j]) 
+    ```
+
+    
+
+
+
+# Design
+
+
+
+# Tricks
+
+- Rotate matrix
+
+- ```python
+    # spiral matrix
+    mx[:] = map(list,zip(*mx[::-1]))	# clock
+    mx[:] = map(list,zip(*mx))[::-1]	# unclock
+    ```
+
+- Swap min and max
+
+- ```python
+    minval = - maxval
+    ```
+
+- Connect string list
+
+- ```python
+  ''.join(string)
+  ```
+
+- Check with list
+
+- ```python
+    result = filter(rule, items)
+    ```
+
+- Find middle (**234 Palindrome Linked List**)
+
+    - Use **slow** and **fast** pointer
+    - May be usable in **Palindrome** problem
+    - 
+    
+- Newton Method (**69 Sqrt(x)**)
+  
+- ```python
+  def mySqrt(self, x: int):
+      r = x
+      while r*r > x:
+          r = (r + x//r) // 2
+      return r
+  ```
+  
+  In fact, it is just generic binary search 
+  
+- Insert index (**981 Time Based Key-Value Store**)
+
+- ```python
+    # arr is sorted
+    bisect.bisect_left(arr, x)
+    bisect.bisect_right(arr, x)
+    
+    ```
+
+- push and sort
+
+- ```python
+    for num in nums:
+        idx = bisect.bisect_left(sortedList, num)
+        sortedList.insert(idx, num)
+    ```
+
+- Default Dict
+
+- ```python
+    listDict = collections.defaultdict(list)
+    ```
+
+- Strip
+
+- ```shell
+    >>> '   spacious   '.strip()
+    'spacious'
+    >>> 'www.example.com'.strip('cmowz.')
+    'example'
+    ```
+
+- Prime (204 Count Primes)
+
+- ```python
+    if isPrime(nums[i])==False:
+        nums[i*i:n:i] = [False]*len(nums[i*i:n:i])
+    ```
+
+- Itertools
+
+- ```python
+    permutations(iterable, length=None)
+    combinations(iterable, length=None)
+    product(*iterables, repeat=1)
+    ```
+
+- Interval insert
+
+- ```python
+    a[1::2], a[::2] = a[:h], a[h:]
+    ```
+
+- Next higher/lower (975 Odd Even Jump)
+
+- ```python
+    next_higher = [0]*n
+    stack = []
+    for a,i in sorted([a,i] for i,a in enumerate(arr)):
+        while stack and stack[-1]<i:
+            next_higher[stack.pop()] = i
+        stack.append(i)
+    ```
+
+- Sub array sum (325 Maximum Size Subarray Sum Equals k)
+
+- ```python
+    '''
+    record prefix sum into dict, then we can check sub array sum in O(1)
+    '''
+    s = 0
+    mp = {0:-1}
+    res = 0
+    for i in range(n):
+        s += nums[i]
+        if s not in mp:
+            mp[s] = i
+    
+        if s-k in mp:
+            res = max(res, i-mp[s-k])
+    ```
+
+- Generator
+
+- ```python
+    # a generator that yields items instead of returning a list
+    def firstn(n):
+    	num = 0
+    	while num < n:
+    		yield num
+    		num += 1
+    sum_of_first_n = sum(firstn(1000000))
+    ```
+
+    
+
+# Thinkings
+
+- Sometimes, **Brute force** method may be your only method, when you find it is really hard to find a fit model.
+- **Object in Python** (138 Copy List with Random Pointer)
+    - If `Object A` contains to `Object V`, when you change `V.val`, `A.V.val` will change as well
+- About edge case, do not pay too much attention onto them at the start. You should get the approximately method as soon as possible
+
+# Data Structure Design
+
+### Double Linked List
+
+```python
+class Node:
+    def __init__(self, k, v):
+        self.key = k
+        self.val = v
+        self.freq = 1
+        self.prev = self.next = None
+
+class DLinkedList:
+    def __init__(self):
+        self.head = Node(None,None)
+        self.tail = Node(None,None)
+        self.head.next = self.tail
+        self.tail.prev = self.head
+        self.size = 0
+        
+    def __len__(self):
+        return self.size
+    
+    def add(self, node):
+        p = self.tail.prev
+        p.next = node
+        node.next = self.tail
+        self.tail.prev = node
+        node.prev = p
+        self.size+=1
+        
+    def pop(self, node=None):
+        if self.size==0:
+            return
+        if not node:
+            node = self.head.next
+        
+        p = node.prev
+        n = node.next
+        p.next = n
+        n.prev = p
+        self.size-=1
+        
+        return node
+```
+
+
+
+### Least Recently Used Cache
+
+**Dict** : access node in $O(1)$
+
+**Double Linked List** : remove node in $O(1)$
+
+```python
+class LRUCache:
+
+    def __init__(self, capacity: int):
+        self.c = capacity
+        self.d = {}
+        self.dll = DLinkedList()
+
+    def get(self, key: int) -> int:
+        if key in self.d:
+            n = self.d[key]
+            self.dll.pop(n)
+            self.dll.add(n)
+            return n.val
+        else:
+            return -1
+
+    def put(self, key: int, value: int) -> None:
+        if key in self.d:
+            self.dll.pop(self.d[key])
+        n = Node(key, value)
+        self.dll.add(n)
+        self.d[key] = n
+        if len(self.d) > self.c:
+            n = self.dll.head.next
+            self.dll.pop(n)
+            del self.d[n.key]
+```
+
+
+
+### Least Frequently Used Cache
+
+**Dict Node** : access node in $O(1)$
+
+**Dict Freq** : record the least frequency
+
+**Double Linked List** : remove node in $O(1)$
+
+```python
+from collections import defaultdict
+class LFUCache:
+    def __init__(self, cap):
+        self.size = 0
+        self.c = cap
+        self.nodemp = {}
+        self.freqmp = defaultdict(DLinkedList)
+        self.minfreq = 0
+        
+    def update(self, node):
+        f = node.freq
+        self.freqmp[f].pop(node)
+        if self.minfreq==f and not self.freqmp[f]:
+            self.minfreq += 1
+        node.freq += 1
+        self.freqmp[node.freq].add(node)
+        
+    def get(self, key):
+        if key not in self.nodemp:
+            return -1
+        node = self.nodemp[key]
+        self.update(node)
+        return node.val
+    
+    def put(self, key, val):
+        if self.c==0:
+            return
+        if key in self.nodemp:
+            node = self.nodemp[key]
+            self.update(node)
+            node.val = val
+        else:
+            if self.size==self.c:
+                node = self.freqmp[self.minfreq].pop()
+                del self.nodemp[node.key]
+                self.size-=1
+                
+            node = Node(key, val)
+            self.nodemp[key] = node
+            self.freqmp[1].add(node)
+            self.minfreq = 1
+            self.size+=1
+```
+
