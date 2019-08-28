@@ -995,6 +995,19 @@ for i in range(len(H)):
     sum_of_first_n = sum(firstn(1000000))
     ```
 
+- Bits
+
+- ```python
+    bits = [0,1,1,0,1]
+    state = 0
+    # convert to state
+    for i,bit in enumerate(bits):
+      if bit==1:
+        state^= 1<<i
+    # get state[idx]
+    stateAtIdx = (state>>idx)&&1
+    ```
+
     
 
 # Thinkings
