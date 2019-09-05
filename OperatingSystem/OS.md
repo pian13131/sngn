@@ -409,3 +409,230 @@ Linear sequence of frames in physical memory
 
 ## Virtual Memory
 
+- Keep only portion of logical memory in physical
+
+- Rest is kept on disk
+- Unit of memory is segment or page
+
+#### Page Replacement Algorithms
+
+- LRU
+
+    - Remove page that was least recently used
+    - Need to keep track of frame
+
+- Clock Algorithm
+
+    - ```python
+        while True:
+            if frames[i].ref == 0:
+                select(frames[i])
+                break
+            else:
+                frames[i].ref = 0
+                i+=1
+        ```
+
+        
+
+    - If ref bit 0, select frame
+
+    - Else, set ref bit to 0
+
+    - Advance clock hand 
+
+    - If frame found, break out of loop else repeat)
+
+- OPT >= LRU >~ Clock >~ FIFO
+
+## File System
+
+File : Logical unit of storage, container of data
+
+#### Attributes
+
+- Type
+- Times
+- Sizes
+- Access control
+
+#### Operations
+
+- Creation: create, delete
+- Prepare for access: open, close
+- Access: read, write
+- Search: move to location
+- Atributes: get, set
+- Mutual exclusion: lock, unlock
+- Name management: rename
+
+File System : a structured collection of files
+
+#### Hierarchical File Name Space
+
+- Name space is organized as a tree
+
+#### Read/Write Model
+
+- `fd = open (fname, usage)`
+- `nr = read (fd, buf, size)`
+- `nw = write (fd, buf, size)`
+- `close (fd)`
+
+#### Structure
+
+- File System Metadata : Information about file system 
+
+    - Sizes
+    - In-use / free entries
+- File Metadata : File control blocks
+
+    - Attributes
+
+        - type of file
+
+        - size
+
+        - permissions
+
+    - References to data blocks
+        - disk block map : 13 Pointers
+        - Find file with filename 
+- Data Blocks : File contents 
+
+#### Performace
+
+- Caching
+- Clustering
+    - Place related blocks close to each other: clustering
+    - Reduces disk head movement, and thus seek time
+- Block Size
+    - The larger the block, the beTer the throughput
+    - The smaller the block, the less wasted space
+
+## Input/Output System
+
+#### IO
+
+- Input from aNached device to CPU/memory
+- Output from CPU/memory to device
+
+#### Buffering
+
+#### Device Dependent: Device Drivers <==> Device Controller
+
+- Encapsulates device-dependent code
+    - Contains device-specific register reads/writes : `dread(), dwrite()`
+- Implements a standard interface
+    - `open (), close (), read (), write ()`
+- Interrupt handlers
+
+#### Device Independent
+
+- Uniform interfacing for device drivers
+- Naming, protection
+- Uniform block size
+- Buffering, caching
+- Storage allocation
+- Locking
+- Error handling
+
+## Protection
+
+Processes access resources
+
+#### Protection Matrix
+
+- Rows are domains
+- Columns are resources
+- Matrix entry `[d, r]` contains permissions/rights
+
+#### Access Control Lists
+
+- For each resource, list (domain, permissions) pairs
+- ACL is associated with **resource**
+- if name is on list, ok to access
+- Can be inefficient: must lookup on each access
+- Revocation is easy; just remove from list
+
+#### Capability Lists
+
+- For each domain, list (resource, permissions) pairs
+- Capability list associated with each **domain**
+- Like key/ticket: if you have it, you get access
+- Efficient: on access, just produce capability
+- Hard to revoke
+
+## Security
+
+#### Cryptography
+
+- Secret key encryption
+    - Same key both sides
+    - Public algorithm
+    - DES & AES
+    - Fast
+    - Hard to distribute keys
+- Public key encryption
+  
+    - Different two keys
+    - Each user has 2 keys
+    - A send B
+      
+        - A encrypts using B public
+        - B decrypts using A private
+    - RSA
+    - slow
+    - Easy to distribute key
+- Combination
+    - Public key to start session: exchange secret key
+    - During session, use secret key
+
+- Digital Signatures
+    - A sends $K_{B,pub}(M, K_{A,priv}(M))$ to B
+    - Only B can decrypt: $K_{B,priv}(K_{B,pub}(M, K_{A,priv}(M)))$
+    - Decrypts using $K_{A,pub}$ proving A signed it
+
+## Distributed Systems
+
+A collection of independent computers that appear to its users as one computer
+
+#### Three Characteristics
+
+- Operate concurrently
+- Fail independently
+- Do not share global clock
+
+#### Storage
+
+- Read replication (Read > Write)
+    - Lead database + follow database
+    - Complexity
+    - Consistency
+- Sharding (simple data model and access patterns)
+    - Separates very large databases the into smaller, faster, more easily managed parts(Shards)
+    - A:F + F:N + F:Z
+    - Limited data model, limited data access patterns
+- Consistent Hashing => Consistency
+    - Unique ID
+    - Calculate the hash value of key, put it into one node accoring with the unique ID (`id[i] < hashValue < id[i+1]`)
+    - This is origional node becomes the *master* node
+    - Replicate to other nodes
+    - $R + W > N$
+- CAP Theorem
+    - Consistent
+    - Available
+    - Partition tolerance
+- Transaction
+
+#### Computation
+
+- MapReduce
+    - Counter only one time
+    - Shuffle
+    - Dumpy into reduce, add same chars
+- Hadoop
+- 
+
+Messaging
+

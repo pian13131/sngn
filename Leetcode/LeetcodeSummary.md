@@ -788,7 +788,7 @@ class MedianFinder:
 ```python
 s = [-1] # stack store the increasing index
 res = 0 # largest area
-H+=[0] # digest all remains in stack
+H=[0] # digest all remains in stack
 for i in range(len(H)):
     while s[-1] != -1 and H[s[-1]] >= H[i]: # 1. push in 1st index 2. when decrease:
         									# pop, cal area
@@ -1005,7 +1005,43 @@ for i in range(len(H)):
       if bit==1:
         state^= 1<<i
     # get state[idx]
-    stateAtIdx = (state>>idx)&&1
+    stateAtIdx = (state>>idx)&1
+    ```
+
+- Semaphore
+
+- ```python
+    from threading import Semaphore
+    smp = Semaphore(1)
+    with smp: # wait()
+        # critical section
+    smp.release() # signal()
+    ```
+
+    ```java
+    import java.util.concurrent.*;
+    Semaphore smp = new Semaphore(1);
+    smp.acquire(); // wait()
+    // critical section
+    smp.release(); // signal()
+    ```
+
+- Customize Comparator (179. Largest Number)
+
+    ```python
+    class LargerNumKey(str):
+        def __lt__(x, y):
+            return x+y > y+x
+    arr.sort(key=LargerNumKey)
+    ```
+
+- XOR to find unique
+
+- ```python
+    res = 0
+    for num in nums:
+        res ^= num
+    # the final res will be the non-even-times number
     ```
 
     
@@ -1155,3 +1191,109 @@ class LFUCache:
             self.size+=1
 ```
 
+
+
+### HashMap
+
+```python
+class HashMap:
+    def __init__(self):
+        self.store = [None for _ in range(16)]
+        self.size = 0
+
+    def get(self, key):
+        key_hash = hash(key)
+        index = self._position(key_hash)
+        if not self.store[index]:
+            return None
+        else:
+            list_at_index = self.store[index]
+            for i in list_at_index:
+                if i.key == key:
+                    return i.value
+            return None
+
+    def put(self, key, value):
+        p = Node(key, value)
+        key_hash = hash(key)
+        index = self._position(key_hash)
+        if not self.store[index]:
+            self.store[index] = [p]
+            self.size += 1
+        else:
+            list_at_index = self.store[index]
+            if p not in list_at_index:
+                list_at_index.append(p)
+                self.size += 1
+            else:
+                for i in list_at_index:
+                    if i == p:
+                        i.value = value
+                        break
+
+    def __len__(self):
+        return self.size
+
+    def _hash(self, key):
+        if isinstance(key, int):
+            return key
+        result = 5381
+        for char in key:
+            result = 33 * result + ord(char)
+        return result
+
+    def _position(self, key_hash):
+        return key_hash % 15
+
+
+class Node:
+    def __init__(self, key, value):
+        self.key = key
+        self.value = value
+
+    def __eq__(self, other):
+        return self.key == other.key
+```
+
+
+
+### TrieTree
+
+```python
+class TrieNode: 
+    def __init__(self): 
+        self.children = [None]*26
+        self.isEndOfWord = False
+  
+class Trie: 
+    def __init__(self): 
+        self.root = self.getNode() 
+  
+    def getNode(self): 
+        return TrieNode() 
+  
+    def _charToIndex(self,ch): 
+        return ord(ch)-ord('a') 
+  
+  
+    def insert(self,key): 
+        pCrawl = self.root 
+        length = len(key) 
+        for level in range(length): 
+            index = self._charToIndex(key[level]) 
+            if not pCrawl.children[index]: 
+                pCrawl.children[index] = self.getNode() 
+            pCrawl = pCrawl.children[index] 
+        pCrawl.isEndOfWord = True
+  
+    def search(self, key): 
+        pCrawl = self.root 
+        length = len(key)
+        for level in range(length): 
+            index = self._charToIndex(key[level]) 
+            if not pCrawl.children[index]: 
+                return False
+            pCrawl = pCrawl.children[index] 
+  
+        return pCrawl != None and pCrawl.isEndOfWord 
+```
