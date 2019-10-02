@@ -176,13 +176,89 @@ for i in range(m):
 return dp[-1][-1]
 ```
 
-### Stock (TODO)
+### Stock
 
 - 121 Best Time to Buy and Sell Stock
 - 122 Best Time to Buy and Sell Stock II
 - 123 Best Time to Buy and Sell Stock III
 - 188 Best Time to Buy and Sell Stock IV
 - 309 Best Time to Buy and Sell Stock with Cooldown
+
+**`dp[i][k][b]`**
+
+`i` : day
+
+`k` : transaction
+
+`b` : remain
+
+- Base cases:
+
+    ```python
+    dp[-1][k][0] = 0, dp[-1][k][1] = -inf
+    dp[i][0][0] = 0, dp[i][0][1] = -inf
+    ```
+
+- Recurrence relations:
+
+    ```python
+    dp[i][k][0] = max(dp[i-1][k][0], dp[i-1][k][1] + prices[i])
+    #                     rest                 sell
+    dp[i][k][1] = max(dp[i-1][k][1], dp[i-1][k-1][0] - prices[i])
+    #					  rest				   buy
+    
+    # when k=1, dp[i][k-1][0] will always be 0, we have
+    dp[i][k][1] = max(dp[i-1][k][1], -prices[i])
+    ```
+
+**Arbitrary `k`**
+
+- `k >= n//2`
+
+    Just regard `k` as `inf`
+
+    ```python
+    dp0 = max(dp0, dp1 + price)
+    dp1 = max(dp1, dp0_old - price)
+    ```
+
+- `k < n//2`
+
+    Iterate `k`
+
+    ```python
+    dp0 = [0]*(k+1)
+    dp1 = [-inf]*(k+1)
+    for j in range(k, 0, -1): # reverse count
+        dp0[j] = max(dp0[j], dp1[j] + price)
+        dp1[j] = max(dp1[j], dp0[j - 1] - price)
+    ```
+
+```python
+def stockWithK(self, k, prices):
+    dp0 = [0]*(k+1)
+    dp1 = [-self.inf]*(k+1)
+    for price in prices:
+        for j in range(k, 0, -1):
+            dp0[j] = max(dp0[j], dp1[j] + price)
+            dp1[j] = max(dp1[j], dp0[j-1] - price)
+    return dp0[k]
+def stockWithInf(self, prices):
+    dp0 = 0
+    dp1 = -self.inf
+    for price in prices:
+        tmp = dp0
+        dp0 = max(dp0, dp1 + price)
+        dp1 = max(dp1, tmp - price)
+    return dp0
+
+def maxProfit(self, k: int, prices: List[int]) -> int:
+    self.inf = float('inf')
+    if k >= len(prices)//2:
+        return self.stockWithInf(prices)
+    else:
+        return self.stockWithK(k, prices)
+```
 
 
 
@@ -397,6 +473,64 @@ def traverseTree(self, root):
     traverseTree(root.left)
     traverseTree(root.right)
 ```
+
+### Iteration Tree
+
+- 102 Binary Tree Level Order Traversal
+
+```python
+h = 0
+queue = collections.deque([root]) # FIFO use queue, FILO use stack
+while queue:
+    mp.append([])
+    l = len(queue)
+    for i in range(l):
+        node = queue.popleft()
+        mp[h].append(node.val)
+        if node.left:
+            queue.append(node.left)
+        if node.right:
+            queue.append(node.right)
+    h+=1
+```
+
+### Recover Tree
+
+- 105 Construct Binary Tree from **Preorder and Inorder** Traversal
+
+```python
+# preorder : [root, allOtherNodes]
+# inorder : [leftSubTree, root, rightSubTree]
+def buildTree(preorder, inorder):
+    def build(stop):
+        if inorder and inorder[-1] != stop:
+            root = TreeNode(preorder.pop())
+            root.left = build(root.val)
+            inorder.pop()
+            root.right = build(stop)
+            return root
+    preorder.reverse()
+    inorder.reverse()
+    return build(None)
+```
+
+- 106 Construct Binary Tree from **Inorder and Postorder** Traversal
+
+```python
+# postorder : [allOtherNodes, root]
+# inorder : [leftSubTree, root, rightSubTree]
+def buildTree(inorder, postorder):
+    def build(stop):
+        if inorder and inorder[-1] != stop:
+            root = TreeNode(postorder.pop())
+            root.right = build(root.val)
+            inorder.pop()
+            root.left = build(stop)
+            return root
+    return build(None)
+```
+
+
 
 # Binary Search
 
@@ -658,6 +792,35 @@ updateResult()
 
 
 
+### QuickSort
+
+```python
+def getPivot(arr, low, high):
+    return high # you can choose different ways
+
+def partition(arr, low, high): 
+    pivotIndex = getPivot(arr, low, high)
+    pivot = arr[pivotIndex]
+    arr[pivotIndex], arr[low] = arr[low], arr[pivotIndex]
+    i = low
+    
+    for j in range(low, high+1): 
+        if arr[j] < pivot: 
+            i = i+1
+            arr[j], arr[i] = arr[i], arr[j] 
+            
+    arr[low], arr[i] = arr[i], arr[low] 
+    return i
+  
+def quickSort(arr, low, high): 
+    if low < high: 
+        pi = partition(arr,low,high) 
+        quickSort(arr, low, pi-1) 
+        quickSort(arr, pi+1, high)
+```
+
+
+
 # Queue(TODO)
 
 ### Monoqueue
@@ -849,6 +1012,33 @@ for i in range(len(H)):
 
     
 
+### Topological Sort
+
+```python
+def getInDegree(mp): # use in degree to avoid graph loop
+    dgr = collections.defaultdict(int)
+    for u in mp:
+        for v in mp[u]:
+            dgr[v] += 1
+    return dgr
+
+def sort(mp):
+    stack = []
+    dgr = self.getInDegree(mp)
+    for u in mp: # start from all 0 in-degree node
+        if dgr[u]==0:
+            stack.append(u)
+    res = []
+    while stack:
+        cur = stack.pop()
+        res.append(cur)
+        for v in mp[cur]:
+            dgr[v]-=1
+            if dgr[v]==0: # add to stack when it is 0 in-degree
+                stack.append(v)
+    return res
+```
+
 
 
 # Design
@@ -907,9 +1097,8 @@ for i in range(len(H)):
     # arr is sorted
     bisect.bisect_left(arr, x)
     bisect.bisect_right(arr, x)
-    
     ```
-
+    
 - push and sort
 
 - ```python
@@ -1044,6 +1233,10 @@ for i in range(len(H)):
     # the final res will be the non-even-times number
     ```
 
+- Level traverse (117 Populating Next Right Pointers in Each Node II)
+
+    - With iterate (queue) traverse, it is much easier to traverse in level
+
     
 
 # Thinkings
@@ -1052,6 +1245,7 @@ for i in range(len(H)):
 - **Object in Python** (138 Copy List with Random Pointer)
     - If `Object A` contains to `Object V`, when you change `V.val`, `A.V.val` will change as well
 - About edge case, do not pay too much attention onto them at the start. You should get the approximately method as soon as possible
+- in the iterate process, queue is BFS while stack is DFS
 
 # Data Structure Design
 
@@ -1297,3 +1491,155 @@ class Trie:
   
         return pCrawl != None and pCrawl.isEndOfWord 
 ```
+
+
+
+### RandomSet
+
+```python
+from random import *
+class RandomizedSet:
+    def __init__(self):
+        self.mp = {}
+        self.nums = []
+
+    def insert(self, val: int) -> bool:
+        if val not in self.mp:
+            self.nums.append(val)
+            self.mp[val] = len(self.nums)-1
+            return True
+        else:
+            return False
+
+    def remove(self, val: int) -> bool:
+        if val in self.mp:
+            idx, last = self.mp[val], self.nums[-1]
+            self.mp[last] = idx
+            self.nums[idx] = last
+            self.nums.pop()
+            del self.mp[val]
+            return True
+        else:
+            return False
+
+    def getRandom(self) -> int:
+        k = randint(0, len(self.nums)-1)
+        return self.nums[k]
+```
+
+
+
+### MinHeap
+
+```python
+class MinHeap:
+    def __init__(self, cap):
+        self.cap = cap
+        self.heap = [0]*cap
+        self.size = 0
+        
+    def peek(self):
+        if size==0:
+            return None
+        return heap[0]
+    
+    def pop(self):
+        if size==0:
+            return None
+        minVal = heap[0]
+        heap[0] = heap[size-1]
+        size-=1
+        self.heapifyDown()
+        return minVal
+    
+    def add(self, val):
+        heap[size] = val
+        size+=1
+        self.heapifyUp()
+    
+    def heapifyDown(self, idx = 0):
+        while self.hasLeftChild(idx):
+            smChildIdx = getLeftChildIdx(idx)
+            if self.hasRightChild(idx) and self.rightChild(idx)<self.leftChild(idx):
+                smChildIdx = getRightChildIdx(idx)
+                
+            if heap[idx]<heap[smChildIdx]:
+                break
+            else:
+                heap[idx], heap[smChildIdx] = heap[smChildIdx], heap[idx]
+                
+            idx = smChildIdx
+            
+    def heapifyUp(self, idx = self.size-1):
+        while self.hasParent(idx) and heap[idx]<self.parent(idx):
+            parentIdx = self.getParentIdx(idx)
+            heap[parentIdx], heap[idx] = heap[idx], heap[parentIdx]
+            idx = parentIdx
+            
+    def getLeftChildIdx(self, idx):
+        return 2*idx+1
+    
+    def getRightChildIdx(self, idx):
+        return 2*idx+2
+    
+    def getParentIdx(self, idx):
+        return (idx-1)//2
+    
+    def hasRightChild(self, idx):
+        return self.getRightChildIdx(idx) < size
+    
+    def hasLeftChild(self, idx):
+        return self.getLeftChildIdx(idx) < size
+    
+    def hasParentIdx(self, idx):
+        return self.getParentIdx(idx) >= 0
+```
+
+
+
+### Disjoint Set Union
+
+```python
+class DSU:
+    def __init__(self):
+        self.par = {}
+        
+    def find(self, x):
+        if x not in self.par:
+            self.par[x] = x
+        elif self.par[x] != x:
+            self.par[x] = self.find(self.par[x])
+        return self.par[x]
+    def union(self, x, y):
+        self.par[self.find(x)] = self.find(y)
+```
+
+**DSU with rank**
+
+```python
+class DSU(object):
+    def __init__(self):
+        self.par = {}
+        self.rnk = collections.defaultdict(int)
+
+    def find(self, x):
+        if x not in self.par:
+            self.par[x] = x
+        elif self.par[x] != x:
+            self.par[x] = self.find(self.par[x])
+        return self.par[x]
+
+    def union(self, x, y):
+        xr, yr = self.find(x), self.find(y)
+        if xr == yr:
+            return False
+        elif self.rnk[xr] < self.rnk[yr]:
+            self.par[xr] = yr
+        elif self.rnk[xr] > self.rnk[yr]:
+            self.par[yr] = xr
+        else:
+            self.par[yr] = xr
+            self.rnk[xr] += 1
+        return True
+```
+

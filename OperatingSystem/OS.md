@@ -629,10 +629,14 @@ A collection of independent computers that appear to its users as one computer
 
 - MapReduce
     - Counter only one time
-    - Shuffle
-    - Dumpy into reduce, add same chars
+    - Shuffle, similar words close to each other
+    - Dump into reduce, add same chars
 - Hadoop
-- 
+    - Spark
+        - More general data model, object
+    - Kafka
 
-Messaging
+#### Messaging
+
+
 
