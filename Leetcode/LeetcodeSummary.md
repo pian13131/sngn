@@ -260,6 +260,17 @@ def maxProfit(self, k: int, prices: List[int]) -> int:
         return self.stockWithK(k, prices)
 ```
 
+### Backpack
+
+```python
+# 01 backpack problem
+# costs : cost for each items
+# values : value for each items
+for i in range(numOfItems):
+    for c in reversed(range(capacity)):
+        dp[i][c] = max(dp[i-1][c], dp[i-1][c-costs[i]] + values[i])
+```
+
 
 
 # Linked List
@@ -1039,12 +1050,6 @@ def sort(mp):
     return res
 ```
 
-
-
-# Design
-
-
-
 # Tricks
 
 - Rotate matrix
@@ -1236,6 +1241,24 @@ def sort(mp):
 - Level traverse (117 Populating Next Right Pointers in Each Node II)
 
     - With iterate (queue) traverse, it is much easier to traverse in level
+    - If you want to specific the level number, add `for i in range(len(q))`, in this loop all nodes are in same level
+
+- Counter
+
+    ```python
+    from collections import Counter
+    cnter = Counter(nums)
+    (cnter1 & cnter2).elements() # all intersect numbers
+    ```
+
+- Try - Except
+
+- ```python
+    try:
+        doSomething()
+    except: # you can add specific exception
+        handleExeption()
+    ```
 
     
 
@@ -1641,5 +1664,34 @@ class DSU(object):
             self.par[yr] = xr
             self.rnk[xr] += 1
         return True
+```
+
+### Binary Search Tree
+
+```python
+class Node:
+    def __init__(self, val):
+        self.val = val
+        self.left = self.right = None
+        
+    def insert(self, node):
+        if node.val > self.val:
+            if not self.right:
+                self.right = node
+                return True
+            return self.right.insert(node)
+        elif node.val < self.val:
+            if not self.left:
+                self.left = node
+                return True
+            return self.left.insert(node)
+        else: # already in bst
+            return False
+```
+
+### Monotonous Stack(TODO)
+
+```python
+
 ```
 
