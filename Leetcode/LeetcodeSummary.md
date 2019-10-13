@@ -1695,3 +1695,50 @@ class Node:
 
 ```
 
+### Segment Tree
+
+```python
+"""
+all leaves are num in nums
+balanced binary tree
+parent = fun(left, right)
+"""
+class SegmentTreeNode:
+    def __init__(self, start, end, val):
+        self.start = start
+        self.end = end
+        self.val = val # val = fun(left.val, right.val) : sum, min, max
+        self.left = None
+        self.right = None
+        
+def build(start, end, vals):
+    if start==end:
+        return SegmentTreeNode(start, end, vals[start]) # leaf
+    mid = (start + end) // 2
+    left = build(start, mid, vals)
+    right = build(mid+1, end, vals)
+    return SegmentTreeNode(start, end, fun(left.val, right.val))
+
+def update(root, idx, val):
+    if root.start == root.end == idx:
+        root.val = val
+    mid = (start+end)//2
+    if idx <= mid:
+        update(root.left, idx, val)
+    else:
+        update(root.right, idx, val)
+        
+    root.val = fun(root.left.val, root.right.val)
+    
+def query(root, i, j):
+    if root.start == i and root.end == j:
+        return root.val
+    mid = (start + end) // 2
+    if j <= mid:
+        return query(root.left, i, j)
+    elif i > mid:
+        return query(root.right, i, j)
+    else:
+        return fun(query(root.left, i, mid), query(root.right, mid+1, j))
+```
+
