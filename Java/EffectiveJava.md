@@ -115,3 +115,62 @@ public Yum(Yum yum) { ... };
 public static Yum newInstance(Yum yum) { ... };
 ```
 
+14 Consider implementing Comparable
+
+```java
+// Multiple-field Comparable with primitive fields
+public int compareTo(PhoneNumber pn) {
+  int result = Short.compare(areaCode, pn.areaCode);
+  if (result == 0) {
+    result = Short.compare(prefix, pn.prefix);
+    if (result == 0)
+      result = Short.compare(lineNum, pn.lineNum);
+  }
+  return result;
+}
+```
+
+```java
+// Comparable with comparator construction methods
+private static final Comparator<PhoneNumber> COMPARATOR = comparingInt((PhoneNumber pn) -> pn.areaCode)
+.thenComparingInt(pn -> pn.prefix) .thenComparingInt(pn -> pn.lineNum);
+public int compareTo(PhoneNumber pn) { 
+  return COMPARATOR.compare(this, pn);
+}
+
+```
+
+15 Minimize the accessibility of classes and members
+
+- **private**—The member is accessible only from the top-level class where it is declared.
+- **package-private**—The member is accessible from any class in the package where it is declared. Technically known as *default* access, this is the access level you get if no access modifier is specified (except for interface members, which are public by default).
+- **protected**—The member is accessible from subclasses of the class where it is declared (subject to a few restrictions [JLS, 6.6.2]) and from any class in the package where it is declared.
+- **public**—The member is accessible from anywhere.
+
+16 In publicclasses, use accessor methods, not public fields
+
+17 Minimize mutability
+
+- Don’t provide methods that modify the object’s state.
+- Ensure that the class can’t be extended
+- Make all fields final
+- Make all fields private.
+- Ensure exclusive access to any mutable components.
+
+18 Favor composition over inheritance
+
+- a class *B* should extend a class *A* only if an “is-a” relationship exists between the two classes. 
+- If the answer is no, it is often the case that *B* should contain a private instance of *A* and expose a different API: *A* is not an essential part of *B*, merely a detail of its implementation.
+
+19 Design and document for inheritance or else prohibit it
+
+- Constructors must not invoke overridable methods
+- When call the father's method, if this method will call another overrided method, it has already been overrided .
+
+20: Prefer interfaces to abstract classes
+
+- Existing classes can easily be retrofitted to implement a new interface.
+- Interfaces are ideal for defining mixins.
+- Interfaces allow for the construction of nonhierarchical type frameworks.
+- Interfaces enable safe, powerful functionality enhancements via the wrapper class idiom
+- The interface defines the type, perhaps providing some default methods, while the skeletal implementation class implements the remaining non-primitive interface methods atop the primitive interface methods. Extending a skeletal implementa- tion takes most of the work out of implementing an interface. 
