@@ -174,3 +174,14 @@ public int compareTo(PhoneNumber pn) {
 - Interfaces allow for the construction of nonhierarchical type frameworks.
 - Interfaces enable safe, powerful functionality enhancements via the wrapper class idiom
 - The interface defines the type, perhaps providing some default methods, while the skeletal implementation class implements the remaining non-primitive interface methods atop the primitive interface methods. Extending a skeletal implementa- tion takes most of the work out of implementing an interface. 
+
+21 Designinterfacesforposterity
+
+22: Use interfaces only to define types
+
+- The constant interface pattern is a poor use of interfaces
+- If the constants are strongly tied to an existing class or interface, you should add them to the class or interface.
+
+23 Prefer class hierarchies to tagged classes
+
+24 Favor static member classes over nonstatic

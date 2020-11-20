@@ -41,6 +41,17 @@ sb.replace(6,9, "wig");
 sb.delete(6, 10);
 ```
 
+### Character
+
+```java
+Character.toLowerCase();
+Character.isUpperCase();
+Character.isAlphabetic();
+Character.isDigit();
+```
+
+
+
 ### Array
 
 - fixed size
@@ -71,6 +82,7 @@ ArrayList<String> a = new ArrayList<>(Arrays.asList(1,2,3,4));
 a.get(1);
 a.set(1,5);
 a.remove(3);
+Collections.swap(list, i, j);
 ```
 
 ### Iterator
@@ -170,9 +182,12 @@ for (String i : capitalCities.keySet()) {
 
 ### Treemap
 
+Sort keys by `compareTo()` using red-black tree
+
+`put()` and `get()` are `O(log(n))`
+
 ```java
 TreeMap<String, Double> tm = new TreeMap<>(new TreeCompare());
-
 boolean containsKey(Object key)
 boolean containsValue(Object value)
 Object firstKey()
@@ -183,7 +198,9 @@ SortedMap headMap(Object key_value) // The method returns a view of the portion 
 Set keySet() // The method returns a Set view of the keys contained in the treemap.
 ```
 
+### LinkedHashMap
 
+Sort keys by `put()` order
 
 ### Hashset
 
@@ -215,7 +232,99 @@ SortedSet tailSet(Object fromElement) // This method will return elements of Tre
 SortedSet subSet(Object fromElement, Object toElement) // This method will return elements ranging from fromElement to toElement. fromElement is inclusive and toElement is exclusive.
 ```
 
+### Queue
 
+```java
+Queue<String> queue = new LinkedList<>();
+queue.offer(e);
+queue.poll();
+queue.peek();
+```
+
+```java
+// Priority queue
+Queue<Integer[]> queue = new PriorityQueue(n, (x, y)->y[0]-x[0]);
+```
+
+
+
+### Lambda
+
+```java
+arrayList.forEach(
+	(x) -> {
+    System.out.println(x);
+  }
+)
+  
+Consumer<Integer> method = (x) -> { System.out.println(x); };
+arrayList.forEach(method)
+  
+interface StringFunction {
+  String run(String str);
+}
+public void printFormatted(String str, StringFunction format) {
+    String result = format.run(str);
+    System.out.println(result);
+}
+StringFunction exclaim = (s) -> s + "!";
+printFormatted("Hello", exclaim);
+```
+
+### Random
+
+```java
+Random rand = new Random();
+rand.nextInt(upperbound); 
+rand.nextDouble();
+rand.nextFloat();
+```
+
+### Math
+
+```java
+Math.exp(a); // e^a
+Math.log(a);
+Math.sqrt();
+Math.pow(x, a); // x^a
+Maht.ceil();
+Math.floor();
+Math.rint();
+Math.abs();
+```
+
+
+
+### Comparator
+
+```java
+public class CustomComparator implements Comparator<MyObject> {
+    @Override
+    public int compare(MyObject o1, MyObject o2) {
+        return o1.getStartDate().compareTo(o2.getStartDate());
+    }
+}
+
+arrayList.sort(new CustomComparator()));
+
+Collections.sort(Database.arrayList, new Comparator<MyObject>() {
+    @Override
+    public int compare(MyObject o1, MyObject o2) {
+        return o1.getStartDate().compareTo(o2.getStartDate());
+    }
+});
+
+Database.arrayList.sort(Comparator.comparing(MyObject::getStartDate));
+```
+
+### Scope
+
+| Modifier    | Package | Subclass | World |
+| ----------- | ------- | -------- | ----- |
+| `public`    | Yes     | Yes      | Yes   |
+| `protected` | Yes     | Yes      | No    |
+| `default`   | Yes     | No       | No    |
+| `private`   | No      | No       | No    |
 
 ### Abstract class
 
@@ -286,3 +395,104 @@ public class SynchronizedCounter {
 
 - First, it is not possible for two invocations of synchronized methods on the same object to interleave. When one thread is executing a synchronized method for an object, all other threads that invoke synchronized methods for the same object block (suspend execution) until the first thread is done with the object.
 - Second, when a synchronized method exits, it automatically establishes a happens-before relationship with *any subsequent invocation* of a synchronized method for the same object. This guarantees that changes to the state of the object are visible to all threads.
+
+
+
+### Database
+
+```java
+Class.forName("com.mysql.jdbc.Driver");  
+Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/databaseName","userName","password");  
+Statement statement = connection.createStatement();  
+ResultSet resultSet = statement.executeQuery("select * from emp");  
+while(resultSet.next())  
+  System.out.println(resultSet.getInt(1)+"  "+resultSet.getString(2)+"  "+resultSet.getString(3));  
+connection.close();
+```
+
+
+
+### Conversion
+
+- `String` to `byte, int, long, float, double, boolean`
+
+    ```java
+    XXX.parseXXX(s)
+    ```
+
+- `String` to `Byte, Int, Long, Float, Double, Boolean`
+
+    ```java
+    XXX.valueOf(s)
+    ```
+
+- `byte, int, long, float, double, boolean` to `String` 
+
+    ```java
+    XXX.toString(val)
+    ```
+
+- `Byte, Int, Long, Float, Double, Boolean` to `String`
+
+    ```java
+    val.toString()
+    ```
+
+- Between `byte, int, long, float, double, boolean`
+
+    ```java
+    (XXX)val
+    ```
+
+    
+
+- `char[]` to `String`
+
+    ```java
+    String.valueOf(charArray)
+    ```
+
+- `char` to `int`
+
+    ```java
+    char c='a';  
+    char c2='1';  
+    int a=c;  // 97
+    int b=c2;  // 49
+    int x = Character.getNumericValue(c2); // 1
+    ```
+
+- `int` to `char`
+
+    ```java
+    int a=65;  
+    char c=(char)a;  // A
+    int b = Character.forDigit('1', 10); // 1
+    ```
+
+- `List` to `Array`
+
+    ```java
+    list.toArray(new T[0])
+    ```
+
+- `Array` to `List`
+
+    ```
+    Arrays.asList(array)
+    Collections.addAll(list, array);
+    ```
+
+    
+
+### Trick
+
+- be careful when you pass value
+
+    ```
+    fun(list) or fun(ArrayList<>(list))
+    ```
+
+- `Array` will not override `hashCode()` nor `equals`, which means values same doesn't means object same. Be careful when use `HashSet` and `HashMap`
+
+- Always remember use `equals()` instead of `==` when you compare two Objects, especially for `Inteager`

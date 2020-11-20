@@ -2,58 +2,42 @@
 
 ### Combination, Permutation
 
-- **78  Subsets** (subCb, using `nums`)
-- **90  Subsets II** (subCb, using `nums`, duplicate)
-- **77  Combinations** (cb by `k` numbers, using `1-n`)
-- **39  Combination Sum** (cb sum to `t`, using `nums`)
-- **40  Combination Sum II** (cb sum to `t`, using `nums`, duplicate)
-- **216  Combination Sum III** (cb by `k` numbers, sum to `t`, using `1-9`)
-- **46  Permutations** (pm, using `nums`)
-- **47  Permutations II** (pm, using `nums`, duplicate)
+- [x] 78  Subsets (subCb, using `nums`)
+- [x] 90  Subsets II (subCb, using `nums`, duplicate)
+- [x] 77  Combinations (cb by `k` numbers, using `1-n`)
+- [ ] 39  Combination Sum (cb sum to `t`, using `nums`)
+- [ ] 40  Combination Sum II (cb sum to `t`, using `nums`, duplicate)
+- [ ] 216  Combination Sum III (cb by `k` numbers, sum to `t`, using `1-9`)
+- [x] 46  Permutations (pm, using `nums`)
+- [ ] 47  Permutations II (pm, using `nums`, duplicate)
 
-#### Three key steps
 
-1. **Choice: `enumerate()` and `recurssion()`**
 
-2. **Constrain: `if someRuleMet`**
+1. **Choice can be made for current record**
 
-3. **Goal: `res.append()`**
+2. **Constrain: `if someRuleMet` then add `record` to `res`**
+
 
 ```python
-def func(self, nums, target, k):
-  	res = []
-  	n = len(nums)
-  	def find(t, cb):
-    	if appendRuleMet:  # goal
-      		res.append(cb)
-      		return
-    	for i in range(n): # enumerate
-      		if skipRuleMet: # rule
-        		continue
-      		if breakRuleMet:
-        		break
-      		find(t-nums[i], cb+[nums[i]]) # recursion
-  	find(target, [])
-  	return res
+result = []
+def backtrack(record, choices):
+    if meetRule:
+        result.add(record)
+        return
+
+    for choice in choices:
+        makeChoice(record)
+        backtrack(record, choices)
+        cancelChoice(record)
 ```
 
-`nums.sort()` and `i>0 and nums[i]==nums[i-1]`
 
-It is a `skipRule` when duplicate number in `nums`
 
-`start from` 
+- The whole process of backtracking is to **In-order** traverse the decision tree
 
-When the order does **not** matter, you may need require `for loop` start from current number
+- Change the `meetRule` will change the `node` you add to the results
 
-`appendRule`
-
-Depends on different problems, sometimes the rule is always met
-
-`breakRule`
-
-Most of the time required in **Sum** related problems
-
-- ##### 377  Combination Sum IV (*DP*)
+- [ ] ##### 377  Combination Sum IV (*DP*)
 
 This one is asked to get the **number** of combination. So backtracking becomes dp
 
@@ -82,17 +66,17 @@ def combinationSum4(self, nums: List[int], target: int) -> int:
 
 ### Parentheses
 
-- 20   Valid Parentheses     
-- 22   Generate Parentheses     
-- 32   Longest Valid Parentheses     
-- 241   Different Ways to Add Parentheses     
-- 301   Remove Invalid Parentheses    
+- [x] 20   Valid Parentheses     
+- [x] 22   Generate Parentheses
+- [ ] 32   Longest Valid Parentheses
+- [ ] 241   Different Ways to Add Parentheses     
+- [ ] 301   Remove Invalid Parentheses
 
-One case of **combination**, which has special **constrain**:
+- One case of **combination**, which has special **constrain**:
 
-**The number of `(`should equal than `)`**
+- The number of `(`should equal than `)`
 
-As a special case, **stack** is useful for **Parentheses** problem
+- As a special case, **stack** is useful for **Parentheses** problem
 
 # Divide and Conquer
 
@@ -118,15 +102,34 @@ def dac(arr):
 
 # Dynamic Programming
 
+**Traverse all states and make choice with memo**
+
+```python
+for state1 in state1s:
+    for state2 in state2s:
+        ...
+        dp[state1][state2][...] = makeChoice(choice1, choice2...)
+```
+
+1. **Define state `dp[i][j]`**
+1. **Define `makeChoice()` for `min`/`max`**
+2. **Define loop order**
+3. **Define  `dp[0]`**
+
+$$T = N_{sub} * T_{sub}$$
+
+$S = N_{sub}$
+
 ### One Dimension
 
 #### Number DP
 
-This kind of problem most of the time would input a `n`, then you need dp from `1` to `n` with a `for` loop
-
-- 70   Climbing Stairs (`1` or `2` sum to `n`)
-- 279   Perfect Squares (`1,4,9,16` sums to `n`)
-- 322   Coin Change (`nums` sums to `n`)
+- [x] 70   Climbing Stairs (`1` or `2` sum to `n`)
+- [x] 279   Perfect Squares (`1,4,9,16` sums to `n`)
+- [x] 322   Coin Change (`nums` sums to `n`)
+- [x] 198 House Robber
+- [x] 312 Burst Balloons
+- [x] 152 Maximum Product Subarray
 
 ```python
 def climbStairs(self, n: int) -> int:
@@ -137,19 +140,46 @@ def climbStairs(self, n: int) -> int:
     return dp[n]
 ```
 
+```c++
+int fib(int n) {
+    if (n == 2 || n == 1) 
+        return 1;
+    int prev = 1, curr = 1;
+    for (int i = 3; i <= n; i++) {
+        int sum = prev + curr;
+        prev = curr;
+        curr = sum;
+    }
+    return curr;
+}
+```
+
+- Be clear about the `dp[i]` and `nums[i]`, sometimes they have different `i` meaning
+- `dp[i][j]` is for bottom up and `dp(i, j)` is for top down
+
 #### String DP
 
-- 139   Word Break (`words` combine to `string`)
-- 10 Regular Expression Matching
+- [x] 139   Word Break (`words` combine to `string`)
+- [x] 10 Regular Expression Matching
+- [x] 516 Longest Palindromic Subsequence
+- [x] 1312 Minimum Insertion Steps to Make a String Palindrome
+- [x] 1143 Longest Common Subsequence
+- [x] 583 Delete Operation for Two Strings
+- [x] 712 Minimum ASCII Delete Sum for Two Strings
+
+- Most of the time, substring, subsequence, sub array, two string/array problem have `O(n*n)` complexity. You need 2d dp.
+- Sometime even you only need `dp[]` to store states but the time can be also `O(n*n)`, because you `makeChoices()` might be a for loop
+
+- `300 Longest Increasing Subsequence` can be opitimized to `O(nlogn)`
 
 ### Two Dimension
 
 This kind of problem most of the time would give you the matrix
 
-- 62   Unique Paths (move from left-top to right-bottom)
-- 63   Unique Paths II (move from left-top to right-bottom with obstacle)
-- 120   Triangle (move from top to bottom with min sum)
-- 221   Maximal Square (find max square in matrix)
+- [x] 62   Unique Paths (move from left-top to right-bottom)
+- [ ] 63   Unique Paths II (move from left-top to right-bottom with obstacle)
+- [ ] 120   Triangle (move from top to bottom with min sum)
+- [ ] 221   Maximal Square (find max square in matrix)
 
 Find the relation between **left** and **cur**, **up** and **cur**, if you traverse from **left top** to **right bottom**
 
@@ -158,6 +188,12 @@ Sometimes you even need relate **left-up** entry as well
 Be careful about the over boundary, make sure `0<=x<m and 0<=y<n`
 
 Sometimes, you need to set the finish check
+
+after defining the state fuction, make sure right side of equation has been calculated. You may change the loop direction
+
+Most of the time the right side contain **left, up, left-up**
+
+2D dp means there should be multiple base case `dp[0][j]` and `dp[i][0]`. Only when their default value are 0, then you don't need to initialize
 
 ```python
 dp = [[0]*(n) for _ in range(m)]
@@ -178,11 +214,11 @@ return dp[-1][-1]
 
 ### Stock
 
-- 121 Best Time to Buy and Sell Stock
-- 122 Best Time to Buy and Sell Stock II
-- 123 Best Time to Buy and Sell Stock III
-- 188 Best Time to Buy and Sell Stock IV
-- 309 Best Time to Buy and Sell Stock with Cooldown
+- [x] 121 Best Time to Buy and Sell Stock
+- [x] 122 Best Time to Buy and Sell Stock II
+- [ ] 123 Best Time to Buy and Sell Stock III
+- [x] 188 Best Time to Buy and Sell Stock IV
+- [ ] 309 Best Time to Buy and Sell Stock with Cooldown
 
 **`dp[i][k][b]`**
 
@@ -264,37 +300,109 @@ def maxProfit(self, k: int, prices: List[int]) -> int:
 
 ```python
 # 01 backpack problem
-# costs : cost for each items
-# values : value for each items
-for i in range(numOfItems):
-    for c in reversed(range(capacity)):
+# state: ith num, c target cap
+# choice: add ith num or not
+for i in range(len(nums)):
+    for c in reversed(range(cap)):
         dp[i][c] = max(dp[i-1][c], dp[i-1][c-costs[i]] + values[i])
 ```
 
+- [x] 416 Partition Equal Subset Sum 
 
+```python
+# subset backpack
+for i in range(nums):
+    for j in reversed(range(cap)):
+        dp[i][j] = dp[i-1][j] || (j>=num && dp[i-1][j-num]) # dp[i-1][x]
+```
+
+- [x] 518 Coin Change 2
+- [x] 322 Coin Change
+
+```python
+# complete backpack
+for i in range(nums):
+    for j in range(cap):
+        dp[i][j] = dp[i-1][j]
+        if j>=num:
+            dp[i][j]+=dp[i][j-num] # dp[i][x]
+```
+
+### Greedy
+
+Local maximum would result global maximum
+
+Special kind of DP but with reduced complexity 
+
+- [x] 435 无重叠区间
+- [x] 452 用最少数量的箭引爆气球
+
+```java
+Arrays.sort(points, Comparator.comparingInt(x -> x[1]));
+int end = points[0][1];
+int count = 1;
+for(int[] point : points) {
+    if (point[0] > end) {
+        count++;
+        end = point[1];
+    }
+}
+return count;
+```
+
+- [x] 55 Jump Game
+- [x] 45 Jump Game II
+- [x] 763 Partition Labels
+
+We don't need to use dp to calculate the exact min/max choice, but choice the one with highest posibility
+
+```python
+for i in range(n):
+    if farthest >= i:
+        farthest = max(farthest, nums[i]+i)
+    else:
+        return False
+return True
+```
+
+```python
+for i in range(n-1):
+    farthest = max(farthest, nums[i]+i)
+    if (end==i):
+        end = farthest
+        jump+=1
+    if farthest >= n-1:
+        return jump+1
+return jump
+```
+
+- [x] 877  Stone Game
+- [x] 651 4 Keys Keyboard
+
+### TopDown
 
 # Linked List
 
 ### NodeModify
 
-- 206   Reverse Linked List 
-- 92   Reverse Linked List II (reverse between)
-- 24   Swap Nodes in Pairs (reverse 2-by-2)
-- 328   Odd Even Linked List (odd then even)
+- [x] 206   Reverse Linked List 
+- [x] 92   Reverse Linked List II (reverse between)
+- [ ] 24   Swap Nodes in Pairs (reverse 2-by-2)
+- [ ] 328   Odd Even Linked List (odd then even)
 
 
 
-- 237   Delete Node in a Linked List     
-- 19   Remove Nth Node From End of List     
-- 83   Remove Duplicates from Sorted List     
-- 203   Remove Linked List Elements     
-- 82   Remove Duplicates from Sorted List II     
-- 369   Plus One Linked List     
-- 2   Add Two Numbers     
-- 160   Intersection of Two Linked Lists     
-- 21   Merge Two Sorted Lists    
+- [ ] 237   Delete Node in a Linked List     
+- [ ] 19   Remove Nth Node From End of List     
+- [ ] 83   Remove Duplicates from Sorted List     
+- [ ] 203   Remove Linked List Elements     
+- [ ] 82   Remove Duplicates from Sorted List II     
+- [ ] 369   Plus One Linked List     
+- [x] 2   Add Two Numbers     
+- [ ] 160   Intersection of Two Linked Lists     
+- [x] 21   Merge Two Sorted Lists    
 
-Write down with change lines on the paper may help a lot
+- Write down with change lines on the paper may help a lot
 
 ```python
 '''
@@ -306,52 +414,74 @@ p      c      n
 
 ```python
 def reverseList(self, head: ListNode) -> ListNode:
-        p = None
-        c = head
-        while c:
-            n = c.next # ADD the next node pointer 
+  	p = ListNode()
+    p.next = head
+    c = head
+    while c.next:
+      n = c.next # ADD the next node pointer 
             
-            c.next = p # CHANGE all next vals
-            
-            p = c # change p, c to MOVE to next state
-            c = n
-        return p
+      c.next = n.next
+      n.next = p.next # p.next may not be c
+      p.next = n # this p will always be the pre of head
+    
+    return p.next
 ```
 
-Most of the time, **CHANGE** on each node need `n` times, but the last time will result the pointer point to **Null**. So sometime you may need add one more **CHANGE** step after loop
+- The `while check` should stop ASAP to avoid null pointer, even if you stop before the final node, you can add extra operation to finish the modifying
 
-In the **CHANGE** step, be careful the order.
-
-In the **CHANGE** step, the pointer still point to the current node before the **MOVE** step, but the nodes order may have been changed. That is why you need drawing to help you
-
-The `while check` should stop ASAP to avoid null pointer, even if you stop before the final node, you can add extra operation to finish the modifying
-
-### CycleLink/FsPointer
-
-- 141   Linked List Cycle    
-- 142   Linked List Cycle II
+```java
+// reverse with recursion
+private ListNode reverse(ListNode head) {
+        if (head.next==null) return head; // newHead
+        ListNode newEnd = head.next;
+        ListNode newHead = reverse(head.next);
+        newEnd.next = head;
+        head.next = null;
+        return newHead;
+    }
+```
 
 ```python
-'''
- * ---> * ---> * --> *
- |	          |     |
-s,f           * <-- *
-'''
-def detectCycle(self, head):
-    if head == None:
-        return None
-    s = f = head
-    while f and f.next: # No loop : f out
-        s = s.next # move before check
-        f = f.next.next
-        if s == f: # Loop : s meets f
-            s2 = head
-    		while s!=s2:
-                s = s.next
-                s2 = s2.next
-    		return s
-    return None
-    
+# reverse with count
+self.rightEdge = None
+def reverseWithCount(head, n):
+    if n==1:
+        self.rightEdge = head.next
+        return head
+   	newHead = reverseWithCount(head.next, n-1)
+    newEnd.next = head
+    head.next = self.rightEdge
+    return newHead
+```
+
+- Traverse linked list also has both `front oder` and `post oder`
+
+- [x] 234 Palindrome Linked List
+
+```java
+void traverse(ListNode head) {
+    // 前序遍历代码
+    traverse(head.next);
+    // 后序遍历代码
+}
+```
+
+```java
+ListNode left;
+
+boolean isPalindrome(ListNode head) {
+    left = head;
+    return traverse(head);
+}
+
+boolean traverse(ListNode right) {
+    if (right == null) return true;
+    boolean res = traverse(right.next);
+    // 后序遍历代码
+    res = res && (right.val == left.val);
+    left = left.next;
+    return res;
+}
 ```
 
 
@@ -395,40 +525,31 @@ sub() # replace, rtype: list
 
 ### Palindrome
 
-- 125 Valid Palindrome
-- 266 Palindrome Permutation
-- 5 Longest Palindromic Substring
-- 9 Palindrome Number
-- 214 Shortest Palindrome
-- 336 Palindrome Pairs
-- 131 Palindrome Partitioning
-- 132 Palindrome Partitioning II
-- 267 Palindrome Permutation II
+- [x] 125 Valid Palindrome
+- [ ] 266 Palindrome Permutation
+- [x] 5 Longest Palindromic Substring
+- [x] 9 Palindrome Number
+- [ ] 214 Shortest Palindrome
+- [ ] 336 Palindrome Pairs
+- [x] 131 Palindrome Partitioning
+- [ ] 132 Palindrome Partitioning II
+- [ ] 267 Palindrome Permutation II
 
 ```python
-'''
-odd : s[i+j]==s[i-j]
-even : s[i+j+1]==s[i-j]
-whole : s == s[::-1]
-from end : s[:-i] == rev[i:]
-'''
-for i in range(n):
-    # odd
-    for j in range(n):
-        if not (i+j<n and i-j>=0): # check boundary
-            break
-        if s[i+j]==s[i-j]: # so good so far
-            doSomething()
-        else: # no more
-            break
-    # even
-    for j in range(n):
-        if not (i+j+1<n and i-j>=0):
-            break
-        if s[i+j+1]==s[i-j]:
-            doSomething()
-        else:
-            break
+def longestPalindrome(self, s: str) -> str:
+    self.res = ""
+    self.chars = s
+    for i in range(len(self.chars)):
+        self.palindrome(i, i)
+        self.palindrome(i, i+1)
+    return self.res
+
+def palindrome(self, l, r):
+    while l>=0 and r<len(self.chars) and self.chars[l]==self.chars[r]:
+        l-=1
+        r+=1
+    if r-l-1>len(self.res):
+        self.res = self.chars[l+1:r]
 ```
 
 ```python
@@ -449,29 +570,35 @@ return ans
 
 # Tree
 
-- 100   Same Tree
-- 101   Symmetric Tree 
-- 226   Invert Binary Tree
-- 257   Binary Tree Paths
-- 112   Path Sum
-- 113   Path Sum II
-- 129   Sum Root to Leaf Numbers
-- 298   Binary Tree Longest Consecutive Sequence
-- 111   Minimum Depth of Binary Tree
-- 104   Maximum Depth of Binary Tree
-- 110   Balanced Binary Tree
-- 124   Binary Tree Maximum Path Sum
-- 250   Count Univalue Subtrees
-- 366   Find Leaves of Binary Tree
-- 337   House Robber III
+- [x] 100   Same Tree
+- [x] 101   Symmetric Tree 
+- [x] 226   Invert Binary Tree
+- [x] 116 Populating Next Right Pointers in Each Node
+- [x] 114 Flatten Binary Tree to Linked List
+- [x] 199 Binary Tree Right Side View
+- [x] 236 Lowest Common Ancestor of a Binary Tree
+- [ ] 257   Binary Tree Paths
+- [ ] 129   Sum Root to Leaf Numbers
+- [ ] 298   Binary Tree Longest Consecutive Sequence
+- [ ] 111   Minimum Depth of Binary Tree
+- [ ] 104   Maximum Depth of Binary Tree
+- [ ] 110   Balanced Binary Tree
+- [ ] 124   Binary Tree Maximum Path Sum
+- [ ] 250   Count Univalue Subtrees
+- [ ] 366   Find Leaves of Binary Tree
+- [ ] 337   House Robber III
 
-Always remember use recursion.
+- Always remember use recursion.
 
-If consider leaf, use pre to pass the previous root.
+- If consider leaf, use pre to pass the previous root.
 
-You can even traverse with two or more nodes at the same time.
+- You can even traverse with two or more nodes at the same time.
 
-The **recurssion order** means a lot
+- The **recursion order** means a lot
+
+- The most important part of **recurssion** is understand the definition of the `recursion() `
+
+- believe the definition of the recurrsion function and the frame work will handle the rest
 
 ```python
 def traverseTree(self, root):
@@ -487,7 +614,9 @@ def traverseTree(self, root):
 
 ### Iteration Tree
 
-- 102 Binary Tree Level Order Traversal
+- It is just BFS
+
+- [x] 102 Binary Tree Level Order Traversal
 
 ```python
 h = 0
@@ -505,27 +634,29 @@ while queue:
     h+=1
 ```
 
-### Recover Tree
+### Build Tree
 
-- 105 Construct Binary Tree from **Preorder and Inorder** Traversal
+- [x] 105 Construct Binary Tree from **Preorder and Inorder** Traversal
+- [x] 106 从中序与后序遍历序列构造二叉树
+- [x] 654 最大二叉树
+- [x] 1008 Construct Binary Search Tree from Preorder Traversal
+- [x] 426 Convert Binary Search Tree to Sorted Doubly Linked List
 
 ```python
-# preorder : [root, allOtherNodes]
+# preorder : [root, leftSubTree, rightSubTree]
 # inorder : [leftSubTree, root, rightSubTree]
 def buildTree(preorder, inorder):
-    def build(stop):
-        if inorder and inorder[-1] != stop:
-            root = TreeNode(preorder.pop())
-            root.left = build(root.val)
-            inorder.pop()
-            root.right = build(stop)
-            return root
-    preorder.reverse()
-    inorder.reverse()
-    return build(None)
+    if len(preorder)==0:
+        return None
+    rootVal = preorder[0]
+    i = findIndexOfVal(rootVal)
+    root = TreeNode(rootVal)
+    root.left = buildTree(preorder[1:1+leftSize], inorder[:i])
+    root.right = buildTree(preorder[1+leftSize:], inorder[i+1:])
+    return root
 ```
 
-- 106 Construct Binary Tree from **Inorder and Postorder** Traversal
+- [ ] 106 Construct Binary Tree from **Inorder and Postorder** Traversal
 
 ```python
 # postorder : [allOtherNodes, root]
@@ -541,113 +672,164 @@ def buildTree(inorder, postorder):
     return build(None)
 ```
 
+- [x] 297  Serialize and Deserialize Binary Tree
+
+```java
+public String serialize(TreeNode root) {
+    if (root==null) return "#";
+    return root.val + "," + serialize(root.left) + "," + serialize(root.right);
+}
+
+public TreeNode deserialize(String data) {
+    LinkedList<String> nodeStrings = new LinkedList<>();
+    for (String nodeString : data.split(",")) nodeStrings.addLast(nodeString);
+    return deserialize(nodeStrings);
+}
+
+private TreeNode deserialize(LinkedList<String> nodeStrings) {
+    String nodeString = nodeStrings.removeFirst();
+    if (nodeString.equals("#")) return null;
+    TreeNode cur = new TreeNode(Integer.parseInt(nodeString));
+    cur.left = deserialize(nodeStrings);
+    cur.right = deserialize(nodeStrings);
+    return cur;
+}
+```
+
 
 
 # Binary Search
 
-- 278   First Bad Version     
-- 35   Search Insert Position     
+- [x] 278   First Bad Version
+- [x] 704 Binary Search
+- [ ] 35   Search Insert Position     
 
 ```python
 l = 0
-r = len(nums)-1
-while l<r:
-    m = (l+r)//2
-    if nums[m] < target:
-        l = m+1
-    elif nums[m] > target:
-        r = m-1
-    else:
-        return m
+r = n-1
+while l <= r:
+    m = l + (r - l)/2 # avoid overflow
+    if nums[m] == target:
+        return nums[n]
+    elif nums[m] < target:
+        l = m + 1
+    elif nums[m] < target:
+        r = m - 1
+return -(l+1) # -(insertionIdx)-1
 ```
 
-You may need handle some edge situations, just avoid add code in the while loop
+```java
+i = Arrays.binarySearch(nums, key);
+if (i<0) i = -i-1; // insertion point
+```
 
-- 4 Median of Two Sorted Arrays
+- Aways consider `l` and `r` as `[l, r]` then the `while(l <= r)`. Always keeps in mind the `boundary value` then you would know how to update `l, r, m`
+
+### Find Boundary
+
+- [x] 34 Find First and Last Position of Element in Sorted Array
+
+```python
+# left boundary
+l = 0
+r = n-1
+while l <= r:
+  m = l + (r - l)/2
+  if nums[m] == target: # let m move 1 by 1
+    r -= 1 # l += 1
+  elif nums[m] < target:
+    l = m+1
+  elif nums[m] > target:
+    r = m-1
+if l >= n || nums[l]!=target: # if r < 0 || nums[r]!=target
+  return -1
+return l # r
+```
 
 ### Rotate
 
-- 33   Search in Rotated Sorted Array     
-- 81   Search in Rotated Sorted Array II     
-- 153   Find Minimum in Rotated Sorted Array     
-- 154   Find Minimum in Rotated Sorted Array II     
+- [x] 33   Search in Rotated Sorted Array     
+- [ ] 81   Search in Rotated Sorted Array II     
+- [ ] 153   Find Minimum in Rotated Sorted Array     
+- [ ] 154   Find Minimum in Rotated Sorted Array II     
 
-Check if `nums[m]` and `target` are on the same side of `nums[0]`
-
-```python
-(nums[m]>nums[0])==(target>nums[0])
-```
-
-### Cuts
-
-- 875 Koko Eating Bananas
-774. 774 Minimize Max Distance to Gas Station
-774. 1011 Capacity To Ship Packages Within D Days
+- Check if `nums[m]` and `target` are on the same side of `nums[0]`
 
 ```python
-def cutIntoGroups(self, W: List[int], D: int) -> int:
-    l = max(W)
-    r = sum(W)
-    def meetRule():
-        s = 0
-        cnt = 1
-        for w in W:
-            if s+w>m:
-                s = 0
-                cnt+=1
-            s+=w
-        return cnt<=D
-    
-    while l<r:
-        m =  (l+r)//2
-        if not meetRule():
-            l = m+1
-        else:
-            r = m
-    return l
+(nums[m]>=nums[0])==(target>=nums[0])
 ```
 
+### BestValue
 
+- [x] 875 Koko Eating Bananas
+- [ ] 774 Minimize Max Distance to Gas Station
+- [x] 1011 Capacity To Ship Packages Within D Days
+
+- Sometimes you may need update `r` or `l` with `m` in the loop, in that case, you may want to change the defination of `[l, r)` , otherwise `l<=r` may loop forever
+
+```python
+# binary search the best value
+l = minVal
+r = maxVal
+
+while l<r:
+    ...
+    if isMeetTheRequirement(m):
+        l = m # r = m
+    else:
+        r = m-1 # l = m-1
+```
 
 # Math
 
 ### N Sum
 
-- 1 Two Sum
-- 167 Two Sum II
-- 15 3Sum
-- 18 4Sum
+- [x] 1 Two Sum
+- [ ] 167 Two Sum II
+- [ ] 15 3Sum
+- [ ] 18 4Sum
+
+- Using two pointer when `nums` is sorted
 
 ```python
-results = []
-def findNsum(nums, target, N, result):
-    if len(nums) < N or N < 2 or target < nums[0]*N or target > nums[-1]*N:  # early termination
-        return
-    if N == 2: # two pointers solve sorted 2-sum problem
-        l,r = 0,len(nums)-1
-        while l < r:
-            s = nums[l] + nums[r]
-            if s == target:
-                results.append(result + [nums[l], nums[r]])
-                l += 1
-                while l < r and nums[l] == nums[l-1]: # skip duplicate
-                    l += 1
-            elif s < target:
-                l += 1
-            else:
-                r -= 1
-    else: # recursively reduce N
-        for i in range(len(nums)-N+1):
-            if i == 0 or (i > 0 and nums[i-1] != nums[i]): # skip duplicate
-                findNsum(nums[i+1:], target-nums[i], N-1, result+[nums[i]])
-    
-findNsum(sorted(nums), target, 4, [])
-return results
+# two sum
+def twoSum(self, nums, t):
+    n = len(nums)
+    l = 0
+    r = n-1
+    res = []
+    while l<r:
+        left = nums[l]
+        right = nums[r]
+        s = left + right
+        if s > t:
+            r-=1
+        elif s < t:
+            l+=1
+        else:
+            res.append([left, right])
+            while l<r and nums[l]==left: l+=1
+            while l<r and nums[r]==right: r-=1
+    return res
 ```
 
-You may find it quiet similar with some **combination** problem. Both of them require the same method to avoid duplicate. So **NSum** may also be kind of **Backtracking**
+```python
+# N sum
+self.res
+def nSum(self, nums, t, N, record):
+    n = len(nums)
+    if N==2:
+        self.res += [record + part for part in self.twoSum(nums, t)]
+        return
 
-Also related with **Divide and Conquer**
+    for i in range(n-N+1):
+        if i==0 or nums[i]!=nums[i-1]: # skip with sort
+            self.nSum(nums[i+1:], t-nums[i], N-1, record + [nums[i]])
+```
+
+- You may find it quiet similar with some **combination** problem. Both of them require the same method to avoid duplicate. So **NSum** may also be kind of **Backtracking**
+
+- Also related with **Divide and Conquer**
 
 ```python
 resList = []
@@ -663,62 +845,121 @@ findNSum(sorted(sums), t, 4, [])
 return resList
 ```
 
-# DFS & BFS
+### Factory
 
-- 200   Number of Islands     
-- 130   Surrounded Regions     
-- 364   Nested List Weight Sum II     
-- 51   N-Queens     
-- 52   N-Queens II     
-- 126   Word Ladder II    
-
-**BFS** is to use a **deque** to record which nodes that we want to visit in the future, and also we record the places that we have visited, so that we don't visit them anymore. Take the front element from queue, do some calculation. Then we get its neighbors, push them to the queue.
-
-Some case you can only use **BFS**, lets call it **relation spread problem** (127 Word Ladder). Define a kind of **relation**, **spread** from one set of points to others till reach the **End point**
+- [x] 172 阶乘后的零
 
 ```python
-def bfs(i, j):
-    queue = collections.deque()
-    queue.append((i, j)) # start from (i, j)
-    markAsVisited(i, j)
-    while queue:
-        x, y = queue.popleft()
-        for neighber in neighbers(x, y):
-            if isValidPos and dfsRuleMet:
-                markAsVisited(neighber.x, neighber.y)
-                queue.append(neighber.x, neighber.y)
-for i in range(m):
-    for j in range(n):
-        if dfsRuleMet:
-        	bfs(i, j)
+while n > 0:
+    res += n // 5
+    n //= 5
 ```
 
-**DFS** is that we **recursively call itself** with changing parameters. When we enter DFS, we normally want to check if certain conditions are met, Then for each possible ways to go, we try DFS on them, get into the next recursion.
+- [x] 793 阶乘后K个零
+
+return 5 or 0
+
+### MissingNumber
+
+- [x] 448 Find All Numbers Disappeared in an Array
+- [x] 645 Set Mismatch
+
+`x ^ x ` equals 0
+
+```python
+for i in range(n):
+    j = abs(nums[i])-1
+    nums[j] = -abs(nums[j])
+
+for i in range(n):
+    if nums[i] > 0:
+        res.append(i+1)
+```
+
+### JosephusCircle
+
+- $N$ People fail in $M$th
+
+$f(N,M)=(f(N−1,M)+M)\%N$
+
+```python
+def josephusCircle(n, m):
+    p = 0
+    for i in range(2, n+1):
+        p = (p+m)%i
+    return p+1
+```
+
+
+
+# DFS & BFS
+
+- [x] 200   Number of Islands     
+- [x] 130   Surrounded Regions     
+- [ ] 364   Nested List Weight Sum II
+- [x] 111 Minimum Depth of Binary Tree
+- [x] 752 Open the Lock
+- [ ] 51   N-Queens     
+- [ ] 52   N-Queens II     
+
+    
+
+
+
+### BFS
+
+- [x] 994 Rotting Oranges
+- [ ] 126 Word Ladder II    
+- [ ] 127 Word Ladder
+
+- `queue` record which nodes that we want to visit in the future
+- `visited` record places that we have visited (not need sometimes, tree)
+- The key point is to find the shortest path, which DFS is hard to achieve.
+- One property of bfs is that it can control the **step**
+
+- Some case you can only use **BFS**, lets call it **relation spread problem** (127 Word Ladder). Define a kind of **relation**, **spread** from one set of points to others till reach the **End point**
+
+- Some times when we know the target, we can do the bi-bfs. Start from both start point and end point.
+
+```python
+def bfs(start, target):
+  queue.append(start)
+    while queue:
+      n = len(queue)
+      for _ in range(n):
+        cur = queue.popleft()
+        if cur==target:
+          return step
+        for neighber in neighbers(cur):
+            if isValidPos:
+              visited.append(neighber)
+              queue.append(neighber)
+      step+=1
+```
+
+### DFS
+
+- [ ] 547 Friend Circles
+
+- DFS belongs to backtracking
+
+- **DFS** is that we **recursively call itself** with changing parameters. When we enter DFS, we normally want to check if certain conditions are met, Then for each possible ways to go, we try DFS on them, get into the next recursion.
 
 ```python
 def dfs(i, j):
-    if isValidPos and dfsRuleMet:
-        markAsVisited(i, j)
-        for neighber in neighbers(i, j):
-            dfs(neighber.x, neighber.y)
-        doSomething()
-for i in range(m):
-    for j in range(n):
-        if dfsRuleMet:
-        	dfs(i, j)
+    markAsVisited(i, j)
+    for neighber in neighbers(i, j):
+      if isValidPos:
+      	dfs(neighber.x, neighber.y)
 ```
-
-Both of them have two **loops** , one is traverse all node manually, other one, for **BFS** is to use **queue** to loop nodes, for **DFS** is to use **recurssion** to loop nodes
-
-In fact, most them are used to **dye**, the common loop is used to count
 
 # Array
 
 ### Interval
 
-- 57   Insert Interval    
-- 56   Merge Intervals 
-- 352   Data Stream as Disjoint Intervals    
+- [x] 57   Insert Interval    
+- [x] 56   Merge Intervals 
+- [ ] 352   Data Stream as Disjoint Intervals    
 
 ```python
 class Interval:
@@ -738,46 +979,38 @@ class Solution:
 
 ### Sliding Window/Sub String
 
-- 76 Minimum Window Substring
-- 30 Substring with Concatenation of All Words
-- 3 Longest Substring Without Repeating Characters
-- 209 Minimum Size Subarray Sum
-- 340 Longest Substring with At Most K Distinct Characters
-- 395 Longest Substring with At Least K Repeating Characters
-- 159 Longest Substring with At Most Two Distinct Characters
+- [x] 76 Minimum Window Substring
+- [x] 567 Permutation in String
+- [x] 438 Find All Anagrams in a String
 
-Contains two moves: `toBeValid()`, `toMinimize()/toMaximize()`
-
-```python
-# Minimize
-i = 0
-for j, c in enumerate(s): # Move right pointer, toBeValid()
-    update(state)
-    if isValid(state):
-        while isValid(state): # Move left pointer, toMinimize()
-            update(state)
-            i+=1
-        updateResult()
-```
+- [ ] 30 Substring with Concatenation of All Words
+- [ ] 3 Longest Substring Without Repeating Characters
+- [ ] 209 Minimum Size Subarray Sum
+- [ ] 340 Longest Substring with At Most K Distinct Characters
+- [ ] 395 Longest Substring with At Least K Repeating Characters
+- [ ] 159 Longest Substring with At Most Two Distinct Characters
 
 ```python
-# Maximize
-i = 0
-for j, c in enumerate(s): # Move right pointer, toMaximize()
-    update(state)
-    if isNotValid(state):
-        updateResult()
-        while isNotValid(state): # Move left pointer, toBeValid()
-            update(state)
-            i+=1
-updateResult()
+# [l, r)
+while r < n:
+  c = s[r]
+  r+=1
+  updateWhenAdd()
+  while shouldShrinkWindow():
+    d = s[l]
+    l++
+    updateWhenRemove()
 ```
+
+There are key methods should be considered `updateWhenAdd()`, `updateWhenRemove()`, `shouldShrinkWindow()` and the final one is to decide where should we `updateRes()`
+
+Most of the time we need the `valid` to track the status of window, `map` to track the data info of the `window` and another `map` to record the `need`
 
 
 
 ### Water
 
-- 11 Container With Most Water
+- [x] 11 Container With Most Water
 
 - ```python
     while i < j:
@@ -801,18 +1034,107 @@ updateResult()
             r-=1
     ```
 
+### MoveItems
 
+- [x] 26 删除排序数组中的重复项
+- [ ] 83 删除排序链表中的重复元素
+- [ ] 27 移除元素
+- [x] 283 移动零
+
+The key point is to use slow and fast pointer
+
+```java
+int p = 0;
+for (int i = 0; i < nums.length; i++) {
+    if (nums[p]!=nums[i]) { // move valid items to the front
+        p++;
+        nums[p] = nums[i];
+    }
+}
+```
+
+### TwoPointers
+
+- [x] 141 环形链表
+- [x] 142 环形链表II
+- [ ] 167 两数之和 II - 输入有序数组
+- [ ] 344 反转字符串
+- [x] 19 删除链表倒数第 N 个元素
+
+```python
+'''
+h: distance from head to cycle entry E
+d: distance from E to X
+c: cycle length
+                          _____
+                         /     \
+        head_____h______E       \ c
+                        \ d     /
+                         X_____/   
+        
+slow = h + d
+fast = 2(h + d)
+fast traveled n loops
+2(h+d) = h+d+nc --> h = nc - d
+Thus if two pointers start from head and X, respectively, one first reaches E, the other also reaches E.
+'''
+def detectCycle(self, head):
+    if head == None:
+        return None
+    s = f = head
+    while f and f.next: # No loop : f out
+        s = s.next # move before check
+        f = f.next.next
+        if s == f: # Loop : s meets f
+            s2 = head
+    		while s!=s2:
+                s = s.next
+                s2 = s2.next
+    		return s
+    return None
+    
+```
+
+```java
+// find mid of linked list
+fast = slow = head;
+while (fast != null && fast.next != null) {
+    fast = fast.next.next;
+    slow = slow.next;
+}
+
+return slow; // odd->mid, even->right to mid
+```
+
+```python
+fast = slow = head
+while n > 0:
+    fast = fast.next
+    n-=1
+if !fast:
+    return head
+while fast and fast.next:
+    fast = fast.next
+    slow = slow.next
+return slow
+```
+
+
+
+### Random
+
+- [x] 380.常数时间插入、删除和获取随机元素
+- [x] 710.黑名单中的随机数
+
+Use `array` to store the results and `Random()` to generate index
 
 ### QuickSort
 
-```python
-def getPivot(arr, low, high):
-    return high # you can choose different ways
+`frontOrderTraverse()`
 
+```python
 def partition(arr, low, high): 
-    pivotIndex = getPivot(arr, low, high)
-    pivot = arr[pivotIndex]
-    arr[pivotIndex], arr[low] = arr[low], arr[pivotIndex]
+    pivot = arr[low]
     i = low
     
     for j in range(low, high+1): 
@@ -828,6 +1150,120 @@ def quickSort(arr, low, high):
         pi = partition(arr,low,high) 
         quickSort(arr, low, pi-1) 
         quickSort(arr, pi+1, high)
+```
+
+### MergeSort
+
+- [ ] 148  Sort List
+
+```python
+def mergeSort(arr): 
+    if len(arr) >1: 
+        mid = len(arr)//2 # Finding the mid of the array 
+        L = arr[:mid] # Dividing the array elements  
+        R = arr[mid:] # into 2 halves 
+  
+        mergeSort(L) # Sorting the first half 
+        mergeSort(R) # Sorting the second half 
+  
+        i = j = k = 0
+          
+        # Copy data to temp arrays L[] and R[] 
+        while i < len(L) and j < len(R): 
+            if L[i] < R[j]: 
+                arr[k] = L[i] 
+                i+= 1
+            else: 
+                arr[k] = R[j] 
+                j+= 1
+            k+= 1
+          
+        # Checking if any element was left 
+        while i < len(L): 
+            arr[k] = L[i] 
+            i+= 1
+            k+= 1
+          
+        while j < len(R): 
+            arr[k] = R[j] 
+            j+= 1
+            k+= 1
+```
+
+
+
+### PatienceSort
+
+- [x] 300 Longest Increasing Subsequence
+
+```java
+int n = nums.length;
+int[] top = new int[n];
+int len = 0;
+for(int num : nums) {
+    int i = Arrays.binarySearch(top, 0, len, num);
+    if (i<0) i = -i-1;
+    top[i] = num;
+    if (i==len) len++;
+}
+return len;
+```
+
+### PrefixSum
+
+- [ ] 112   Path Sum
+- [ ] 113   Path Sum II
+
+- [x] 437  Path Sum III
+
+*Prefix sum* is a sum of the current value with all previous elements starting from the beginning of the structure.
+
+- 1D arrays (sum the current value with all the previous integers)
+
+- 2D arrays (sum of the current value with the integers above or on the left)
+
+- binary trees (sum the values of the current node and all parent nodes)
+
+
+
+1. `curPrefixSum`
+2. `mp: curPrefixSum->cnt`
+
+```python
+for num in nums:
+    # current prefix sum
+    curr_sum += num
+
+    # situation 1:
+    # continuous subarray starts 
+    # from the beginning of the array
+    if curr_sum == k:
+        count += 1
+
+    # situation 2:
+    # number of times the curr_sum − k has occurred already, 
+    # determines the number of times a subarray with sum k 
+    # has occurred up to the current index
+    count += h[curr_sum - k]
+
+    # add the current sum
+    h[curr_sum] += 1
+```
+
+```python
+def preorder(node: TreeNode, curr_sum) -> None:
+    nonlocal count
+    if not node: return 
+    curr_sum += node.val
+    if curr_sum == k:
+        count += 1
+
+    count += h[curr_sum - k] # h only record one single path to cur node
+    
+    h[curr_sum] += 1
+    preorder(node.left, curr_sum)
+    preorder(node.right, curr_sum)
+    h[curr_sum] -= 1 # avoid found by other subtrees
 ```
 
 
@@ -970,6 +1406,10 @@ for i in range(len(H)):
     s.append(i) # keep push in index
 ```
 
+### Encode/Decode
+
+- [x] 394 Decode String
+
 # Graph
 
 ### Shortest Path Problem
@@ -1082,7 +1522,6 @@ def sort(mp):
 
     - Use **slow** and **fast** pointer
     - May be usable in **Palindrome** problem
-    - 
     
 - Newton Method (**69 Sqrt(x)**)
   
@@ -1260,6 +1699,14 @@ def sort(mp):
         handleExeption()
     ```
 
+- revert number
+
+    ```python
+    while x != 0:
+      r = r*10 + x%10
+      x /= 10
+    ```
+
     
 
 # Thinkings
@@ -1269,6 +1716,8 @@ def sort(mp):
     - If `Object A` contains to `Object V`, when you change `V.val`, `A.V.val` will change as well
 - About edge case, do not pay too much attention onto them at the start. You should get the approximately method as soon as possible
 - in the iterate process, queue is BFS while stack is DFS
+- `/2` reduce one unit, `length -> index` increase one unit
+- $$T(N)=aT(\frac{b}{N})+Θ(N^d)$$, The equation represents dividing the problem up into $$a$$ subproblems of size $$\frac{b}{N}$$ in $$Θ(N^d)$$ time
 
 # Data Structure Design
 
@@ -1668,32 +2117,110 @@ class DSU(object):
 
 ### Binary Search Tree
 
+- [x] 450 Delete Node in a BST
+- [x] 230 BST第K小的元素（Medium）
+- [x] 538 二叉搜索树转化累加树（Medium）
+- [x] 1038 BST转累加树（Medium）
+- [x] 701 二叉搜索树中的插入操作
+- [x] 700 二叉搜索树中的搜索
+- [ ] 98 验证二叉搜索树
+
+`node.rightTree.vals >= node.val >= node.leftTree.vals`
+
+in order traverse is sorted
+
+```c++
+void BST(TreeNode root, int target) {
+ if (root.val == target)
+     // 找到目标，做点什么
+ if (root.val < target) 
+     BST(root.right, target);
+ if (root.val > target)
+     BST(root.left, target);
+}
+```
+
+
+
 ```python
 class Node:
     def __init__(self, val):
         self.val = val
         self.left = self.right = None
-        
-    def insert(self, node):
-        if node.val > self.val:
-            if not self.right:
-                self.right = node
-                return True
-            return self.right.insert(node)
-        elif node.val < self.val:
-            if not self.left:
-                self.left = node
-                return True
-            return self.left.insert(node)
-        else: # already in bst
+
+def find(root, val):
+    if val > root.val:
+        if not root.right:
             return False
+        return root.right.find(val)
+    elif val < root.val:
+        if not root.left:
+            return False
+        return root.left.find(val)
+    else:
+        return True
+
+def insert(root, val):
+    if val > root.val:
+        if not root.right:
+            root.right = TreeNode(val)
+            return True
+        return root.right.insert(val)
+    elif val < root.val:
+        if not root.left:
+            root.left = TreeNode(val)
+            return True
+        return root.left.insert(val)
+    else:
+        return False
+
+def delete(root, val):
+    if root == null:
+        return null
+    if root.val==val:
+        if root.left==null: # left is null return right
+            return root.right
+        if root.right==null: # right is null return left
+            return root.left
+        minNode = root.right
+        while minNode.left: # both non null return min in right tree/max in left tree
+            minNode = minNode.left
+        root.val = minNode.val
+        root.right = delete(root.right, minNode.val)
+    elif root.val > val:
+        root.left = delete(root.left, val)
+    elif root.val < val:
+        root.right = delete(root.right, val)
+    return root
 ```
 
-### Monotonous Stack(TODO)
+
+
+### Monotonous Stack
+
+- [x] 496 下一个更大元素I
+- [x] 503 下一个更大元素II
+- [x] 1019 Next Greater Node In Linked List
+- [ ] 1118 一月有多少天
 
 ```python
-
+for i in reversed(range(n)):
+    while len(stack)>0 and stack[-1]<nums[i]:
+        stack.pop()
+    nextGreater[i] = -1 if len(stack)==0 else stack[-1]
+    stack.append(nums[i])
 ```
+
+```python
+# circle
+for i in reversed(range(n*2)):
+    while len(stack)>0 and stack[-1]<=nums[i%n]:
+        stack.pop()
+    nextGreater[i%n] = -1 if len(stack)==0 else stack[-1]
+    stack.append(nums[i%n])
+```
+
+
 
 ### Segment Tree
 
@@ -1742,3 +2269,17 @@ def query(root, i, j):
         return fun(query(root.left, i, mid), query(root.right, mid+1, j))
 ```
 
+
+
+### B+Tree
+
+- all data stored in leaf tree
+- every leaf is at the same level
+- all leaf nodes have links to other leaf nodes
+- 
+
+# Outliers in top100
+
+- [x] 6 ZigZag Conversion
+- [ ] 8 String to Integer (atoi)
+- [ ] 10 Regular Expression Matching
