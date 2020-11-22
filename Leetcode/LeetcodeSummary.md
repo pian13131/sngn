@@ -890,6 +890,29 @@ def josephusCircle(n, m):
     return p+1
 ```
 
+### NewtonMethod
+
+- [x] 69 Sqrt(x)
+
+```python
+def mySqrt(self, x: int):
+    r = x
+    while r*r > x:
+        r = (r + x//r) // 2
+    return r
+```
+
+### Prime
+
+- [x] 204 Count Primes
+
+```python
+for i in range(2, n):
+    if isPrime[i]:
+        for j in range(i*i, n, i):
+            isPrime[j] = False
+```
+
 
 
 # DFS & BFS
@@ -959,22 +982,23 @@ def dfs(i, j):
 
 - [x] 57   Insert Interval    
 - [x] 56   Merge Intervals 
+- [x] 435 Non-overlapping Intervals
 - [ ] 352   Data Stream as Disjoint Intervals    
+- [ ] 1288 Remove Covered Intervals
+- [x] 986 Interval List Intersections
+
+1. Sort by `interval.left`
+2.  `rightEnd = firstInterval.right` 
+3. Any `interval` with `interval.left < rightEnd` should be merged/removed
+4. update `rightEnd` then loop till the end
 
 ```python
-class Interval:
-    def __init__(self, l, r):
-        self.l = l
-        self.r = r
-class Solution:
-    def merge(self, intervals):
-        res = []
-        for interval in sorted(intervals, key=lambda x:x[0]): # sort
-            if not res or res[-1].r<interval.l: # compare last invertal with cur
-                res.append(interval) # insert
-            else:
-                res[-1].r = max(res[-1].r, interval.r) # merge
-        return res
+for interval in sorted(intervals, key=lambda x:x[0]): # sort
+    if not res or res[-1].r<interval.l: # compare last invertal with cur
+        res.append(interval) # insert
+    else:
+        res[-1].r = max(res[-1].r, interval.r) # merge
+return res
 ```
 
 ### Sliding Window/Sub String
@@ -984,8 +1008,8 @@ class Solution:
 - [x] 438 Find All Anagrams in a String
 
 - [ ] 30 Substring with Concatenation of All Words
-- [ ] 3 Longest Substring Without Repeating Characters
-- [ ] 209 Minimum Size Subarray Sum
+- [x] 3 Longest Substring Without Repeating Characters
+- [x] 209 Minimum Size Subarray Sum
 - [ ] 340 Longest Substring with At Most K Distinct Characters
 - [ ] 395 Longest Substring with At Least K Repeating Characters
 - [ ] 159 Longest Substring with At Most Two Distinct Characters
@@ -1002,9 +1026,10 @@ while r < n:
     updateWhenRemove()
 ```
 
-There are key methods should be considered `updateWhenAdd()`, `updateWhenRemove()`, `shouldShrinkWindow()` and the final one is to decide where should we `updateRes()`
+1. Considered `updateWhenAdd()`, `updateWhenRemove()`, `shouldShrinkWindow()` 
+2. Decide where should we `updateRes()`
 
-Most of the time we need the `valid` to track the status of window, `map` to track the data info of the `window` and another `map` to record the `need`
+2. Most of the time we need the `valid:int` to track the status of window, `counter:map` to track the data info of the `window` and another `need:map` to track the needs to be valid
 
 
 
@@ -1012,36 +1037,36 @@ Most of the time we need the `valid` to track the status of window, `map` to tra
 
 - [x] 11 Container With Most Water
 
-- ```python
-    while i < j:
-        water = max(water, (j - i) * min(height[i], height[j]))
-        if height[i] < height[j]:
-            i += 1
-        else:
-            j -= 1
-    ```
+```python
+while i < j:
+    water = max(water, (j - i) * min(height[i], height[j]))
+    if height[i] < height[j]:
+        i += 1
+    else:
+        j -= 1
+```
 
-- 42 Trapping Rain Water
+- [ ] 42 Trapping Rain Water
 
-- ```python
-    while l < r:
-        lh, rh = max(lh, ht[l]), max(rh, ht[r])
-        if lh <= rh:
-            res += lh - ht[l]
-            l+=1
-        else:
-            res += rh - ht[r]
-            r-=1
-    ```
+```python
+while l < r:
+    lh, rh = max(lh, ht[l]), max(rh, ht[r])
+    if lh <= rh:
+        res += lh - ht[l]
+        l+=1
+    else:
+        res += rh - ht[r]
+        r-=1
+```
 
 ### MoveItems
 
 - [x] 26 删除排序数组中的重复项
-- [ ] 83 删除排序链表中的重复元素
+- [x] 83 删除排序链表中的重复元素
 - [ ] 27 移除元素
 - [x] 283 移动零
 
-The key point is to use slow and fast pointer
+- The key point is to use slow and fast pointer
 
 ```java
 int p = 0;
@@ -1107,6 +1132,7 @@ return slow; // odd->mid, even->right to mid
 ```
 
 ```python
+# find the last Nth node
 fast = slow = head
 while n > 0:
     fast = fast.next
@@ -1126,15 +1152,17 @@ return slow
 - [x] 380.常数时间插入、删除和获取随机元素
 - [x] 710.黑名单中的随机数
 
-Use `array` to store the results and `Random()` to generate index
+- Use `array` to store the results and `Random()` to generate index
 
 ### QuickSort
+
+- [x] 912 Sort an Array
 
 `frontOrderTraverse()`
 
 ```python
 def partition(arr, low, high): 
-    pivot = arr[low]
+    pivot = arr[low] # may use other way to get pivot
     i = low
     
     for j in range(low, high+1): 
@@ -1142,7 +1170,7 @@ def partition(arr, low, high):
             i = i+1
             arr[j], arr[i] = arr[i], arr[j] 
             
-    arr[low], arr[i] = arr[i], arr[low] 
+    arr[low], arr[i] = arr[i], arr[low] # move pivot to i
     return i
   
 def quickSort(arr, low, high): 
@@ -1154,7 +1182,7 @@ def quickSort(arr, low, high):
 
 ### MergeSort
 
-- [ ] 148  Sort List
+- [x] 148  Sort List
 
 ```python
 def mergeSort(arr): 
@@ -1212,7 +1240,7 @@ return len;
 ### PrefixSum
 
 - [ ] 112   Path Sum
-- [ ] 113   Path Sum II
+- [x] 113   Path Sum II
 
 - [x] 437  Path Sum III
 
@@ -1235,15 +1263,12 @@ for num in nums:
     curr_sum += num
 
     # situation 1:
-    # continuous subarray starts 
     # from the beginning of the array
     if curr_sum == k:
         count += 1
 
     # situation 2:
     # number of times the curr_sum − k has occurred already, 
-    # determines the number of times a subarray with sum k 
-    # has occurred up to the current index
     count += h[curr_sum - k]
 
     # add the current sum
@@ -1268,7 +1293,7 @@ def preorder(node: TreeNode, curr_sum) -> None:
 
 
 
-# Queue(TODO)
+# Queue
 
 ### Monoqueue
 
@@ -1287,7 +1312,7 @@ class Monoq:
         while self.que and self.que[-1][0]<v:
             c += self.que[-1][1] + 1
             self.que.pop()
-        self.que.append([v, c])
+        self.que.append([v, c]) # c: cnt of num <= v on the left side of v
     def maxval(self):
         return self.que[0][0]
     def popq(self):
@@ -1308,38 +1333,36 @@ dq.popleft()
 dq.appendleft()
 ```
 
-# Heap/PriorityQueue
+### Heap/PriorityQueue
 
-- 23 Merge k Sorted Lists
-- 347 Top K Frequent Elements
-- 253 Meeting Rooms II
-- 973 K Closest Points to Origin
-- 215 Kth Largest Element in an Array
+- [x] 23 Merge k Sorted Lists
+- [ ] 347 Top K Frequent Elements
+- [ ] 253 Meeting Rooms II
+- [ ] 973 K Closest Points to Origin
+- [ ] 215 Kth Largest Element in an Array
 
 ```python
 from heapq import *
 heap = []
 heappush(heap, item)
 heappop(heap)
-heappushpop(heap, item) # push and then pop
-heapreplace(heap, item) # pop and then push
 heapify(heap) # convert into heap
 heap[0] # the smallest one
 ```
 
-The items in the heap is sorted in **binary search tree** not in normal order
+- The items in the heap is sorted in **binary search tree** not in normal order
 
-If you want to access sorted items make sure use `nlargest(n, heap, key=None)` or `nsmallest(n, heap, key=None)` 
+- If you want to access sorted items make sure use `nlargest(n, heap, key=None)` or `nsmallest(n, heap, key=None)` 
 
-When you need sort **fix number of items** , you may need heap
+- When you need sort **fix number of items** , you may need heap
 
-When you only care about the **max** or **min** that kind of edge value
+- When you only care about the **max** or **min** that kind of edge value
 
-When the item of **Heap** is like **(cnt, val)**, it becomes **PriorityQueue**
+- When the item of **Heap** is like **(cnt, val)**, it becomes **PriorityQueue**
 
-The **one key point** of heap is that you need **doSomething** during the sort (**merge k sorted list**), otherwhise, you can just use `sort(key=lambda x:fun(x))`. **Another one** is you want to fix the size
+- The **one key point** of heap is that you need **doSomething** during the sort (**merge k sorted list**), otherwhise, you can just use `sort(key=lambda x:fun(x))`. **Another one** is you want to fix the size
 
-- 218 The Skyline Problem
+- [ ] 218 The Skyline Problem
 
 ```python
 def getSkyline(self, buildings):
@@ -1365,7 +1388,7 @@ def getSkyline(self, buildings):
     return res[1:]
 ```
 
-- 295 Find Median from Data Stream
+- [ ] 295 Find Median from Data Stream
 
 ```python
 class MedianFinder:
@@ -1406,6 +1429,10 @@ for i in range(len(H)):
     s.append(i) # keep push in index
 ```
 
+### Parentheses
+
+- [x] 1249 Minimum Remove to Make Valid Parentheses
+
 ### Encode/Decode
 
 - [x] 394 Decode String
@@ -1414,54 +1441,54 @@ for i in range(len(H)):
 
 ### Shortest Path Problem
 
-- **Dijkstra's**
-    Shortest path from **one node** to all nodes
+**Dijkstra's**
+Shortest path from **one node** to all nodes
 
-- ```python
-    # dist[u] = distance from s to u
-    graph = collections.defaultdict(list)
-    for u, v, w in times:
-        graph[u].append((v, w))
-    
-    pq = [(0, s)]
-    dist = {}
-    while pq:
-        d, node = heapq.heappop(pq)
-        if node in dist: continue
-        dist[node] = d
-        for nei, d2 in graph[node]:
-            if nei not in dist:
-                heapq.heappush(pq, (d+d2, nei))
-    return prev
-    ```
+```python
+# dist[u] = distance from s to u
+graph = collections.defaultdict(list)
+for u, v, w in times:
+    graph[u].append((v, w))
 
-- **Bellman-Ford**
-    Shortest path from **one node** to all nodes, negative edges allowed
+pq = [(0, s)]
+dist = {}
+while pq:
+    d, node = heapq.heappop(pq)
+    if node in dist: continue
+    dist[node] = d
+    for nei, d2 in graph[node]:
+        if nei not in dist:
+            heapq.heappush(pq, (d+d2, nei))
+return prev
+```
 
-- ```python
-    dist[K-1] = 0
-    for i in range(N):
-        for u,v,w in V:
-            dist[v] = min(dist[v], dist[u]+w)
-    ```
+**Bellman-Ford**
+Shortest path from **one node** to all nodes, negative edges allowed
 
-- **Floyd-Warshall**
-    Shortest path between **all pairs** of vertices, negative edges allowed
+```python
+dist[K-1] = 0 # to itself is 0
+for i in range(N):
+    for u,v,w in Vs:
+        dist[v] = min(dist[v], dist[u]+w)
+```
 
-- ```python
-    # V = vertices in graph
-    # dist = n x n array of minimum distances
-    for v in range(v1, vn):
-    	dist[v][v] = 0
-    for u,v,w in V:
-    	dist[u][v] = w
-    for k in range(v1, vn):
-    	for i in range(v1, vn):
-            for j in range(v1, vn):
-    			dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j]) 
-    ```
+**Floyd-Warshall**
+Shortest path between **all pairs** of vertices, negative edges allowed
 
-    
+```python
+# V = vertices in graph
+# dist = n x n array of minimum distances
+for v in range(v1, vn):
+	dist[v][v] = 0
+for u,v,w in V:
+	dist[u][v] = w
+for k in range(v1, vn):
+	for i in range(v1, vn):
+        for j in range(v1, vn):
+			dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j]) 
+```
+
+
 
 ### Topological Sort
 
@@ -1489,225 +1516,6 @@ def sort(mp):
                 stack.append(v)
     return res
 ```
-
-# Tricks
-
-- Rotate matrix
-
-- ```python
-    # spiral matrix
-    mx[:] = map(list,zip(*mx[::-1]))	# clock
-    mx[:] = map(list,zip(*mx))[::-1]	# unclock
-    ```
-
-- Swap min and max
-
-- ```python
-    minval = - maxval
-    ```
-
-- Connect string list
-
-- ```python
-  ''.join(string)
-  ```
-
-- Check with list
-
-- ```python
-    result = filter(rule, items)
-    ```
-
-- Find middle (**234 Palindrome Linked List**)
-
-    - Use **slow** and **fast** pointer
-    - May be usable in **Palindrome** problem
-    
-- Newton Method (**69 Sqrt(x)**)
-  
-- ```python
-  def mySqrt(self, x: int):
-      r = x
-      while r*r > x:
-          r = (r + x//r) // 2
-      return r
-  ```
-  
-  In fact, it is just generic binary search 
-  
-- Insert index (**981 Time Based Key-Value Store**)
-
-- ```python
-    # arr is sorted
-    bisect.bisect_left(arr, x)
-    bisect.bisect_right(arr, x)
-    ```
-    
-- push and sort
-
-- ```python
-    for num in nums:
-        idx = bisect.bisect_left(sortedList, num)
-        sortedList.insert(idx, num)
-    ```
-
-- Default Dict
-
-- ```python
-    listDict = collections.defaultdict(list)
-    ```
-
-- Strip
-
-- ```shell
-    >>> '   spacious   '.strip()
-    'spacious'
-    >>> 'www.example.com'.strip('cmowz.')
-    'example'
-    ```
-
-- Prime (204 Count Primes)
-
-- ```python
-    if isPrime(nums[i])==False:
-        nums[i*i:n:i] = [False]*len(nums[i*i:n:i])
-    ```
-
-- Itertools
-
-- ```python
-    permutations(iterable, length=None)
-    combinations(iterable, length=None)
-    product(*iterables, repeat=1)
-    ```
-
-- Interval insert
-
-- ```python
-    a[1::2], a[::2] = a[:h], a[h:]
-    ```
-
-- Next higher/lower (975 Odd Even Jump)
-
-- ```python
-    next_higher = [0]*n
-    stack = []
-    for a,i in sorted([a,i] for i,a in enumerate(arr)):
-        while stack and stack[-1]<i:
-            next_higher[stack.pop()] = i
-        stack.append(i)
-    ```
-
-- Sub array sum (325 Maximum Size Subarray Sum Equals k)
-
-- ```python
-    '''
-    record prefix sum into dict, then we can check sub array sum in O(1)
-    '''
-    s = 0
-    mp = {0:-1}
-    res = 0
-    for i in range(n):
-        s += nums[i]
-        if s not in mp:
-            mp[s] = i
-    
-        if s-k in mp:
-            res = max(res, i-mp[s-k])
-    ```
-
-- Generator
-
-- ```python
-    # a generator that yields items instead of returning a list
-    def firstn(n):
-    	num = 0
-    	while num < n:
-    		yield num
-    		num += 1
-    sum_of_first_n = sum(firstn(1000000))
-    ```
-
-- Bits
-
-- ```python
-    bits = [0,1,1,0,1]
-    state = 0
-    # convert to state
-    for i,bit in enumerate(bits):
-      if bit==1:
-        state^= 1<<i
-    # get state[idx]
-    stateAtIdx = (state>>idx)&1
-    ```
-
-- Semaphore
-
-- ```python
-    from threading import Semaphore
-    smp = Semaphore(1)
-    with smp: # wait()
-        # critical section
-    smp.release() # signal()
-    ```
-
-    ```java
-    import java.util.concurrent.*;
-    Semaphore smp = new Semaphore(1);
-    smp.acquire(); // wait()
-    // critical section
-    smp.release(); // signal()
-    ```
-
-- Customize Comparator (179. Largest Number)
-
-    ```python
-    class LargerNumKey(str):
-        def __lt__(x, y):
-            return x+y > y+x
-    arr.sort(key=LargerNumKey)
-    ```
-
-- XOR to find unique
-
-- ```python
-    res = 0
-    for num in nums:
-        res ^= num
-    # the final res will be the non-even-times number
-    ```
-
-- Level traverse (117 Populating Next Right Pointers in Each Node II)
-
-    - With iterate (queue) traverse, it is much easier to traverse in level
-    - If you want to specific the level number, add `for i in range(len(q))`, in this loop all nodes are in same level
-
-- Counter
-
-    ```python
-    from collections import Counter
-    cnter = Counter(nums)
-    (cnter1 & cnter2).elements() # all intersect numbers
-    ```
-
-- Try - Except
-
-- ```python
-    try:
-        doSomething()
-    except: # you can add specific exception
-        handleExeption()
-    ```
-
-- revert number
-
-    ```python
-    while x != 0:
-      r = r*10 + x%10
-      x /= 10
-    ```
-
-    
 
 # Thinkings
 
@@ -2273,10 +2081,9 @@ def query(root, i, j):
 
 ### B+Tree
 
-- all data stored in leaf tree
-- every leaf is at the same level
-- all leaf nodes have links to other leaf nodes
-- 
+- All data stored in leaf tree
+- Every leaf is at the same level
+- All leaf nodes have links to other leaf nodes
 
 # Outliers in top100
 

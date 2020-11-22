@@ -22,33 +22,30 @@ Database management system is software that is used to manage the database.
 
 ##### 1-Tier
 
-- database is directly available to the user.
+- user --- database
 
 ##### 2-Tier
 
-- The 2-Tier architecture is same as basic client-server. In the two-tier architecture, applications on the client end can directly communicate with the database at the server side. The user interfaces and application programs are run on the client-side.
+- User --- UI(client) --- Server(database)
 
 ##### 3-Tier Architecture
 
-- The application on the client-end interacts with an application server which further communicates with the database system.
-- End user has no idea about the existence of the database beyond the application server. The database also has no idea about any other user beyond the application.
+- user --- UI --- Application --- database
 
 ### Three schema Architecture
 
 ##### Internal Level
 
-- The internal level has an internal schema which describes the physical storage structure of the database. 
+- physical storage structure of the database. 
 
 ##### Conceptual Level
 
-- The conceptual schema describes the structure of the whole database. 
-- The conceptual level describes what data are to be stored in the database and also describes what relationship exists among those data.
+- what data are to be stored in the database and also describes what relationship exists among those data.
 
 ##### External Level
 
 - An external schema is also known as view schema.
-- Each view schema describes the database part that a particular user group is interested and hides the remaining database from that user group.
-- The view schema describes the end user interaction with database systems.
+- describes the end user interaction with database systems.
 
 ### Data model Schema
 
@@ -61,7 +58,7 @@ Database management system is software that is used to manage the database.
 ##### Data Definition Language
 
 - **DDL** stands for **D**ata **D**efinition **L**anguage. It is used to define database structure or pattern. 
-- It is used to create schema, tables, indexes, constraints, etc. in the database.
+- It is used to create **schema**, **tables**, **indexes**, **constraints**, etc. in the database.
 
 ##### Data Manipulation Language
 
@@ -119,11 +116,27 @@ The attribute is used to describe the property of an entity.
 
 ##### Super Key
 
-- Super key is a set of an attribute which can uniquely identify a tuple. Super key is a superset of a candidate key.
+- Super key is a set of an attribute which can uniquely identify a tuple. Super key is a superset of a candidate key. Super key can contains some **useless** attributes but candidate key cannot
 
 ##### Foreign key
 
 - Foreign keys are the column of the table which is used to point to the primary key of another table.
+
+### Constraint
+
+- NOT NULL
+- UNIQUE
+- PRIMARY KEY
+- FOREIGHN KEY
+- CHECK
+
+### Join
+
+- 交叉连接(CROSS JOIN) 
+- 内连接(INNER JOIN) 
+- 外连接(LEFT JOIN/RIGHT JOIN) 
+- 联合查询(UNION与UNION ALL) 
+- 全连接(FULL JOIN)
 
 ### Generalization
 
@@ -153,19 +166,15 @@ The functional dependency is a relationship that exists between two attributes. 
 
 ##### 1NF
 
-- A relation will be 1NF if it contains an atomic value.
+- Column cannot be devided
 
 ##### 2NF
 
-- all non-key attributes are fully functional dependent on the primary key
+- all non-key attributes are fully functional dependent on the primary key **not a part** of PK
 
 ##### 3NF
 
-atleast one of the following conditions for every non-trivial function dependency X → Y.
-
-- X is a super key.
-
-- Y is a prime attribute, i.e., each element of Y is part of some candidate key.
+- all non-key attributes are only functional dependent on the primary key **not any other** PK
 
 ##### Boyce Codd normal form
 
@@ -187,9 +196,10 @@ atleast one of the following conditions for every non-trivial function dependenc
 ### Indexing
 
 - Indexing is used to optimize the performance of a database by minimizing the number of disk accesses required when a query is processed. 
-- The index is a type of data structure. It is used to locate and access the data in a database table quickly.
-- The first column of the database is the search key that contains a copy of the primary key or candidate key of the table. The values of the primary key are stored in sorted order so that the corresponding data can be accessed easily. 
-- The second column of the database is the data reference. It contains a set of pointers holding the address of the disk block where the value of the particular key can be found.
+- primary key/candidate key --- data reference
+- sorted at PK/CK
+- creating cost time
+- Covering Index: one single non index column will force a serach in whole table
 
 ##### Ordered indices
 
@@ -198,21 +208,42 @@ The indices are usually sorted to make searching faster.
 ##### Primary Index
 
 - If the index is created on the basis of the primary key of the table, then it is known as primary indexing. These primary keys are unique to each record and contain 1:1 relation between the records.
-- As primary keys are stored in sorted order, the performance of the searching operation is quite efficient.
-  - Dense index : The dense index contains an index record for every search key value in the data file. 
-  - Sparse index : In the data file, index record appears only for a few items. 
 
 ##### Clustering Index
 
-- A clustered index can be defined as an ordered data file. Sometimes the index is created on non-primary key columns which may not be unique for each record.
-- In this case, to identify the record faster, we will group two or more columns to get the unique value and create index out of them. This method is called a clustering index.
-- The records which have similar characteristics are grouped, and indexes are created for these group.
+- In this case, to identify the record faster, we will **group two or more columns to get the unique value** and create index out of them. This method is called a clustering index.
 
-##### Secondary Index
+##### Unique index
 
-- to reduce the size of mapping, another level of indexing is introduced. 
+##### Common index
 
-### B+ Tree (TODO)
+##### Fulltext index
+
+##### B+Tree Index
+
+- Leaf : pointer to the data
+- inner nodes: index
+- support =, >, >=, <, <= and like
+
+##### Hash Index
+
+- only support = or <=>
+
+#### Principle of Indexing
+
+`ALTER TABLE <tableName> ADD INDEX <indexName> (<columnList>)`
+
+`ALTER TABLE <tableName> DROP KEY <indexName`
+
+- match from left to right till the range search
+- only data with frequence search need index
+- high frequence at update should not at index
+- the column with little diversity should not add index
+- try to expand index instead of add new index
+- FK should have index
+- Text, image and bit should not add index
+
+### B+ Tree
 
 - The B+ tree is a balanced binary search tree. It follows a multi-level index format.
 - In the B+ tree, leaf nodes denote actual data pointers. B+ tree ensures that all leaf nodes remain at the same height.
@@ -228,3 +259,166 @@ The indices are usually sorted to make searching faster.
 - The leaf node of the B+ tree can contain at least n/2 record pointers and n/2 key values.
 - At most, a leaf node contains n record pointer and n key values.
 - Every leaf node of the B+ tree contains one block pointer P to point to next leaf node.
+
+### B Tree
+
+- every node store data and pointer
+- could put the high frequence searched data put at node that close to root
+
+### BinLog
+
+- statement 
+- row
+- mixed
+
+### Permission table
+
+- user
+- db_permission
+- table
+- columns
+- host
+
+### MyISAM vs InnoDB
+
+#### Innodb
+
+- ACID
+- row lock
+- Foreign key
+- one single file
+- better at IUD
+- Clustered index
+
+#### MyISAM
+
+- Default 
+- table lock
+
+- definition file + datafile + index file
+- better at SELECT
+- non Clustered index
+
+
+
+### Transaction
+
+All ot None
+
+- **A**tomic: cannot be devided
+- **C**onsistency: always the same
+- **I**solation: should not be affected by other transaction
+- **D**urability: changes should be saved
+
+##### Read
+
+- Dirty read: one update, other read, one rollback
+- Non-repeatable read: one read, other update, one read
+- Phantom read: one read, other update **column**, one read
+
+#### Isolation level
+
+| Level            | Dirty read | Non-repeatable read | Phantom read |
+| ---------------- | ---------- | ------------------- | ------------ |
+| READ-UNCOMMITTED | √          | √                   | √            |
+| READ-COMMITTED   | ×          | √                   | √            |
+| REPEATABLE-READ  | ×          | ×                   | √            |
+| SERIALIZABLE     | ×          | ×                   | ×            |
+
+### Lock
+
+- Row-level locking
+- Table-level locking
+- Page-lovel locking
+
+
+
+- read lock
+- wrtie lock
+
+
+
+#### Deadlock
+
+Two or more trasactions hold same resource and requesy to lock others resource
+
+- search tables in same order
+- try to lock all need resource
+- increase the level of lock
+
+
+
+- optimistic lock 
+- pessimistic lock
+
+
+
+### View
+
+- from different tables
+- virtual table
+- create and delete would not affect original table
+- update would affect
+- should not add or delete data when view are multiple tables
+
+
+
+- simple
+- safe
+
+
+
+### Stored procedure
+
+A **stored procedure** is a group of one or more database statements **stored** in the database's data dictionary and called from either a remote program, another **stored procedure**, or the command line
+
+
+
+### Trigger
+
+A database trigger is procedural code that is automatically executed in response to certain events on a particular table or view in a database. 
+
+- Before Insert 
+- After Insert 
+- Before Update 
+- After Update 
+- Before Delete 
+- After Delete
+
+
+
+### Explain
+
+| Select type  | Description                              |
+| ------------ | ---------------------------------------- |
+| SIMPLE       | 不包含任何子查询或union等查询            |
+| PRIMARY      | 包含子查询**最外层**查询就显示为 PRIMARY |
+| SUBQUERY     | 在select或 where字句中包含的查询         |
+| DERIVED      | from字句中包含的查询                     |
+| UNION        | 出现在union后的查询语句中                |
+| UNION RESULT | 从UNION中获取结果集                      |
+
+##### type
+
+- ALL 扫描全表数据
+- index 遍历索引
+- range 索引范围查找
+- index_subquery 在子查询中使用 ref 
+- unique_subquery 在子查询中使用 eq_ref
+-  ref_or_null 对Null进行索引的优化的 ref
+- fulltext 使用全文索引
+
+- ref 使用非唯一索引查找数据
+
+- eq_ref 在join查询中使用PRIMARY KEYorUNIQUE NOT NULL索引关联
+
+
+
+### SQL life circle
+
+- server create connection to database
+- database get sql
+- Interpret sql and execute
+- read data to memory and do logic process
+- send back to server
+- close connection
