@@ -181,19 +181,7 @@ This kind of problem most of the time would give you the matrix
 - [ ] 120   Triangle (move from top to bottom with min sum)
 - [ ] 221   Maximal Square (find max square in matrix)
 
-Find the relation between **left** and **cur**, **up** and **cur**, if you traverse from **left top** to **right bottom**
-
-Sometimes you even need relate **left-up** entry as well
-
-Be careful about the over boundary, make sure `0<=x<m and 0<=y<n`
-
-Sometimes, you need to set the finish check
-
-after defining the state fuction, make sure right side of equation has been calculated. You may change the loop direction
-
-Most of the time the right side contain **left, up, left-up**
-
-2D dp means there should be multiple base case `dp[0][j]` and `dp[i][0]`. Only when their default value are 0, then you don't need to initialize
+- 2D dp means there should be multiple base case `dp[0][j]` and `dp[i][0]`. Only when their default value are 0, then you don't need to initialize
 
 ```python
 dp = [[0]*(n) for _ in range(m)]
@@ -296,7 +284,9 @@ def maxProfit(self, k: int, prices: List[int]) -> int:
         return self.stockWithK(k, prices)
 ```
 
-### Backpack
+### Backpack/Knapsack
+
+- [x] 1049 Last Stone Weight II
 
 ```python
 # 01 backpack problem
@@ -328,14 +318,18 @@ for i in range(nums):
             dp[i][j]+=dp[i][j-num] # dp[i][x]
 ```
 
+- For the 01 backpack and subset backpack, when we use compressed dp, be sure you reversed the `cap` loop
+
 ### Greedy
 
-Local maximum would result global maximum
+- Local maximum would result global maximum
 
-Special kind of DP but with reduced complexity 
+- Special kind of DP but with reduced complexity
+- Most of the time you need to `sort()`
 
 - [x] 435 无重叠区间
 - [x] 452 用最少数量的箭引爆气球
+- [x] 406 Queue Reconstruction by Height
 
 ```java
 Arrays.sort(points, Comparator.comparingInt(x -> x[1]));
@@ -353,6 +347,7 @@ return count;
 - [x] 55 Jump Game
 - [x] 45 Jump Game II
 - [x] 763 Partition Labels
+- [x] 403 Frog Jump
 
 We don't need to use dp to calculate the exact min/max choice, but choice the one with highest posibility
 
@@ -379,7 +374,14 @@ return jump
 - [x] 877  Stone Game
 - [x] 651 4 Keys Keyboard
 
-### TopDown
+- Not all dp problems fit in `dp[][]`, which is top-down. When the valid dp entry or choice is very limited, `dp{}` is a better choice, which is bottom-up
+
+## DivideAndConquer
+
+- [x] 395 Longest Substring with At Least K Repeating Characters
+
+- Divide and Conquer works by dividing the problem into sub-problems, conquer each sub-problem recursively and combine these solutions.
+- Compared with DAC, the DP has memory and will re-use some sovled subproblems
 
 # Linked List
 
@@ -1046,16 +1048,21 @@ while i < j:
         j -= 1
 ```
 
-- [ ] 42 Trapping Rain Water
+- [x] 42 Trapping Rain Water
+
+- `w[i] = min(leftMax[i], rightMax[i]) - H[i]`
+- `if leftMax[i] < anyRightMax: w[i] = leftMax[i] - H[i]`
+
+- [ ] 407 Trapping Rain Water II
 
 ```python
 while l < r:
-    lh, rh = max(lh, ht[l]), max(rh, ht[r])
-    if lh <= rh:
-        res += lh - ht[l]
+    lmax, rmax = max(lmax, H[l]), max(rmax, H[r])
+    if lmax <= rmax:
+        res += lmax - H[l]
         l+=1
     else:
-        res += rh - ht[r]
+        res += rmax - H[r]
         r-=1
 ```
 
@@ -1162,7 +1169,7 @@ return slow
 
 ```python
 def partition(arr, low, high): 
-    pivot = arr[low] # may use other way to get pivot
+    pivot = arr[high] # may use other way to get pivot
     i = low
     
     for j in range(low, high+1): 
@@ -1170,7 +1177,7 @@ def partition(arr, low, high):
             i = i+1
             arr[j], arr[i] = arr[i], arr[j] 
             
-    arr[low], arr[i] = arr[i], arr[low] # move pivot to i
+    arr[high], arr[i] = arr[i], arr[high] # move pivot to i
     return i
   
 def quickSort(arr, low, high): 
@@ -1180,42 +1187,79 @@ def quickSort(arr, low, high):
         quickSort(arr, pi+1, high)
 ```
 
+### QuickSelect
+
+- [x] 347 Top K Frequent Elements
+
+```python
+cnt = Counter(nums)
+unq = list(cnt.keys())
+n = len(unq)
+
+def partition(l, r):
+    pivot = cnt[unq[r]]
+    i = l
+    for j in range(l, r):
+        if cnt[unq[j]] < pivot:
+            unq[i], unq[j] = unq[j], unq[i]
+            i+=1
+
+    unq[i], unq[r] = unq[r], unq[i]
+    return i
+
+def quickSelect(l, r):
+    if l==r:
+        return
+
+    pivotIdx = partition(l, r)
+
+    if pivotIdx==n-k:
+        return
+    elif pivotIdx<n-k:
+        quickSelect(pivotIdx+1, r)
+    else:
+        quickSelect(l, pivotIdx-1)
+```
+
+
+
 ### MergeSort
 
 - [x] 148  Sort List
+- [x] 493 Reverse Pairs
 
 ```python
 def mergeSort(arr): 
     if len(arr) >1: 
-        mid = len(arr)//2 # Finding the mid of the array 
-        L = arr[:mid] # Dividing the array elements  
-        R = arr[mid:] # into 2 halves 
-  
-        mergeSort(L) # Sorting the first half 
-        mergeSort(R) # Sorting the second half 
-  
-        i = j = k = 0
-          
-        # Copy data to temp arrays L[] and R[] 
-        while i < len(L) and j < len(R): 
-            if L[i] < R[j]: 
-                arr[k] = L[i] 
-                i+= 1
-            else: 
-                arr[k] = R[j] 
-                j+= 1
-            k+= 1
-          
-        # Checking if any element was left 
-        while i < len(L): 
+        mid = len(arr)//2
+        L = arr[:mid]
+        R = arr[mid:]
+        mergeSort(L)
+        mergeSort(R)
+        merge(L, R)
+    
+# merge two sorted list
+def merge(L, R):
+    i = j = k = 0
+    # Copy data to temp arrays L[] and R[] 
+    while i < len(L) and j < len(R): 
+        if L[i] < R[j]: 
             arr[k] = L[i] 
             i+= 1
-            k+= 1
-          
-        while j < len(R): 
+        else: 
             arr[k] = R[j] 
             j+= 1
-            k+= 1
+        k+= 1
+    # Checking if any element was left 
+    while i < len(L): 
+        arr[k] = L[i] 
+        i+= 1
+        k+= 1
+
+    while j < len(R): 
+        arr[k] = R[j] 
+        j+= 1
+        k+= 1
 ```
 
 
@@ -1241,8 +1285,8 @@ return len;
 
 - [ ] 112   Path Sum
 - [x] 113   Path Sum II
-
 - [x] 437  Path Sum III
+- [x] 974 Subarray Sums Divisible by K
 
 *Prefix sum* is a sum of the current value with all previous elements starting from the beginning of the structure.
 
@@ -1416,17 +1460,24 @@ class MedianFinder:
 
 # Stack
 
-### Largest Rectangle in Histogram
+- [x] 735 Asteroid Collision
+- [x] 84 Largest Rectangle in Histogram
 
 ```python
+# Largest Rectangle in Histogram
 s = [-1] # stack store the increasing index
 res = 0 # largest area
 H=[0] # digest all remains in stack
 for i in range(len(H)):
-    while s[-1] != -1 and H[s[-1]] >= H[i]: # 1. push in 1st index 2. when decrease:
-        									# pop, cal area
-        res = max(res, H[s.pop()]*(i-s[-1]-1))
-    s.append(i) # keep push in index
+    top = s[-1]
+    while top != -1 and H[top] >= H[i]: # push in 1st index/if decrease, then pop + cal area
+        s.pop()
+        secTop = s[-1]
+        res = max(res, H[top]*(i-secTop-1))
+    s.append(i)
+    
+while s[-1]!=-1: # clear s
+    res = max(res, H[s[-1]]*(len(H)-s[-1]-1))
 ```
 
 ### Parentheses
@@ -1436,6 +1487,24 @@ for i in range(len(H)):
 ### Encode/Decode
 
 - [x] 394 Decode String
+
+```python
+for c in s:
+    if c in digits:
+        numStr += c
+    elif c=='[': # enter next nest
+        numStack.append(int(numStr)) # push num for new nest
+        strStack.append(string) # push string for pre nest
+        numStr = ''
+        string = ''
+    elif c==']':
+        num = numStack.pop() # finish cur nest, check the num for cur nest
+        string = strStack.pop() + num * string # pre nest string + cur nest string
+    else:
+        string += c
+```
+
+
 
 # Graph
 
@@ -1491,6 +1560,8 @@ for k in range(v1, vn):
 
 
 ### Topological Sort
+
+- [x] 207 Course Schedule
 
 ```python
 def getInDegree(mp): # use in degree to avoid graph loop
@@ -2077,13 +2148,57 @@ def query(root, i, j):
         return fun(query(root.left, i, mid), query(root.right, mid+1, j))
 ```
 
+### B Tree
 
+**Property**
+
+- `len(keys) + 1 = len(children) ~ [order/2, order]`
+- root can have min 2 children
+- all leaves in same level
+
+**Structure**
+
+- `[childP1, k1, recordP1, childP2...]`
+
+**Insertion**
+
+- find the leaf node where the item should be inserted
+- if the leaf is not full, intert it in correct location
+- else split node in two, promote the medain one to the parent node.
+- if parent is full too, repeat
+- if it reach root, the height of tree increase
 
 ### B+Tree
 
 - All data stored in leaf tree
-- Every leaf is at the same level
 - All leaf nodes have links to other leaf nodes
+
+### RedBlackTree
+
+maintain banlanced BST
+
+**Rule**
+
+- node is either red or black
+- root and NIL are black
+- if node is red the children are black
+- all paths from a node to its NIL contain the same number of black nodes
+
+**Property**
+
+- $h_l <= 2h_s$
+    - shortest path: all black nodes
+    - Longest path: red and black
+
+**Insertion**
+
+1. insert Z and color it red
+2. recolor and rotate nodes to fix violation
+
+- `if Z==root: recolor(Z)`
+- `if Z.uncle==red: recolor([Z.uncle, Z.parent, Z.grandParent])`
+- `if Z.uncle==black and triangle: rotate(Z.parent)`
+- `if Z.uncle==black and line: rotate(Z.grandParent) \ recolor([Z.parent, Z.grandParent])`
 
 # Outliers in top100
 

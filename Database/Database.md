@@ -243,6 +243,12 @@ The indices are usually sorted to make searching faster.
 - FK should have index
 - Text, image and bit should not add index
 
+#### Left-Prefix Index Rule
+
+- a query can search an **index** efficiently if it provides search terms that match the leading columns of the **index**, in **left**-to-right order
+- Up to and including the first inequality or range search condition
+- Without any gaps in the column prefix
+
 ### B+ Tree
 
 - The B+ tree is a balanced binary search tree. It follows a multi-level index format.
@@ -422,3 +428,6 @@ A database trigger is procedural code that is automatically executed in response
 - read data to memory and do logic process
 - send back to server
 - close connection
+
+
+

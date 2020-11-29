@@ -376,27 +376,23 @@ t2.start();
 ### Atomic
 
 ```java
-public class SynchronizedCounter {
-    private int c = 0;
-
-    public synchronized void increment() {
-        c++;
-    }
-
-    public synchronized void decrement() {
-        c--;
-    }
-
-    public synchronized int value() {
-        return c;
-    }
+private int c = 0;
+public synchronized void increment() {
+    c++;
 }
 ```
 
-- First, it is not possible for two invocations of synchronized methods on the same object to interleave. When one thread is executing a synchronized method for an object, all other threads that invoke synchronized methods for the same object block (suspend execution) until the first thread is done with the object.
+- When one thread is executing a synchronized method for an object, all other threads that invoke synchronized methods for the same object block until the first thread is done with the object.
 - Second, when a synchronized method exits, it automatically establishes a happens-before relationship with *any subsequent invocation* of a synchronized method for the same object. This guarantees that changes to the state of the object are visible to all threads.
 
+```java
+private volatile int c = 0;
+public void increment() {
+    c++;
+}
+```
 
+- `volatile` forces all accesses (read or write) to the volatile variable to occur to main memory which means all thread are accessing the same value
 
 ### Database
 
@@ -483,7 +479,21 @@ connection.close();
     Collections.addAll(list, array);
     ```
 
-    
+
+### GarbageCollection
+
+**Creating Unreachable Objects**
+
+- Nullifying the reference variable
+- Re-assigning the reference variable
+- Object created inside method
+- Anonymous object
+
+```java
+System.gc();
+Runtime.getRuntime().gc();
+protected void finalize() throws Throwable // will be ran before object got destroyed
+```
 
 ### Trick
 
@@ -496,3 +506,5 @@ connection.close();
 - `Array` will not override `hashCode()` nor `equals`, which means values same doesn't means object same. Be careful when use `HashSet` and `HashMap`
 
 - Always remember use `equals()` instead of `==` when you compare two Objects, especially for `Inteager`
+
+- 

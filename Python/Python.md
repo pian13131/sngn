@@ -179,3 +179,21 @@ while x != 0:
   x /= 10
 ```
 
+#### Format
+
+```shell
+>>> print("Number {:03d} is here.".format(11))
+Number 011 is here.
+>>> 'A formatted number - {:.4f}'.format(.2)
+A formatted number - 0.2000
+```
+
+#### Comparator
+
+```python
+class LargerNumKey(str):
+    def __lt__(x, y):
+        return x+y > y+x
+sort(key = LargerNumKey)
+```
+
