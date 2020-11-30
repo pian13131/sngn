@@ -16,8 +16,6 @@ module reused at many locations
 - after throwing advice: run after the method(if exception thrown)
 - Around advice: run before and after method
 
-*just like the life cycle of component in React, haha*
-
 ##### Join Point
 
 **when** to apply code during program execution
@@ -84,7 +82,7 @@ most of the time, you should create a new package to hold all your aspects
 
 #### Point-cut expression
 
-execution(modifiers? **return-type** declaring-type? **method-name(param)** throws?)
+`execution(modifiers <return-type> declaring-type <method-name>(param) throws <exception>)`
 
 if you don't mention the declaring-type, which tell which class, all the methods with the same name in different classes will be matched
 
@@ -122,17 +120,17 @@ public class MyDemoLoggingAspect {
 }
 ```
 
-##### combine point-cut
+##### Combine point-cut
 
 use logic operators
 
-```
+```java
 @Before("expressionOne() && !expressionTwo()")
 ```
 
-so you can match all methods except the getter()
+so you can match all methods except the `getter()`
 
-you can even pass those logic expression into new @Pointcut
+you can even pass those logic expression into new `@Pointcut`
 
 #### Ordering
 
@@ -195,7 +193,7 @@ public void afterReturnFindAccountAdvice( |
 
 you just modify it in the method above
 
-#### @AfterTrowing
+#### @AfterThrowing
 
 log the exception
 

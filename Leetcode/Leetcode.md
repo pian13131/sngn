@@ -1,17 +1,16 @@
 # **Backtracking**
 
-### Combination, Permutation
+### Combination/Permutation
 
 - [x] 78  Subsets (subCb, using `nums`)
 - [x] 90  Subsets II (subCb, using `nums`, duplicate)
 - [x] 77  Combinations (cb by `k` numbers, using `1-n`)
-- [ ] 39  Combination Sum (cb sum to `t`, using `nums`)
+- [x] 39  Combination Sum (cb sum to `t`, using `nums`)
 - [ ] 40  Combination Sum II (cb sum to `t`, using `nums`, duplicate)
 - [ ] 216  Combination Sum III (cb by `k` numbers, sum to `t`, using `1-9`)
 - [x] 46  Permutations (pm, using `nums`)
 - [ ] 47  Permutations II (pm, using `nums`, duplicate)
-
-
+- [x] 465 Optimal Account Balancing
 
 1. **Choice can be made for current record**
 
@@ -31,38 +30,13 @@ def backtrack(record, choices):
         cancelChoice(record)
 ```
 
-
-
 - The whole process of backtracking is to **In-order** traverse the decision tree
-
 - Change the `meetRule` will change the `node` you add to the results
+- Change the `makeChoice()` like `start` will change how you select from the original pool, duplicate or not
 
-- [ ] ##### 377  Combination Sum IV (*DP*)
+- Dp does not care about the **content**, but only the **count**
 
-This one is asked to get the **number** of combination. So backtracking becomes dp
-
-Dp does not care about the **content**, but only the **count**
-
-When it aks you to return an integer, consider about dp
-
-```python
-def combinationSum4(self, nums: List[int], target: int) -> int:
-      mp = {}
-      nums.sort()
-      def find(t):
-          if t in mp: # 1. check memo
-              return mp[t]
-          if t==0: # 2. set boundary
-              return 1
-          res = 0
-          for e in nums: # 3. cal new value
-              if e > t:
-                  break
-              res += find(t-e)
-          mp[t] = res # 4. set memo
-          return res
-      return find(target)
-```
+- When it asks you to return an integer/max/min, consider about dp
 
 ### Parentheses
 
@@ -74,31 +48,21 @@ def combinationSum4(self, nums: List[int], target: int) -> int:
 
 - One case of **combination**, which has special **constrain**:
 
-- The number of `(`should equal than `)`
-
-- As a special case, **stack** is useful for **Parentheses** problem
+    - The **total** number of `(`should equal than `)`
+    - In stack, number of `(` should be not less than `)`
+    - As a special case, **stack** is useful for **Parentheses** problem
 
 # Divide and Conquer
 
-### Operators(TODO)
+- [ ] 241 Different Ways to Add Parentheses
 
-- 241 Different Ways to Add Parentheses
+- [ ] 224 Basic Calculator
+- [ ] 282 Expression Add Operators
 
-- 224 Basic Calculator
-- 282 Expression Add Operators
+- [x] 395 Longest Substring with At Least K Repeating Characters
 
-```python
-def dac(arr):
-    if endRuleMet:
-        return unitResult # set the end
-    for i in range(len(arr)):
-        res1 = dac(arr[:i]) # divide
-        res2 = dac(arr[i+1:])
-        res = doSomething(res1, res2, arr[i]) # conquer
-    return res
-```
-
-
+- Divide and Conquer works by dividing the problem into sub-problems, conquer each sub-problem recursively and combine these solutions.
+- Compared with DAC, the DP has memory and will re-use some sovled subproblems
 
 # Dynamic Programming
 
@@ -112,7 +76,7 @@ for state1 in state1s:
 ```
 
 1. **Define state `dp[i][j]`**
-1. **Define `makeChoice()` for `min`/`max`**
+1. **Define `makeChoice()` for `min`/`max` with sub `dp[][]`** 
 2. **Define loop order**
 3. **Define  `dp[0]`**
 
@@ -120,9 +84,7 @@ $$T = N_{sub} * T_{sub}$$
 
 $S = N_{sub}$
 
-### One Dimension
-
-#### Number DP
+### Number DP
 
 - [x] 70   Climbing Stairs (`1` or `2` sum to `n`)
 - [x] 279   Perfect Squares (`1,4,9,16` sums to `n`)
@@ -140,26 +102,11 @@ def climbStairs(self, n: int) -> int:
     return dp[n]
 ```
 
-```c++
-int fib(int n) {
-    if (n == 2 || n == 1) 
-        return 1;
-    int prev = 1, curr = 1;
-    for (int i = 3; i <= n; i++) {
-        int sum = prev + curr;
-        prev = curr;
-        curr = sum;
-    }
-    return curr;
-}
-```
-
 - Be clear about the `dp[i]` and `nums[i]`, sometimes they have different `i` meaning
 - `dp[i][j]` is for bottom up and `dp(i, j)` is for top down
 
-#### String DP
+### String DP
 
-- [x] 139   Word Break (`words` combine to `string`)
 - [x] 10 Regular Expression Matching
 - [x] 516 Longest Palindromic Subsequence
 - [x] 1312 Minimum Insertion Steps to Make a String Palindrome
@@ -172,33 +119,21 @@ int fib(int n) {
 
 - `300 Longest Increasing Subsequence` can be opitimized to `O(nlogn)`
 
-### Two Dimension
+### MinCuts
 
-This kind of problem most of the time would give you the matrix
+- [x] 131 Palindrome Partitioning
+- [ ] 132 Palindrome Partitioning II
+- [x] 139   Word Break (`words` combine to `string`)
+
+### Matrix
+
+- This kind of problem most of the time would give you the matrix
+- 2D dp means there should be multiple base case `dp[0][j]` and `dp[i][0]`. Only when their default value are 0, then you don't need to initialize
 
 - [x] 62   Unique Paths (move from left-top to right-bottom)
 - [ ] 63   Unique Paths II (move from left-top to right-bottom with obstacle)
 - [ ] 120   Triangle (move from top to bottom with min sum)
-- [ ] 221   Maximal Square (find max square in matrix)
-
-- 2D dp means there should be multiple base case `dp[0][j]` and `dp[i][0]`. Only when their default value are 0, then you don't need to initialize
-
-```python
-dp = [[0]*(n) for _ in range(m)]
-dp[0][0] = 1 # set the initial value
-def get(x, y):
-    if 0<=x<m and 0<=y<n:
-        return dp[x][y]
-    else: # handle the over boundary
-        return 0
-
-for i in range(m):
-    for j in range(n):
-        if i==0 and j==0: # skip the initial value
-            continue
-        dp[i][j] = get(i-1, j) + get(i, j-1) # relate to left and up one
-return dp[-1][-1]
-```
+- [x] 221   Maximal Square (find max square in matrix)
 
 ### Stock
 
@@ -214,7 +149,7 @@ return dp[-1][-1]
 
 `k` : transaction
 
-`b` : remain
+`b` : sold/hold
 
 - Base cases:
 
@@ -286,6 +221,8 @@ def maxProfit(self, k: int, prices: List[int]) -> int:
 
 ### Backpack/Knapsack
 
+- [x] 377  Combination Sum IV
+
 - [x] 1049 Last Stone Weight II
 
 ```python
@@ -349,7 +286,7 @@ return count;
 - [x] 763 Partition Labels
 - [x] 403 Frog Jump
 
-We don't need to use dp to calculate the exact min/max choice, but choice the one with highest posibility
+- We don't need to use dp to calculate the exact min/max choice, but choice the one with highest posibility
 
 ```python
 for i in range(n):
@@ -376,26 +313,19 @@ return jump
 
 - Not all dp problems fit in `dp[][]`, which is top-down. When the valid dp entry or choice is very limited, `dp{}` is a better choice, which is bottom-up
 
-## DivideAndConquer
-
-- [x] 395 Longest Substring with At Least K Repeating Characters
-
-- Divide and Conquer works by dividing the problem into sub-problems, conquer each sub-problem recursively and combine these solutions.
-- Compared with DAC, the DP has memory and will re-use some sovled subproblems
-
 # Linked List
 
 ### NodeModify
 
 - [x] 206   Reverse Linked List 
 - [x] 92   Reverse Linked List II (reverse between)
-- [ ] 24   Swap Nodes in Pairs (reverse 2-by-2)
+- [x] 24   Swap Nodes in Pairs (reverse 2-by-2)
 - [ ] 328   Odd Even Linked List (odd then even)
 
 
 
 - [ ] 237   Delete Node in a Linked List     
-- [ ] 19   Remove Nth Node From End of List     
+- [x] 19   Remove Nth Node From End of List     
 - [ ] 83   Remove Duplicates from Sorted List     
 - [ ] 203   Remove Linked List Elements     
 - [ ] 82   Remove Duplicates from Sorted List II     
@@ -490,51 +420,15 @@ boolean traverse(ListNode right) {
 
 # String
 
-### Regular Expression
-
-- **^a** : start with a
-
-- **a$** : end with a
-- ***** : 0 or more
-- **+** : 1 or more
-- **?** : 0 or 1
-- **{3}** : 3, **{3,}** : 3 or more, **{3,5}** : 3 to 5 
-- **()** : group, default as 1
-- **(a|b|c), [abc], [a-b]** : a or b or c
-
-#### Classes
-
-- **\d** : digit, **\D** : non-digit
-- **\w** : word, **\W** : non-word
-- **\s** : space, **\S** : non-space
-- **\b** : boundary, **\B** : non-boundary
-- **.** : any
-- **\\** : escape
-
-#### Flag
-
-- **/abc/g** : all abc
-- **/^\d+/m, /\d+$/m** : start/end includes the line start/end
-- **/abc/i** : case insensitive
-
-```python
-import re
-findall() # list of matches, rtype: list
-search() # if any, rtype: bool
-split() # split by matches, rtype: list
-sub() # replace, rtype: list
-```
-
 ### Palindrome
 
 - [x] 125 Valid Palindrome
+- [x] 680 Valid Palindrome II
 - [ ] 266 Palindrome Permutation
 - [x] 5 Longest Palindromic Substring
 - [x] 9 Palindrome Number
 - [ ] 214 Shortest Palindrome
 - [ ] 336 Palindrome Pairs
-- [x] 131 Palindrome Partitioning
-- [ ] 132 Palindrome Partitioning II
 - [ ] 267 Palindrome Permutation II
 
 ```python
@@ -590,17 +484,9 @@ return ans
 - [ ] 366   Find Leaves of Binary Tree
 - [ ] 337   House Robber III
 
-- Always remember use recursion.
+- The **traverse order** means a lot
 
-- If consider leaf, use pre to pass the previous root.
-
-- You can even traverse with two or more nodes at the same time.
-
-- The **recursion order** means a lot
-
-- The most important part of **recurssion** is understand the definition of the `recursion() `
-
-- believe the definition of the recurrsion function and the frame work will handle the rest
+- Believe the definition of the `recurrsion()` and the frame work will handle the rest
 
 ```python
 def traverseTree(self, root):
@@ -636,7 +522,7 @@ while queue:
     h+=1
 ```
 
-### Build Tree
+### BuildTree
 
 - [x] 105 Construct Binary Tree from **Preorder and Inorder** Traversal
 - [x] 106 从中序与后序遍历序列构造二叉树
@@ -698,21 +584,21 @@ private TreeNode deserialize(LinkedList<String> nodeStrings) {
 }
 ```
 
-
+- when we build tree with the `nil` marked/leaf marked, we don't need to which part is the left/right, the recursion will build by itself
 
 # Binary Search
 
 - [x] 278   First Bad Version
 - [x] 704 Binary Search
-- [ ] 35   Search Insert Position     
+- [x] 35   Search Insert Position     
 
 ```python
 l = 0
 r = n-1
 while l <= r:
-    m = l + (r - l)/2 # avoid overflow
+    m = l + (r - l)//2 # avoid overflow
     if nums[m] == target:
-        return nums[n]
+        return m
     elif nums[m] < target:
         l = m + 1
     elif nums[m] < target:
@@ -748,11 +634,13 @@ if l >= n || nums[l]!=target: # if r < 0 || nums[r]!=target
 return l # r
 ```
 
+- left boundary may out of right side, vice versa
+
 ### Rotate
 
 - [x] 33   Search in Rotated Sorted Array     
 - [ ] 81   Search in Rotated Sorted Array II     
-- [ ] 153   Find Minimum in Rotated Sorted Array     
+- [x] 153   Find Minimum in Rotated Sorted Array     
 - [ ] 154   Find Minimum in Rotated Sorted Array II     
 
 - Check if `nums[m]` and `target` are on the same side of `nums[0]`
@@ -760,6 +648,8 @@ return l # r
 ```python
 (nums[m]>=nums[0])==(target>=nums[0])
 ```
+
+- sometime you may not need to return in the loop, but just keep move `l` and `r` till `l==r` to return `nums[l]`
 
 ### BestValue
 
@@ -791,7 +681,7 @@ while l<r:
 - [ ] 15 3Sum
 - [ ] 18 4Sum
 
-- Using two pointer when `nums` is sorted
+- Using two pointer when `nums` is sorted else use `dict()`
 
 ```python
 # two sum
@@ -817,6 +707,7 @@ def twoSum(self, nums, t):
 
 ```python
 # N sum
+# backtack + twoSum
 self.res
 def nSum(self, nums, t, N, record):
     n = len(nums)
@@ -831,21 +722,6 @@ def nSum(self, nums, t, N, record):
 
 - You may find it quiet similar with some **combination** problem. Both of them require the same method to avoid duplicate. So **NSum** may also be kind of **Backtracking**
 
-- Also related with **Divide and Conquer**
-
-```python
-resList = []
-def findNSum(nums, t, N, res):
-    if endRuleMet:
-        return
-    if N==2:
-        find2Sum(nums, t)
-    else:
-        for num in nums:
-            findNSum(nums-[num], t-num, N-1, res+[num])
-findNSum(sorted(sums), t, 4, [])
-return resList
-```
 
 ### Factory
 
@@ -859,7 +735,7 @@ while n > 0:
 
 - [x] 793 阶乘后K个零
 
-return 5 or 0
+- return 5 or 0
 
 ### MissingNumber
 
@@ -925,25 +801,20 @@ for i in range(2, n):
 - [x] 111 Minimum Depth of Binary Tree
 - [x] 752 Open the Lock
 - [ ] 51   N-Queens     
-- [ ] 52   N-Queens II     
-
-    
-
+- [ ] 52   N-Queens II
 
 
 ### BFS
 
 - [x] 994 Rotting Oranges
 - [ ] 126 Word Ladder II    
-- [ ] 127 Word Ladder
-
+- [x] 1197 Minimum Knight Moves
+- [x] 127 Word Ladder
 - `queue` record which nodes that we want to visit in the future
 - `visited` record places that we have visited (not need sometimes, tree)
 - The key point is to find the shortest path, which DFS is hard to achieve.
 - One property of bfs is that it can control the **step**
-
 - Some case you can only use **BFS**, lets call it **relation spread problem** (127 Word Ladder). Define a kind of **relation**, **spread** from one set of points to others till reach the **End point**
-
 - Some times when we know the target, we can do the bi-bfs. Start from both start point and end point.
 
 ```python
@@ -1012,7 +883,7 @@ return res
 - [ ] 30 Substring with Concatenation of All Words
 - [x] 3 Longest Substring Without Repeating Characters
 - [x] 209 Minimum Size Subarray Sum
-- [ ] 340 Longest Substring with At Most K Distinct Characters
+- [x] 340 Longest Substring with At Most K Distinct Characters
 - [ ] 395 Longest Substring with At Least K Repeating Characters
 - [ ] 159 Longest Substring with At Most Two Distinct Characters
 
@@ -1028,12 +899,10 @@ while r < n:
     updateWhenRemove()
 ```
 
-1. Considered `updateWhenAdd()`, `updateWhenRemove()`, `shouldShrinkWindow()` 
-2. Decide where should we `updateRes()`
+1. Consider `updateWhenAdd()`, `updateWhenRemove()`, `shouldShrinkWindow()` 
+2. Consider where should we `updateRes()`
 
 2. Most of the time we need the `valid:int` to track the status of window, `counter:map` to track the data info of the `window` and another `need:map` to track the needs to be valid
-
-
 
 ### Water
 
@@ -1070,19 +939,18 @@ while l < r:
 
 - [x] 26 删除排序数组中的重复项
 - [x] 83 删除排序链表中的重复元素
-- [ ] 27 移除元素
+- [x] 27 移除元素
 - [x] 283 移动零
 
 - The key point is to use slow and fast pointer
 
-```java
-int p = 0;
-for (int i = 0; i < nums.length; i++) {
-    if (nums[p]!=nums[i]) { // move valid items to the front
-        p++;
-        nums[p] = nums[i];
-    }
-}
+```python
+p = 0 # just like the i in qsort
+for i in range(n):
+    if nums[i]!=val:
+        nums[p] = nums[i]
+        p+=1
+return p
 ```
 
 ### TwoPointers
@@ -1250,12 +1118,12 @@ def merge(L, R):
             arr[k] = R[j] 
             j+= 1
         k+= 1
+        
     # Checking if any element was left 
     while i < len(L): 
         arr[k] = L[i] 
         i+= 1
         k+= 1
-
     while j < len(R): 
         arr[k] = R[j] 
         j+= 1
@@ -1269,6 +1137,7 @@ def merge(L, R):
 - [x] 300 Longest Increasing Subsequence
 
 ```java
+// LIS problem
 int n = nums.length;
 int[] top = new int[n];
 int len = 0;
@@ -1281,9 +1150,11 @@ for(int num : nums) {
 return len;
 ```
 
+- Each subsequent card is placed on the leftmost existing pile whose top card has a value greater than or equal to the new card's value, or to the right of all of the existing piles, thus forming a new pile.
+
 ### PrefixSum
 
-- [ ] 112   Path Sum
+- [x] 112   Path Sum
 - [x] 113   Path Sum II
 - [x] 437  Path Sum III
 - [x] 974 Subarray Sums Divisible by K
@@ -1380,7 +1251,6 @@ dq.appendleft()
 ### Heap/PriorityQueue
 
 - [x] 23 Merge k Sorted Lists
-- [ ] 347 Top K Frequent Elements
 - [ ] 253 Meeting Rooms II
 - [ ] 973 K Closest Points to Origin
 - [ ] 215 Kth Largest Element in an Array
@@ -1444,7 +1314,7 @@ class MedianFinder:
 
     def addNum(self, num: int) -> None:
         sm, lg = self.hp
-        heappush(sm, -heappushpop(lg, num)) # always get the max val in lg into sm
+        heappush(sm, -heappushpop(lg, num)) # always get the min val in lg into sm
         if len(lg) < len(sm): # key len(sm)-len(lg) <= 1
             heappush(lg, -heappop(sm))
 
@@ -1465,7 +1335,8 @@ class MedianFinder:
 
 ```python
 # Largest Rectangle in Histogram
-s = [-1] # stack store the increasing index
+# Mono stack
+s = [-1] # stack store the increasing num's index
 res = 0 # largest area
 H=[0] # digest all remains in stack
 for i in range(len(H)):
@@ -1541,24 +1412,6 @@ for i in range(N):
         dist[v] = min(dist[v], dist[u]+w)
 ```
 
-**Floyd-Warshall**
-Shortest path between **all pairs** of vertices, negative edges allowed
-
-```python
-# V = vertices in graph
-# dist = n x n array of minimum distances
-for v in range(v1, vn):
-	dist[v][v] = 0
-for u,v,w in V:
-	dist[u][v] = w
-for k in range(v1, vn):
-	for i in range(v1, vn):
-        for j in range(v1, vn):
-			dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j]) 
-```
-
-
-
 ### Topological Sort
 
 - [x] 207 Course Schedule
@@ -1590,12 +1443,7 @@ def sort(mp):
 
 # Thinkings
 
-- Sometimes, **Brute force** method may be your only method, when you find it is really hard to find a fit model.
-- **Object in Python** (138 Copy List with Random Pointer)
-    - If `Object A` contains to `Object V`, when you change `V.val`, `A.V.val` will change as well
-- About edge case, do not pay too much attention onto them at the start. You should get the approximately method as soon as possible
-- in the iterate process, queue is BFS while stack is DFS
-- `/2` reduce one unit, `length -> index` increase one unit
+- In the iterate process, queue is BFS while stack is DFS
 - $$T(N)=aT(\frac{b}{N})+Θ(N^d)$$, The equation represents dividing the problem up into $$a$$ subproblems of size $$\frac{b}{N}$$ in $$Θ(N^d)$$ time
 
 # Data Structure Design
@@ -2199,9 +2047,3 @@ maintain banlanced BST
 - `if Z.uncle==red: recolor([Z.uncle, Z.parent, Z.grandParent])`
 - `if Z.uncle==black and triangle: rotate(Z.parent)`
 - `if Z.uncle==black and line: rotate(Z.grandParent) \ recolor([Z.parent, Z.grandParent])`
-
-# Outliers in top100
-
-- [x] 6 ZigZag Conversion
-- [ ] 8 String to Integer (atoi)
-- [ ] 10 Regular Expression Matching

@@ -20,32 +20,11 @@ Database management system is software that is used to manage the database.
 
 ### Architecture
 
-##### 1-Tier
+- 1-Tier: user --- database
 
-- user --- database
+- 2-Tier: User --- UI(client) --- Server(database)
 
-##### 2-Tier
-
-- User --- UI(client) --- Server(database)
-
-##### 3-Tier Architecture
-
-- user --- UI --- Application --- database
-
-### Three schema Architecture
-
-##### Internal Level
-
-- physical storage structure of the database. 
-
-##### Conceptual Level
-
-- what data are to be stored in the database and also describes what relationship exists among those data.
-
-##### External Level
-
-- An external schema is also known as view schema.
-- describes the end user interaction with database systems.
+- 3-Tier Architecture: user --- UI --- Application --- database
 
 ### Data model Schema
 
@@ -116,7 +95,7 @@ The attribute is used to describe the property of an entity.
 
 ##### Super Key
 
-- Super key is a set of an attribute which can uniquely identify a tuple. Super key is a superset of a candidate key. Super key can contains some **useless** attributes but candidate key cannot
+- Super key is a set of an attribute which can uniquely identify a tuple. **Super key is a superset of a candidate key**. Super key can contains some **useless** attributes but candidate key cannot
 
 ##### Foreign key
 
@@ -164,34 +143,11 @@ The functional dependency is a relationship that exists between two attributes. 
 - Normalization divides the larger table into the smaller table and links them using relationship.
 - The normal form is used to reduce redundancy from the database table.
 
-##### 1NF
+- **1NF**: Column cannot be devided
 
-- Column cannot be devided
+- **2NF**: all non-key attributes are fully functional dependent on the primary key **not a part** of PK
 
-##### 2NF
-
-- all non-key attributes are fully functional dependent on the primary key **not a part** of PK
-
-##### 3NF
-
-- all non-key attributes are only functional dependent on the primary key **not any other** PK
-
-##### Boyce Codd normal form
-
-- BCNF is the advance version of 3NF. It is stricter than 3NF. 
-- A table is in BCNF if every functional dependency X → Y, X is the super key of the table. 
-- For BCNF, the table should be in 3NF, and for every FD, LHS is super key.
-
-##### 4NF
-
-- A relation will be in 4NF if it is in Boyce Codd normal form and has no multi-valued dependency.
-- For a dependency A → B, if for a single value of A, multiple values of B exists, then the relation will be a multi-valued dependency.
-
-##### 5NF
-
-- A relation is in 5NF if it is in 4NF and not contains any join dependency and joining should be lossless. 
-- 5NF is satisfied when all the tables are broken into as many tables as possible in order to avoid redundancy. 
-- 5NF is also known as Project-join normal form (PJ/NF).
+- **3NF**: all non-key attributes are only functional dependent on the primary key **not any other** non-PK
 
 ### Indexing
 
@@ -254,6 +210,7 @@ The indices are usually sorted to make searching faster.
 - The B+ tree is a balanced binary search tree. It follows a multi-level index format.
 - In the B+ tree, leaf nodes denote actual data pointers. B+ tree ensures that all leaf nodes remain at the same height.
 - In the B+ tree, the leaf nodes are linked using a link list. Therefore, a B+ tree can support random access as well as sequential access.
+- Get more index in one read from block
 
 ##### Internal node
 
@@ -279,8 +236,8 @@ The indices are usually sorted to make searching faster.
 
 ### Permission table
 
-- user
-- db_permission
+- user: account - server
+- db: account - db
 - table
 - columns
 - host
@@ -292,9 +249,9 @@ The indices are usually sorted to make searching faster.
 - ACID
 - row lock
 - Foreign key
-- one single file
-- better at IUD
-- Clustered index
+- stored in one single file
+- better at IUD operation
+- Clustered index, data in leaf
 
 #### MyISAM
 
@@ -303,9 +260,13 @@ The indices are usually sorted to make searching faster.
 
 - definition file + datafile + index file
 - better at SELECT
-- non Clustered index
+- non Clustered index, address in leaf
 
+### Binlog
 
+- statement
+- row
+- mixed
 
 ### Transaction
 
@@ -316,7 +277,7 @@ All ot None
 - **I**solation: should not be affected by other transaction
 - **D**urability: changes should be saved
 
-##### Read
+#### Read
 
 - Dirty read: one update, other read, one rollback
 - Non-repeatable read: one read, other update, one read
@@ -344,6 +305,9 @@ All ot None
 
 
 
+- optimistic lock 
+- pessimistic lock
+
 #### Deadlock
 
 Two or more trasactions hold same resource and requesy to lock others resource
@@ -352,19 +316,12 @@ Two or more trasactions hold same resource and requesy to lock others resource
 - try to lock all need resource
 - increase the level of lock
 
-
-
-- optimistic lock 
-- pessimistic lock
-
-
-
 ### View
 
 - from different tables
 - virtual table
-- create and delete would not affect original table
-- update would affect
+- **create** and delete would not affect original table
+- **update** would affect
 - should not add or delete data when view are multiple tables
 
 
@@ -378,8 +335,6 @@ Two or more trasactions hold same resource and requesy to lock others resource
 
 A **stored procedure** is a group of one or more database statements **stored** in the database's data dictionary and called from either a remote program, another **stored procedure**, or the command line
 
-
-
 ### Trigger
 
 A database trigger is procedural code that is automatically executed in response to certain events on a particular table or view in a database. 
@@ -390,8 +345,6 @@ A database trigger is procedural code that is automatically executed in response
 - After Update 
 - Before Delete 
 - After Delete
-
-
 
 ### Explain
 
@@ -404,7 +357,7 @@ A database trigger is procedural code that is automatically executed in response
 | UNION        | 出现在union后的查询语句中                |
 | UNION RESULT | 从UNION中获取结果集                      |
 
-##### type
+##### index type
 
 - ALL 扫描全表数据
 - index 遍历索引

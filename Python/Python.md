@@ -197,3 +197,38 @@ class LargerNumKey(str):
 sort(key = LargerNumKey)
 ```
 
+### Regular Expression
+
+- **^a** : start with a
+
+- **a$** : end with a
+- ***** : 0 or more
+- **+** : 1 or more
+- **?** : 0 or 1
+- **{3}** : 3, **{3,}** : 3 or more, **{3,5}** : 3 to 5 
+- **()** : group, default as 1
+- **(a|b|c), [abc], [a-b]** : a or b or c
+
+#### Classes
+
+- **\d** : digit, **\D** : non-digit
+- **\w** : word, **\W** : non-word
+- **\s** : space, **\S** : non-space
+- **\b** : boundary, **\B** : non-boundary
+- **.** : any
+- **\\** : escape
+
+#### Flag
+
+- **/abc/g** : all abc
+- **/^\d+/m, /\d+$/m** : start/end includes the line start/end
+- **/abc/i** : case insensitive
+
+```python
+import re
+findall() # list of matches, rtype: list
+search() # if any, rtype: bool
+split() # split by matches, rtype: list
+sub() # replace, rtype: list
+```
+

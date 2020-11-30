@@ -1,22 +1,22 @@
 ### Inversion of Control
 
-. Create and manage objects
+- Create and manage objects
 
-. Config Spring Container
+- Config Spring Container
 
 ##### XML
 
-. it is like a config file for the java bean(object)
+- it is like a config file for the java bean(object)
 
-. you can load class during the java code
+- you can load class during the java code
 
-. you can change the class you want to load just in the xml file, you don't need to change the java code
+- you can change the class you want to load just in the xml file, you don't need to change the java code
 
 ### Dependency Injection
 
-. Inject object's dependencies
+- Inject object's dependencies
 
-. helper objects
+- helper objects
 
 ##### Constructor injection
 
@@ -26,11 +26,11 @@ when you use spring to create a new class, you can customize the constructor, ju
 
 ##### Setter injection
 
-. create no-arg constructor
+- create no-arg constructor
 
-. create setter
+- create setter
 
-. set the xml file
+- set the xml file
 
 `<property name="fortuneService" ref="myFortuneService"/>`
 
@@ -40,21 +40,21 @@ you can also inject literal values just change input from class to values
 
 samely, you can inject property file that storing values
 
-. Create property file:
+- Create property file:
 
 `foo.email=sample@gmail.com`
 
-. Load property file:
+- Load property file:
 
 `<context:property-placeholder location="classpath:sport.properties"/>`
 
-. Reference the values:
+- Reference the values:
 
 `value="${foo.email}$"`
 
 ### Bean Scopes
 
-. life cycle of bean
+- life cycle of bean
 
 **singleton**: only one object
 
@@ -62,23 +62,23 @@ samely, you can inject property file that storing values
 
 Bean life cycle method
 
-. custom codes in initialization
+- custom codes in initialization
 
 `init-method="doMyInitStuff"`
 
-. custom codes in destruction
+- custom codes in destruction
 
 `destroy-method="doMyFinalStuff"`
 
-**for prototype, spring will not call destruction method!**
+***for prototype, spring will not call destruction method!***
 
 ### Java Annotations
 
-. meta-data about the class
+- meta-data about the class
 
-. it just a alternative to XML for config
+- it just a alternative to XML for config
 
-. `@Override`
+- `@Override`
 
 1. enable component scanning in Spring config file
 
@@ -92,7 +92,7 @@ Bean life cycle method
 
 **default bean id**
 
-**TennisCoach --> tennisCoach**
+`TennisCoach --> tennisCoach`
 
 So you just need `@Component`
 
@@ -108,7 +108,7 @@ So you just need `@Component`
 `@Autowired` onto the setter()
 
 ##### Any Method
-`@Autowired` onto the someFun()
+`@Autowired` onto the `someFun()`
 
 ##### Field
 Even for private field, so that u do not even need `setter()`
@@ -122,11 +122,11 @@ Stay consistent
 
 ### Qualifier
 
-To avoid multiple matched classes
+To avoid multiple matched classes which implement the same interface
 
-`@Qualifier("the desired bean id")`
+`@Qualifier("the desired bean id")` 
 
-**When u want to use Qualifier in constructor injection, u have to put it into the argument**
+***When u want to use Qualifier in constructor injection, u have to put it into the argument***
 
 ### Scope Annotation
 
@@ -138,11 +138,11 @@ Similarly you can also add methods to **Initialization** and **Destruction**:
 
 `@PostConsturct`, `@PreDestroy`
 
-. it can access all kinds of methods: protected, public, private
+- it can access all kinds of methods: protected, public, private
 
-. The method should be no-arg.
+- The method should be no-arg.
 
-. Again, Spring will not run the `@PreDestroy` of prototype.
+- Again, Spring will not run the `@PreDestroy` of prototype.
 
 ### Spring Configuration with Java Code
 
@@ -191,3 +191,11 @@ public class SwimCoach implements Coach {
 }
 ```
 
+
+
+### Spring Start Up process
+
+1. Find and read xml file
+2. BeanDefinition load and interpretation 
+3. BeanDefinition registory
+4. Instantiate Bean and dependnecy injection

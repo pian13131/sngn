@@ -1,16 +1,16 @@
 #### Why Spring boot?
 
-easy to start a Spring app
+- easy to start a Spring app
 
-resolve dependency conflict
+- resolve dependency conflict
 
-embedded server
+- embedded server
 
-auto annotation
+- auto annotation
 
-auto scan in all packages in your app name folder
+- auto scan in all packages in your app name folder
 
-if you want to other package, you should add by yourself
+- if you want to other package, you should add by yourself
 
 #### Spring Initializr
 
@@ -20,7 +20,7 @@ if you want to other package, you should add by yourself
 
 - import
 
-you should run as Java application
+***you should run as Java application***
 
 #### Project structure
 
@@ -56,8 +56,6 @@ you can override the version of java version
 
 just add it to the pom
 
-*just like nodemon*
-
 restart app when you change the code
 
 #### Spring boot actuator
@@ -90,17 +88,17 @@ java -jar fileName.jar
 
 #### Data Source
 
-the connection to the database
+- the connection to the database
 
-you just need to provide url, username, password in the application property file
+- you just need to provide url, username, password in the application property file
 
 ##### JPA
 
-Java persistence API
+- Java persistence API
 
-standard API for ORM
+- standard API for ORM
 
-one them is Hibernate
+- one them is Hibernate
 
 `EnrityManager` is the same with Hibernate's `SessionFactory`
 
@@ -117,13 +115,13 @@ you can use standard JPA instead of Hibernate itself
 
 ##### Spring data JPA
 
-another kind of JPA, just like hibernate
+- another kind of JPA, just like hibernate
 
-build DAO with template
+- build DAO with template
 
-Spring will create full CRUD methods for you
+- Spring will create full CRUD methods for you
 
-you just extend `JpaRepository` interface
+- you just extend `JpaRepository` interface
 
 ```java
 public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
@@ -131,7 +129,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
 }
 ```
 
-then you just inject it into the Service class, then use it as it is the DAO class
+- then you just inject it into the Service class, then use it as it is the DAO class
 
 #### Spring data REST
 
