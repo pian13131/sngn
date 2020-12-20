@@ -6,7 +6,7 @@
 - [x] 90  Subsets II (subCb, using `nums`, duplicate)
 - [x] 77  Combinations (cb by `k` numbers, using `1-n`)
 - [x] 39  Combination Sum (cb sum to `t`, using `nums`)
-- [ ] 40  Combination Sum II (cb sum to `t`, using `nums`, duplicate)
+- [x] 40  Combination Sum II (cb sum to `t`, using `nums`, duplicate)
 - [ ] 216  Combination Sum III (cb by `k` numbers, sum to `t`, using `1-9`)
 - [x] 46  Permutations (pm, using `nums`)
 - [ ] 47  Permutations II (pm, using `nums`, duplicate)
@@ -34,7 +34,7 @@ def backtrack(record, choices):
 - Change the `meetRule` will change the `node` you add to the results
 - Change the `makeChoice()` like `start` will change how you select from the original pool, duplicate or not
 
-- Dp does not care about the **content**, but only the **count**
+- Dp does not care about the **content**, but only the **count** or the **max/min**
 
 - When it asks you to return an integer/max/min, consider about dp
 
@@ -42,8 +42,7 @@ def backtrack(record, choices):
 
 - [x] 20   Valid Parentheses     
 - [x] 22   Generate Parentheses
-- [ ] 32   Longest Valid Parentheses
-- [ ] 241   Different Ways to Add Parentheses     
+- [ ] 241   Different Ways to Add Parentheses
 - [ ] 301   Remove Invalid Parentheses
 
 - One case of **combination**, which has special **constrain**:
@@ -90,6 +89,7 @@ $S = N_{sub}$
 - [x] 279   Perfect Squares (`1,4,9,16` sums to `n`)
 - [x] 322   Coin Change (`nums` sums to `n`)
 - [x] 198 House Robber
+- [x] 213 House Robber II
 - [x] 312 Burst Balloons
 - [x] 152 Maximum Product Subarray
 
@@ -119,21 +119,40 @@ def climbStairs(self, n: int) -> int:
 
 - `300 Longest Increasing Subsequence` can be opitimized to `O(nlogn)`
 
-### MinCuts
+### Cuts
 
 - [x] 131 Palindrome Partitioning
-- [ ] 132 Palindrome Partitioning II
+- [x] 132 Palindrome Partitioning II
 - [x] 139   Word Break (`words` combine to `string`)
+
+```python
+dp = [False]*(n+1)
+dp[0] = True
+for i in range(n+1):
+    for j in range(i): # put cut from 0 to i
+        if dp[j] and s[j:i] in words:
+            dp[i] = True
+            break
+return dp[n]
+```
+
+
+
+- The `dp[]` may not be used to store the result directly, but some value you can use to calculate the result
+
+- [x] 85 Maximal Rectangle
+
+- Also you may need multiple `dp[]` with different update rules, which you can use to calculate the result
 
 ### Matrix
 
 - This kind of problem most of the time would give you the matrix
 - 2D dp means there should be multiple base case `dp[0][j]` and `dp[i][0]`. Only when their default value are 0, then you don't need to initialize
-
 - [x] 62   Unique Paths (move from left-top to right-bottom)
 - [ ] 63   Unique Paths II (move from left-top to right-bottom with obstacle)
-- [ ] 120   Triangle (move from top to bottom with min sum)
+- [x] 120   Triangle (move from top to bottom with min sum)
 - [x] 221   Maximal Square (find max square in matrix)
+- [x] 85 Maximal Rectangle
 
 ### Stock
 
@@ -326,9 +345,9 @@ return jump
 
 - [ ] 237   Delete Node in a Linked List     
 - [x] 19   Remove Nth Node From End of List     
-- [ ] 83   Remove Duplicates from Sorted List     
-- [ ] 203   Remove Linked List Elements     
-- [ ] 82   Remove Duplicates from Sorted List II     
+- [x] 83   Remove Duplicates from Sorted List     
+- [x] 203   Remove Linked List Elements     
+- [x] 82   Remove Duplicates from Sorted List II     
 - [ ] 369   Plus One Linked List     
 - [x] 2   Add Two Numbers     
 - [ ] 160   Intersection of Two Linked Lists     
@@ -425,6 +444,7 @@ boolean traverse(ListNode right) {
 - [x] 125 Valid Palindrome
 - [x] 680 Valid Palindrome II
 - [ ] 266 Palindrome Permutation
+- [x] 647 Palindromic Substrings
 - [x] 5 Longest Palindromic Substring
 - [x] 9 Palindrome Number
 - [ ] 214 Shortest Palindrome
@@ -480,9 +500,9 @@ return ans
 - [ ] 104   Maximum Depth of Binary Tree
 - [ ] 110   Balanced Binary Tree
 - [ ] 124   Binary Tree Maximum Path Sum
-- [ ] 250   Count Univalue Subtrees
+- [x] 250   Count Univalue Subtrees
 - [ ] 366   Find Leaves of Binary Tree
-- [ ] 337   House Robber III
+- [x] 337   House Robber III
 
 - The **traverse order** means a lot
 
@@ -590,7 +610,8 @@ private TreeNode deserialize(LinkedList<String> nodeStrings) {
 
 - [x] 278   First Bad Version
 - [x] 704 Binary Search
-- [x] 35   Search Insert Position     
+- [x] 35   Search Insert Position
+- [x] 1382 Balance a Binary Search Tree
 
 ```python
 l = 0
@@ -677,9 +698,9 @@ while l<r:
 ### N Sum
 
 - [x] 1 Two Sum
-- [ ] 167 Two Sum II
-- [ ] 15 3Sum
-- [ ] 18 4Sum
+- [x] 167 Two Sum II
+- [x] 15 3Sum
+- [x] 18 4Sum
 
 - Using two pointer when `nums` is sorted else use `dict()`
 
@@ -741,6 +762,9 @@ while n > 0:
 
 - [x] 448 Find All Numbers Disappeared in an Array
 - [x] 645 Set Mismatch
+- [x] 41 First Missing Positive
+
+- key point is to use value as index
 
 `x ^ x ` equals 0
 
@@ -800,7 +824,7 @@ for i in range(2, n):
 - [ ] 364   Nested List Weight Sum II
 - [x] 111 Minimum Depth of Binary Tree
 - [x] 752 Open the Lock
-- [ ] 51   N-Queens     
+- [x] 51   N-Queens
 - [ ] 52   N-Queens II
 
 
@@ -849,15 +873,17 @@ def dfs(i, j):
       	dfs(neighber.x, neighber.y)
 ```
 
+- `c not in cols and r-c not in diag and r+c not in atdg`
+
 # Array
 
 ### Interval
 
 - [x] 57   Insert Interval    
-- [x] 56   Merge Intervals 
+- [x] 56   Merge Intervals
 - [x] 435 Non-overlapping Intervals
 - [ ] 352   Data Stream as Disjoint Intervals    
-- [ ] 1288 Remove Covered Intervals
+- [x] 1288 Remove Covered Intervals
 - [x] 986 Interval List Intersections
 
 1. Sort by `interval.left`
@@ -874,6 +900,10 @@ for interval in sorted(intervals, key=lambda x:x[0]): # sort
 return res
 ```
 
+- [x] 253 Meeting Rooms II
+
+- You may need heap to track the current largest right end
+
 ### Sliding Window/Sub String
 
 - [x] 76 Minimum Window Substring
@@ -884,12 +914,12 @@ return res
 - [x] 3 Longest Substring Without Repeating Characters
 - [x] 209 Minimum Size Subarray Sum
 - [x] 340 Longest Substring with At Most K Distinct Characters
-- [ ] 395 Longest Substring with At Least K Repeating Characters
-- [ ] 159 Longest Substring with At Most Two Distinct Characters
+- [x] 395 Longest Substring with At Least K Repeating Characters
+- [x] 159 Longest Substring with At Most Two Distinct Characters
 
 ```python
 # [l, r)
-while r < n:
+while r < n: # not l<r
   c = s[r]
   r+=1
   updateWhenAdd()
@@ -957,8 +987,8 @@ return p
 
 - [x] 141 环形链表
 - [x] 142 环形链表II
-- [ ] 167 两数之和 II - 输入有序数组
-- [ ] 344 反转字符串
+- [x] 167 两数之和 II - 输入有序数组
+- [x] 344 反转字符串
 - [x] 19 删除链表倒数第 N 个元素
 
 ```python
@@ -1041,9 +1071,9 @@ def partition(arr, low, high):
     i = low
     
     for j in range(low, high+1): 
-        if arr[j] < pivot: 
-            i = i+1
+        if arr[j] < pivot:
             arr[j], arr[i] = arr[i], arr[j] 
+            i = i+1
             
     arr[high], arr[i] = arr[i], arr[high] # move pivot to i
     return i
@@ -1158,6 +1188,7 @@ return len;
 - [x] 113   Path Sum II
 - [x] 437  Path Sum III
 - [x] 974 Subarray Sums Divisible by K
+- [ ] 523 Continuous Subarray Sum
 
 *Prefix sum* is a sum of the current value with all previous elements starting from the beginning of the structure.
 
@@ -1201,8 +1232,10 @@ def preorder(node: TreeNode, curr_sum) -> None:
     count += h[curr_sum - k] # h only record one single path to cur node
     
     h[curr_sum] += 1
+    
     preorder(node.left, curr_sum)
     preorder(node.right, curr_sum)
+    
     h[curr_sum] -= 1 # avoid found by other subtrees
 ```
 
@@ -1218,6 +1251,12 @@ Monoqueue:
 push: push an element into the queue; O (1) (amortized)
 pop: pop an element out of the queue; O(1) (pop = remove, it can't report this element)
 max: report the max element in queue;O(1)
+v_c
+| |
+| |_
+| | |_
+| | | |_
+|_|_|_|_|
 '''
 class Monoq:
     def __init__(self):
@@ -1251,7 +1290,7 @@ dq.appendleft()
 ### Heap/PriorityQueue
 
 - [x] 23 Merge k Sorted Lists
-- [ ] 253 Meeting Rooms II
+- [x] 253 Meeting Rooms II
 - [ ] 973 K Closest Points to Origin
 - [ ] 215 Kth Largest Element in an Array
 
@@ -1302,7 +1341,7 @@ def getSkyline(self, buildings):
     return res[1:]
 ```
 
-- [ ] 295 Find Median from Data Stream
+- [x] 295 Find Median from Data Stream
 
 ```python
 class MedianFinder:
@@ -1315,7 +1354,7 @@ class MedianFinder:
     def addNum(self, num: int) -> None:
         sm, lg = self.hp
         heappush(sm, -heappushpop(lg, num)) # always get the min val in lg into sm
-        if len(lg) < len(sm): # key len(sm)-len(lg) <= 1
+        if len(lg) < len(sm): # key len(sm)<=len(lg)
             heappush(lg, -heappop(sm))
 
     def findMedian(self) -> float:
@@ -1338,26 +1377,30 @@ class MedianFinder:
 # Mono stack
 s = [-1] # stack store the increasing num's index
 res = 0 # largest area
-H=[0] # digest all remains in stack
 for i in range(len(H)):
-    top = s[-1]
-    while top != -1 and H[top] >= H[i]: # push in 1st index/if decrease, then pop + cal area
-        s.pop()
-        secTop = s[-1]
-        res = max(res, H[top]*(i-secTop-1))
+    while s[-1] != -1 and H[s[-1]] >= H[i]: # push in 1st index/if decrease, then pop + cal area
+        res = max(res, H[s.pop()] * (i-s[-1]-1))
     s.append(i)
     
 while s[-1]!=-1: # clear s
-    res = max(res, H[s[-1]]*(len(H)-s[-1]-1))
+    res = max(res, H[s.pop()]*(len(H)-s[-1]-1))
 ```
 
 ### Parentheses
 
 - [x] 1249 Minimum Remove to Make Valid Parentheses
+- [x] 32   Longest Valid Parentheses
+
+- When use stack to track the valid parentheses, you can also choose to push in the index to track the total length
 
 ### Encode/Decode
 
 - [x] 394 Decode String
+- [x] 224 Basic Calculator
+
+- `curNum` tracking current num
+- `numStack` when met **nest-in**, push `curNum` into it, when met **nest-out**, pop it
+- When push, need clear `curNum`, when pop out, need update `curNum`
 
 ```python
 for c in s:
@@ -1374,8 +1417,6 @@ for c in s:
     else:
         string += c
 ```
-
-
 
 # Graph
 
@@ -2011,7 +2052,7 @@ def query(root, i, j):
 **Insertion**
 
 - find the leaf node where the item should be inserted
-- if the leaf is not full, intert it in correct location
+- if the leaf is not full, insert it in correct location
 - else split node in two, promote the medain one to the parent node.
 - if parent is full too, repeat
 - if it reach root, the height of tree increase

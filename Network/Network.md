@@ -180,3 +180,12 @@ Include Presentation and Session
 
 **PUT**: accept the body of the request, and then store that at the resource identified by the URI. If there is already resource, relpace it.
 
+### HTTPS
+
+**cryptographic protocols**: SSL/TLS
+
+- Client request server's certificate which contains public key
+- Client encrypt a new secret key with server's public key and send it to server which can only be decrypted by server's private key
+- Now client and server can communicate with encryption
+- Client with server's public key could know only that specific server could send that message, client can check this with some CA(certificate authority)
+

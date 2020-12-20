@@ -366,11 +366,101 @@ class MyThread implements Runnable {
     }
 
 }
-
+class NewThread extends Thread{
+     public void run( ) {
+        for(int i = 1; i <= 5; i++) {
+           System.out.println("From Thread A with i = "+ -1*i);
+        }
+        System.out.println("Exiting from Thread A ...");
+     }
+}
 Thread t1 = new Thread(new MyThread(), "1");
 t1.start();
 Thread t2 = new Thread(new MyThread(), "2");
 t2.start();
+NewThread t3 = new NewThread();
+```
+
+**Newborn** : When a thread is created but not yet to run. In this state, the local data members are allocated and initialized. 
+**Runnable** : The Runnable state means that a thread is ready to run and is awaiting for the control of the processor.
+**Running** : Running means that the thread has control of the processor.
+**Blocked** : A thread is Blocked means that it is being prevented from the Runnable  or Running) state and is waiting for some event in order for it to reenter the scheduling queue.
+**Dead** : A thread is Dead when it finishes its execution or is stopped (killed) by another thread.
+
+**`start()`** : A newborn thread with this method enter into Runnable state and Java run time create a system thread context and starts it running. This method for a thread object can be called once only
+**`stop()`** : This method causes a thread to stop immediately to dead.
+**`suspend()`** : This method is different from stop( ) method. It takes the thread and causes it to stop running and later on can be restored by calling it again.
+**`resume()`** : This method is used to revive a suspended thread. There is no gurantee that the thread will start running right way, since there might be a higher priority thread running already, but, resume()causes the thread to become eligible for running.
+**`sleep(int n)`** : This method causes the run time to put the current thread to sleep for n milliseconds. After n milliseconds have expired, this thread will become elligible to run again.
+**`yield()`** : The yield() method causes the run time to switch the context from the current thread to the next available runnable thread. This is one way to ensure that the threads at lower priority do not get started. 
+
+**Communication among threads**
+
+- commonly shared data
+- `suspend()`, `resume()`, `join()`
+- `wait()`, `notify()`, `notifyAll()`
+
+```java
+class Q {
+    int n;
+    boolean flag = false;
+    synchronized void put( int n) {	// Produce a value
+        if(flag) {							// Entry	      	                      
+            try wait( );  catch(InterruptedException e);		// to the		      
+        }							// critical section	                              
+
+        this.n = n;
+        System.out.println( "Produce :" + n);			// Critical Section           
+
+        flag = true;						// Exit from the	                      
+        notify( );							// critical section
+    }
+    synchronized int get( ) {		// Consume a value
+        if(! flag) {						// Entry		                          
+            try  wait( );  catch(InterruptedException e);		// to the		      
+        }							// critical section	                             						                                   
+        System.out.println( "Consume :" + n);			// Critical Section           						                                                           
+        flag = false;						// Exit from the	                      
+        notify( );							// critical	// section                         	
+        return( n );
+    }
+
+
+    class Producer implement Runnable  {	// Thread for Producer process 
+        Q  q;
+        Producer ( Q q ) 	{  	// constructor
+            this.q =q;
+            new thread (this).start ( ) ;		// Producer process is started 
+        }
+
+        public void run( ) { 		// infinite running  thread for Producer 
+            int i = 0;
+            while (true )
+                q.put ( i++ );
+        }
+    }
+
+    class Consumer implement Runnable { 	// Thread for consumer process
+        Q q;
+        Consumer (Q q )	{ 	          // Constructor 
+            this.q  = q;
+            new Thread (this).start ( );
+        }
+
+        public void run( ) {		// infinite running thread for Consumer 
+            while (true)
+                q.get ( );
+        }
+    }
+
+    class PandC  {
+        public static void main( String args[ ] ) {
+            Q q = new Q( );		// an instance of parallel processes  is created
+            new Producer(q) ;			// Run the thread for producer 
+            new Consumer (q);			// Run consumer thread 
+        }
+    }
+}
 ```
 
 ### Atomic

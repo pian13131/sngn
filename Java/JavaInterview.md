@@ -165,7 +165,7 @@ it is possible to override any method by changing the return type if the return 
 
 - A final variable, not initialized at the time of declaration, is known as the final blank variable. We can't initialize the final blank variable directly. Instead, we have to initialize it by using the class constructor. It can only be initialized once
 
-#### What is Java instanceOf operato
+#### What is Java instanceOf operatoion
 
 The instanceof in Java is also known as type comparison operator because it compares the instance with type. 
 
