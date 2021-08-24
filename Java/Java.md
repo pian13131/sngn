@@ -50,8 +50,6 @@ Character.isAlphabetic();
 Character.isDigit();
 ```
 
-
-
 ### Array
 
 - fixed size
@@ -123,11 +121,54 @@ if (sc.hasNextLine()) {
 
 ### Enum
 
+enum constants are `public`, `static` and `final`
+
 ```java
 public enum Day {
     Monday, Tuesday, Wednesday
 }
 ```
+
+```java
+public enum PizzaDeliveryStrategy {
+    EXPRESS {
+        @Override
+        public void deliver(Pizza pz) {
+            System.out.println("Pizza will be delivered in express mode");
+        }
+    },
+    NORMAL {
+        @Override
+        public void deliver(Pizza pz) {
+            System.out.println("Pizza will be delivered in normal mode");
+        }
+    };
+
+    public abstract void deliver(Pizza pz);
+}
+```
+
+```java
+public static enum Month {
+  JANUARY(1),
+  FEBRUARY(2),
+  MARCH(3),
+  APRIL(4),
+  MAY(5),
+  JUNE(6),
+  JULY(7),
+  AUGUST(8),
+  SEPTEMBER(9),
+  OCTOBER(10),
+  NOVEMBER(11),
+  DECEMBER(12);
+  Month(int index) {
+    this.index = index;
+  }
+}
+```
+
+
 
 ### Exeption handling
 
@@ -259,7 +300,9 @@ arrayList.forEach(
   
 Consumer<Integer> method = (x) -> { System.out.println(x); };
 arrayList.forEach(method)
-  
+
+// interface with a SAM(Single Abstract Method) => Functional Interfaces
+@FunctionalInterface
 interface StringFunction {
   String run(String str);
 }
@@ -270,6 +313,50 @@ public void printFormatted(String str, StringFunction format) {
 StringFunction exclaim = (s) -> s + "!";
 printFormatted("Hello", exclaim);
 ```
+
+### Function
+
+```java
+// Predicate is a function that receives a value and returns a boolean value
+List<String> namesWithA = names.stream()
+  .filter(name -> name.startsWith("A"))
+  .collect(Collectors.toList());
+// Consumer accepts a generified argument and returns nothing
+names.forEach(name -> System.out.println("Hello, " + name));
+// Supplier does not take any arguments used for lazy generation
+Supplier<Double> lazyValue = () -> {
+    Uninterruptibles.sleepUninterruptibly(1000, TimeUnit.MILLISECONDS);
+    return 9d;
+};
+// Operator receive and return the same value type
+names.replaceAll(name -> name.toUpperCase());
+```
+
+### Stream
+
+```java
+Stream<String> stream = Arrays.stream(arr);
+stream = Stream.of("a", "b", "c");
+anyCollection.stream()
+
+// count
+long count = list.stream().distinct().count();
+// iterate
+boolean isExist = list.stream().anyMatch(element -> element.contains("a"));
+// filter
+Stream<String> stream = list.stream().filter(element -> element.contains("d"));
+// mapping
+Stream<Path> stream = uris.stream().map(uri -> Paths.get(uri));
+// matching
+boolean isValidOne = list.stream().allMatch(element -> element.contains("h"));
+// reduction
+Integer sum = integers.stream().reduce(startValue, (a, b) -> a + b);
+// collection
+List<String> resultList 
+  = list.stream().map(element -> element.toUpperCase()).collect(Collectors.toList());
+```
+
+
 
 ### Random
 
@@ -502,72 +589,72 @@ connection.close();
 
 - `String` to `byte, int, long, float, double, boolean`
 
-    ```java
-    XXX.parseXXX(s)
-    ```
+  ```java
+  XXX.parseXXX(s)
+  ```
 
 - `String` to `Byte, Int, Long, Float, Double, Boolean`
 
-    ```java
-    XXX.valueOf(s)
-    ```
+  ```java
+  XXX.valueOf(s)
+  ```
 
 - `byte, int, long, float, double, boolean` to `String` 
 
-    ```java
-    XXX.toString(val)
-    ```
+  ```java
+  XXX.toString(val)
+  ```
 
 - `Byte, Int, Long, Float, Double, Boolean` to `String`
 
-    ```java
-    val.toString()
-    ```
+  ```java
+  val.toString()
+  ```
 
 - Between `byte, int, long, float, double, boolean`
 
-    ```java
-    (XXX)val
-    ```
+  ```java
+  (XXX)val
+  ```
 
-    
+  
 
 - `char[]` to `String`
 
-    ```java
-    String.valueOf(charArray)
-    ```
+  ```java
+  String.valueOf(charArray)
+  ```
 
 - `char` to `int`
 
-    ```java
-    char c='a';  
-    char c2='1';  
-    int a=c;  // 97
-    int b=c2;  // 49
-    int x = Character.getNumericValue(c2); // 1
-    ```
+  ```java
+  char c='a';  
+  char c2='1';  
+  int a=c;  // 97
+  int b=c2;  // 49
+  int x = Character.getNumericValue(c2); // 1
+  ```
 
 - `int` to `char`
 
-    ```java
-    int a=65;  
-    char c=(char)a;  // A
-    int b = Character.forDigit('1', 10); // 1
-    ```
+  ```java
+  int a=65;  
+  char c=(char)a;  // A
+  int b = Character.forDigit('1', 10); // 1
+  ```
 
 - `List` to `Array`
 
-    ```java
-    list.toArray(new T[0])
-    ```
+  ```java
+  list.toArray(new T[0])
+  ```
 
 - `Array` to `List`
 
-    ```
-    Arrays.asList(array)
-    Collections.addAll(list, array);
-    ```
+  ```
+  Arrays.asList(array)
+  Collections.addAll(list, array);
+  ```
 
 
 ### GarbageCollection
@@ -589,12 +676,13 @@ protected void finalize() throws Throwable // will be ran before object got dest
 
 - be careful when you pass value
 
-    ```
-    fun(list) or fun(ArrayList<>(list))
-    ```
+  ```
+  fun(list) or fun(ArrayList<>(list))
+  ```
 
 - `Array` will not override `hashCode()` nor `equals`, which means values same doesn't means object same. Be careful when use `HashSet` and `HashMap`
 
 - Always remember use `equals()` instead of `==` when you compare two Objects, especially for `Inteager`
 
 - 
+
