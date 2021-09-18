@@ -33,10 +33,22 @@ def backtrack(record, choices):
 - The whole process of backtracking is to **In-order** traverse the decision tree
 - Change the `meetRule` will change the `node` you add to the results
 - Change the `makeChoice()` like `start` will change how you select from the original pool, duplicate or not
-
 - Dp does not care about the **content**, but only the **count** or the **max/min**
-
 - When it asks you to return an integer/max/min, consider about dp
+
+```python
+# permutation with dup
+def dfs(start):
+    if start==n:
+        res.append(nums[:])
+    else:
+        for i in range(start, n):
+            swap(start, i)
+            dfs(i+1)
+            swap(start, i)
+```
+
+
 
 ### Parentheses
 
@@ -47,7 +59,7 @@ def backtrack(record, choices):
 
 - One case of **combination**, which has special **constrain**:
 
-    - The **total** number of `(`should equal than `)`
+    - The **total** number of `(`should equal to`)`
     - In stack, number of `(` should be not less than `)`
     - As a special case, **stack** is useful for **Parentheses** problem
 
@@ -71,7 +83,7 @@ def backtrack(record, choices):
 for state1 in state1s:
     for state2 in state2s:
         ...
-        dp[state1][state2][...] = makeChoice(choice1, choice2...)
+        dp[state1][state2][...] = makeChoice(choice1, choice2...) # with previous dp
 ```
 
 1. **Define state `dp[i][j]`**
@@ -82,6 +94,18 @@ for state1 in state1s:
 $$T = N_{sub} * T_{sub}$$
 
 $S = N_{sub}$
+
+```python
+def dp(state1, state2...):
+    if reachBaseCase():
+        return baseValue
+    key = (state1, state2...)
+    if key not in cache:
+        cache[key] = makeChoice(choice1, choice2...) # with previous dp
+    return cache[key]
+```
+
+- **dfs** with **cache** is the **original dp** idea. The **tabulation** is just a better way to save the space
 
 ### Number DP
 
@@ -149,7 +173,7 @@ return dp[n]
 - This kind of problem most of the time would give you the matrix
 - 2D dp means there should be multiple base case `dp[0][j]` and `dp[i][0]`. Only when their default value are 0, then you don't need to initialize
 - [x] 62   Unique Paths (move from left-top to right-bottom)
-- [ ] 63   Unique Paths II (move from left-top to right-bottom with obstacle)
+- [x] 63   Unique Paths II (move from left-top to right-bottom with obstacle)
 - [x] 120   Triangle (move from top to bottom with min sum)
 - [x] 221   Maximal Square (find max square in matrix)
 - [x] 85 Maximal Rectangle
@@ -160,7 +184,7 @@ return dp[n]
 - [x] 122 Best Time to Buy and Sell Stock II
 - [ ] 123 Best Time to Buy and Sell Stock III
 - [x] 188 Best Time to Buy and Sell Stock IV
-- [ ] 309 Best Time to Buy and Sell Stock with Cooldown
+- [x] 309 Best Time to Buy and Sell Stock with Cooldown
 
 **`dp[i][k][b]`**
 
@@ -276,16 +300,31 @@ for i in range(nums):
 
 - For the 01 backpack and subset backpack, when we use compressed dp, be sure you reversed the `cap` loop
 
+```python
+# loop order trick
+# non-duplicate
+for c in coins:
+    for i in range(t+1):
+        if i>=c:
+            dp[i] += dp[i-c]
+# duplicate
+for i in range(t+1):
+    for c in coins:
+        if i>=c:
+            dp[i] += dp[i-c]
+```
+
+
+
 ### Greedy
 
 - Local maximum would result global maximum
-
 - Special kind of DP but with reduced complexity
 - Most of the time you need to `sort()`
-
 - [x] 435 无重叠区间
 - [x] 452 用最少数量的箭引爆气球
 - [x] 406 Queue Reconstruction by Height
+- [x] 621 Task Scheduler
 
 ```java
 Arrays.sort(points, Comparator.comparingInt(x -> x[1]));
@@ -348,7 +387,7 @@ return jump
 - [x] 83   Remove Duplicates from Sorted List     
 - [x] 203   Remove Linked List Elements     
 - [x] 82   Remove Duplicates from Sorted List II     
-- [ ] 369   Plus One Linked List     
+- [x] 369   Plus One Linked List     
 - [x] 2   Add Two Numbers     
 - [ ] 160   Intersection of Two Linked Lists     
 - [x] 21   Merge Two Sorted Lists    
@@ -633,6 +672,7 @@ if (i<0) i = -i-1; // insertion point
 ```
 
 - Aways consider `l` and `r` as `[l, r]` then the `while(l <= r)`. Always keeps in mind the `boundary value` then you would know how to update `l, r, m`
+- **sorted** + **findIndexWithRule** = **binarySearch**
 
 ### Find Boundary
 
@@ -677,7 +717,7 @@ return l # r
 - [x] 875 Koko Eating Bananas
 - [ ] 774 Minimize Max Distance to Gas Station
 - [x] 1011 Capacity To Ship Packages Within D Days
-
+- [x] 658 Find K Closest Elements
 - Sometimes you may need update `r` or `l` with `m` in the loop, in that case, you may want to change the defination of `[l, r)` , otherwise `l<=r` may loop forever
 
 ```python
@@ -902,7 +942,7 @@ return res
 
 - [x] 253 Meeting Rooms II
 
-- You may need heap to track the current largest right end
+- You may need heap to track the current largest right end, cuz you only care about if next line would cross with poped lines
 
 ### Sliding Window/Sub String
 
@@ -971,8 +1011,8 @@ while l < r:
 - [x] 83 删除排序链表中的重复元素
 - [x] 27 移除元素
 - [x] 283 移动零
-
 - The key point is to use slow and fast pointer
+- `p`  always points to valid items
 
 ```python
 p = 0 # just like the i in qsort
@@ -1050,7 +1090,7 @@ while fast and fast.next:
 return slow
 ```
 
-
+- [x] 160 Intersection of Two Linked Lists
 
 ### Random
 
@@ -1237,6 +1277,26 @@ def preorder(node: TreeNode, curr_sum) -> None:
     preorder(node.right, curr_sum)
     
     h[curr_sum] -= 1 # avoid found by other subtrees
+```
+
+### Consecutive
+
+- [x] 128 Longest Consecutive Sequence
+- [x] 298 Binary Tree Longest Consecutive Sequence
+- [x] 549 Binary Tree Longest Consecutive Sequence II
+
+#### BoyerMooreVotingAlgorithm
+
+- [x] 169 Majority Element
+
+```python
+cnt = 0
+cand = None
+for num in nums:
+    if cnt==0:
+        cand = num
+    cnt+=1 if num==cand else -1
+return cand
 ```
 
 

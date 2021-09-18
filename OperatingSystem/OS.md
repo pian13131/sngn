@@ -79,7 +79,7 @@ Each process gets quantum in turn
 - Assume service time known
 - Theoretical
 
-#### Shortes Remaining time
+#### Shortest Remaining time
 
 - Best preemptive
 - Assume service time known
@@ -210,7 +210,7 @@ lock = 0;
 - Order processes : 
     - `s = 0`
     - Pre process end with `signal(s)`
-    - Post process end with `wait(s)`
+    - Post process start with `wait(s)`
 
 ## Inter Process Commulication
 
@@ -292,8 +292,8 @@ while (TRUE) {
 - Processes are permanent blocked
 
 - Four conditions
-    - Mutual exclusion : Only one process may use a resource at a 6me
-    - Hold and wait : Process holds resource while wai6ng for another
+    - Mutual exclusion : Only one process may use a resource at same time
+    - Hold and wait : Process holds resource while waitng for another
     - No preemption : Can’t take a resource away from a process
     - Circle wait : The waitng processes form a cycle
 
@@ -519,7 +519,7 @@ File System : a structured collection of files
 
 #### Buffering
 
-#### Device Dependent: Device Drivers <==> Device Controller
+**Device Dependent: Device Drivers <==> Device Controller**
 
 - Encapsulates device-dependent code
     - Contains device-specific register reads/writes : `dread(), dwrite()`
@@ -580,7 +580,7 @@ Processes access resources
     - A send B
       
         - A encrypts using B public
-        - B decrypts using A private
+        - B decrypts using B private
     - RSA
     - slow
     - Easy to distribute key
@@ -611,7 +611,7 @@ A collection of independent computers that appear to its users as one computer
     - Consistency
 - Sharding (simple data model and access patterns)
     - Separates very large databases the into smaller, faster, more easily managed parts(Shards)
-    - A:F + F:N + F:Z
+    - A:F + F:N + N:Z
     - Limited data model, limited data access patterns
 - Consistent Hashing => Consistency
     - Unique ID
