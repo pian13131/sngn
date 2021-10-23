@@ -53,6 +53,7 @@ Character.isDigit();
 ### Array
 
 - fixed size
+- it did not override any method from `Object`, do not use `Map<int[], int[]>` nor `Set<int[]>`
 
 ```java
 int[] a1 = new int[10];
@@ -87,6 +88,8 @@ Collections.swap(list, i, j);
 
 ```java
 Iterator it = a.iterator();
+CharacterIterator it = new StringCharacterIterator(s);
+it.DONE
 it.hasNext();
 it.next();
 ```
@@ -94,7 +97,7 @@ it.next();
 ### LinkedList
 
 ```java
-LinkedList<Integer> L = new LinkedList<Integer>();
+LinkedList<Integer> L = new LinkedList<>();
 L.add(1);
 L.addAll(Arrays.asList(1,2,3,4));
 L.addFirst(0);
@@ -237,6 +240,8 @@ void putAll(Map map)
 Set entrySet() // Returns a set view of the mappings contained in this map.
 SortedMap headMap(Object key_value) // The method returns a view of the portion of the map strictly less than the parameter key_value.
 Set keySet() // The method returns a Set view of the keys contained in the treemap.
+K floorKey(K key) // <= key
+K ceilingKey(K key) // >= key
 ```
 
 ### LinkedHashMap
@@ -271,23 +276,26 @@ Object last()
 SortedSet headSet(Object toElement) // This method will return elements of TreeSet which are less than the specified element.
 SortedSet tailSet(Object fromElement) // This method will return elements of TreeSet which are greater than or equal to the specified element.
 SortedSet subSet(Object fromElement, Object toElement) // This method will return elements ranging from fromElement to toElement. fromElement is inclusive and toElement is exclusive.
+E floor(E e) // <= e
+E ceiling(E e) // >= e
 ```
 
-### Queue
+### Deque/Queue/Stack
 
 ```java
-Queue<String> queue = new LinkedList<>();
-queue.offer(e);
-queue.poll();
-queue.peek();
+Deque<String> dq = new ArrayDeque<>();
+dq.peekFirst();
+dq.addFirst();
+dq.removeFirst();
+dq.peekLast();
+dq.addLast();
+dq.removeLast();
 ```
 
 ```java
 // Priority queue
 Queue<Integer[]> queue = new PriorityQueue(n, (x, y)->y[0]-x[0]);
 ```
-
-
 
 ### Lambda
 
@@ -354,6 +362,14 @@ Integer sum = integers.stream().reduce(startValue, (a, b) -> a + b);
 // collection
 List<String> resultList 
   = list.stream().map(element -> element.toUpperCase()).collect(Collectors.toList());
+// max
+int sum = nums.stream().max().orElse(0);
+// primitive array to set
+Set<Integer> D = Arrays.stream(to_delete).boxed().collect(Collectors.toSet());
+// list to primitive array
+int[] nums = arrayList.stream().mapToInt(i->i).toArray();
+// primitive array to list
+List<Integer> nums = Arrays.stream(A).boxed().collect(Collectors.toList());
 ```
 
 
@@ -646,7 +662,8 @@ connection.close();
 - `List` to `Array`
 
   ```java
-  list.toArray(new T[0])
+  list.toArray(new T[0]); // list of non-primitve
+  list.stream.mapToInt(i->i).toArray() // list of primitve
   ```
 
 - `Array` to `List`

@@ -1,6 +1,7 @@
-# **Backtracking**
+# ***Backtracking**
 
-### Combination/Permutation
+- [x] ### Combination/Permutation
+
 
 - [x] 78  Subsets (subCb, using `nums`)
 - [x] 90  Subsets II (subCb, using `nums`, duplicate)
@@ -50,7 +51,8 @@ def dfs(start):
 
 
 
-### Parentheses
+- [x] ### Parentheses
+
 
 - [x] 20   Valid Parentheses     
 - [x] 22   Generate Parentheses
@@ -63,7 +65,8 @@ def dfs(start):
     - In stack, number of `(` should be not less than `)`
     - As a special case, **stack** is useful for **Parentheses** problem
 
-# Divide and Conquer
+- [ ] # Divide and Conquer
+
 
 - [ ] 241 Different Ways to Add Parentheses
 
@@ -75,7 +78,7 @@ def dfs(start):
 - Divide and Conquer works by dividing the problem into sub-problems, conquer each sub-problem recursively and combine these solutions.
 - Compared with DAC, the DP has memory and will re-use some sovled subproblems
 
-# Dynamic Programming
+# *Dynamic Programming
 
 **Traverse all states and make choice with memo**
 
@@ -107,7 +110,12 @@ def dp(state1, state2...):
 
 - **dfs** with **cache** is the **original dp** idea. The **tabulation** is just a better way to save the space
 
-### Number DP
+- dp problem, one state only related to its previous state, which means `dp[i]` only related to `dp[i-1]`
+
+- dfs with dp may not need to contains the whole info for every dp as long as some of them contains the max/min
+
+- [x] ### Number DP
+
 
 - [x] 70   Climbing Stairs (`1` or `2` sum to `n`)
 - [x] 279   Perfect Squares (`1,4,9,16` sums to `n`)
@@ -129,7 +137,8 @@ def climbStairs(self, n: int) -> int:
 - Be clear about the `dp[i]` and `nums[i]`, sometimes they have different `i` meaning
 - `dp[i][j]` is for bottom up and `dp(i, j)` is for top down
 
-### String DP
+- [x] ### String DP
+
 
 - [x] 10 Regular Expression Matching
 - [x] 516 Longest Palindromic Subsequence
@@ -137,13 +146,13 @@ def climbStairs(self, n: int) -> int:
 - [x] 1143 Longest Common Subsequence
 - [x] 583 Delete Operation for Two Strings
 - [x] 712 Minimum ASCII Delete Sum for Two Strings
-
 - Most of the time, substring, subsequence, sub array, two string/array problem have `O(n*n)` complexity. You need 2d dp.
 - Sometime even you only need `dp[]` to store states but the time can be also `O(n*n)`, because you `makeChoices()` might be a for loop
-
 - `300 Longest Increasing Subsequence` can be opitimized to `O(nlogn)`
+- String dp may be similar to number dp that also need to increase from short to long 1312
 
-### Cuts
+- [ ] ### Cuts
+
 
 - [x] 131 Palindrome Partitioning
 - [x] 132 Palindrome Partitioning II
@@ -168,7 +177,8 @@ return dp[n]
 
 - Also you may need multiple `dp[]` with different update rules, which you can use to calculate the result
 
-### Matrix
+- [ ] ### Matrix
+
 
 - This kind of problem most of the time would give you the matrix
 - 2D dp means there should be multiple base case `dp[0][j]` and `dp[i][0]`. Only when their default value are 0, then you don't need to initialize
@@ -178,7 +188,8 @@ return dp[n]
 - [x] 221   Maximal Square (find max square in matrix)
 - [x] 85 Maximal Rectangle
 
-### Stock
+- [ ] ### Stock
+
 
 - [x] 121 Best Time to Buy and Sell Stock
 - [x] 122 Best Time to Buy and Sell Stock II
@@ -262,7 +273,8 @@ def maxProfit(self, k: int, prices: List[int]) -> int:
         return self.stockWithK(k, prices)
 ```
 
-### Backpack/Knapsack
+- [ ] ### Backpack/Knapsack
+
 
 - [x] 377  Combination Sum IV
 
@@ -298,7 +310,7 @@ for i in range(nums):
             dp[i][j]+=dp[i][j-num] # dp[i][x]
 ```
 
-- For the 01 backpack and subset backpack, when we use compressed dp, be sure you reversed the `cap` loop
+- when we use compressed dp, and `dp[i] ~ dp[i-1]`, need to reverse to avoid overlapping
 
 ```python
 # loop order trick
@@ -316,7 +328,8 @@ for i in range(t+1):
 
 
 
-### Greedy
+- [x] ### Greedy
+
 
 - Local maximum would result global maximum
 - Special kind of DP but with reduced complexity
@@ -371,9 +384,9 @@ return jump
 
 - Not all dp problems fit in `dp[][]`, which is top-down. When the valid dp entry or choice is very limited, `dp{}` is a better choice, which is bottom-up
 
-# Linked List
+# *Linked List
 
-### NodeModify
+### *NodeModify
 
 - [x] 206   Reverse Linked List 
 - [x] 92   Reverse Linked List II (reverse between)
@@ -476,9 +489,9 @@ boolean traverse(ListNode right) {
 
 
 
-# String
+# *String
 
-### Palindrome
+### *Palindrome
 
 - [x] 125 Valid Palindrome
 - [x] 680 Valid Palindrome II
@@ -521,9 +534,9 @@ for center in range(2*N - 1): # 2*N-1 kinds of center, both odd and even
 return ans
 ```
 
+* When need to change string during the traverse, do it in reverse so it will not affect the index
 
-
-# Tree
+# *Tree
 
 - [x] 100   Same Tree
 - [x] 101   Symmetric Tree 
@@ -558,6 +571,8 @@ def traverseTree(self, root):
     traverseTree(root.left)
     traverseTree(root.right)
 ```
+
+* the return value is the info child want to tell parent while the param passed in recur method is the info parent want to tell child
 
 ### Iteration Tree
 
@@ -674,7 +689,7 @@ if (i<0) i = -i-1; // insertion point
 - Aways consider `l` and `r` as `[l, r]` then the `while(l <= r)`. Always keeps in mind the `boundary value` then you would know how to update `l, r, m`
 - **sorted** + **findIndexWithRule** = **binarySearch**
 
-### Find Boundary
+### *Find Boundary
 
 - [x] 34 Find First and Last Position of Element in Sorted Array
 
@@ -697,7 +712,7 @@ return l # r
 
 - left boundary may out of right side, vice versa
 
-### Rotate
+### *Rotate
 
 - [x] 33   Search in Rotated Sorted Array     
 - [ ] 81   Search in Rotated Sorted Array II     
@@ -712,7 +727,7 @@ return l # r
 
 - sometime you may not need to return in the loop, but just keep move `l` and `r` till `l==r` to return `nums[l]`
 
-### BestValue
+### *BestValue
 
 - [x] 875 Koko Eating Bananas
 - [ ] 774 Minimize Max Distance to Gas Station
@@ -732,6 +747,11 @@ while l<r:
     else:
         r = m-1 # l = m-1
 ```
+
+### *Version
+
+- [x] 981 Time Based Key-Value Store
+- [x] 1146 Snapshot Array
 
 # Math
 
@@ -857,7 +877,7 @@ for i in range(2, n):
 
 
 
-# DFS & BFS
+# *DFS & BFS
 
 - [x] 200   Number of Islands     
 - [x] 130   Surrounded Regions     
@@ -868,7 +888,7 @@ for i in range(2, n):
 - [ ] 52   N-Queens II
 
 
-### BFS
+### *BFS
 
 - [x] 994 Rotting Oranges
 - [ ] 126 Word Ladder II    
@@ -897,12 +917,11 @@ def bfs(start, target):
       step+=1
 ```
 
-### DFS
+### *DFS
 
 - [ ] 547 Friend Circles
-
+- [x] 695 Max Area of Island
 - DFS belongs to backtracking
-
 - **DFS** is that we **recursively call itself** with changing parameters. When we enter DFS, we normally want to check if certain conditions are met, Then for each possible ways to go, we try DFS on them, get into the next recursion.
 
 ```python
@@ -1285,7 +1304,7 @@ def preorder(node: TreeNode, curr_sum) -> None:
 - [x] 298 Binary Tree Longest Consecutive Sequence
 - [x] 549 Binary Tree Longest Consecutive Sequence II
 
-#### BoyerMooreVotingAlgorithm
+### BoyerMooreVotingAlgorithm
 
 - [x] 169 Majority Element
 
@@ -1299,15 +1318,36 @@ for num in nums:
 return cand
 ```
 
+### DoubleMonoArray
 
+* `M[i] = func(nums[i], i)`
+* `L[i]` max/min val from left, `R[i]`max/min val from right
+* `max(M[i]) = max(L[i], R[i])`
+* Similar to the water problem 
 
 # Queue
 
-### Monoqueue
+### MonoQueue/Stack
+
+```java
+for (int num : nums) {
+    while (!q.isEmpty() && forSomeReason())
+        q.removeFirst();
+    if (!q.isEmpty())
+        max = q.peekFirst();
+    while (!q.isEmpty() && q.peekLast() < num)
+        q.removeLast();
+    q.addLast(num);
+}
+```
+
+* Sub array min/max
+
+### WindowMonoQueue/Stack
 
 ```python
 '''
-Monoqueue:
+WindowMonoQueue
 push: push an element into the queue; O (1) (amortized)
 pop: pop an element out of the queue; O(1) (pop = remove, it can't report this element)
 max: report the max element in queue;O(1)
@@ -1318,7 +1358,7 @@ v_c
 | | | |_
 |_|_|_|_|
 '''
-class Monoq:
+class WinMonoq:
     def __init__(self):
         self.que = []
     def pushq(self, v):
@@ -1336,16 +1376,7 @@ class Monoq:
         self.que = self.que[1:]
 ```
 
-### Deque
 
-```python
-from collections import deque
-dq = deque('item')
-dq.pop()
-dq.append()
-dq.popleft()
-dq.appendleft()
-```
 
 ### Heap/PriorityQueue
 
@@ -1353,15 +1384,6 @@ dq.appendleft()
 - [x] 253 Meeting Rooms II
 - [ ] 973 K Closest Points to Origin
 - [ ] 215 Kth Largest Element in an Array
-
-```python
-from heapq import *
-heap = []
-heappush(heap, item)
-heappop(heap)
-heapify(heap) # convert into heap
-heap[0] # the smallest one
-```
 
 - The items in the heap is sorted in **binary search tree** not in normal order
 
@@ -1427,7 +1449,7 @@ class MedianFinder:
 
 
 
-# Stack
+# *Stack
 
 - [x] 735 Asteroid Collision
 - [x] 84 Largest Rectangle in Histogram
@@ -1478,12 +1500,25 @@ for c in s:
         string += c
 ```
 
+### MonoStack
+
+- [ ] 1130 Minimum Cost Tree From Leaf Values
+- [x] 1776 Car Fleet II
+- [ ] 907 Sum of Subarray Minimums
+- [ ] 901 Online Stock Span856 Score of Parentheses
+- [ ] 503 Next Greater Element II
+- [ ] 496 Next Greater Element I
+- [ ] 84 Largest Rectangle in Histogram
+- [ ] 42 Trapping Rain Water
+
 # Graph
 
 ### Shortest Path Problem
 
 **Dijkstra's**
 Shortest path from **one node** to all nodes
+
+* BFS + heap
 
 ```python
 # dist[u] = distance from s to u
@@ -1541,6 +1576,21 @@ def sort(mp):
                 stack.append(v)
     return res
 ```
+
+### Kruskals Algorithms
+
+* to find the min cost spanning tree
+* MCS tree is a sub graph of a graph that contains all `n` nodes and the `n-1` edges
+* always add the min weight edge that doesnt make a circle
+* need disjoin set
+
+
+
+```python
+nodes = sorted(nodes, key = lambda x : x.weight)
+```
+
+
 
 # Thinkings
 
@@ -2024,7 +2074,7 @@ def delete(root, val):
 
 
 
-### Monotonous Stack
+### *Monotonous Stack
 
 - [x] 496 下一个更大元素I
 - [x] 503 下一个更大元素II
@@ -2148,3 +2198,36 @@ maintain banlanced BST
 - `if Z.uncle==red: recolor([Z.uncle, Z.parent, Z.grandParent])`
 - `if Z.uncle==black and triangle: rotate(Z.parent)`
 - `if Z.uncle==black and line: rotate(Z.grandParent) \ recolor([Z.parent, Z.grandParent])`
+
+### CompleteTree
+
+*  `tree[i]` has left child `tree[2 * i + 1]` and `tree[2 * i + 2]`
+* So when insert the `N`th node (0-indexed), we push it into the list, we can find its parent `tree[(N - 1) / 2]` directly
+
+```java
+List<TreeNode> tree;
+public CBTInserter(TreeNode root) {
+    tree = new ArrayList<>();
+    tree.add(root);
+    for (int i = 0; i < tree.size(); ++i) {
+        if (tree.get(i).left != null) tree.add(tree.get(i).left);
+        if (tree.get(i).right != null) tree.add(tree.get(i).right);
+    }
+}
+
+public int insert(int v) {
+    int N = tree.size();
+    TreeNode node = new TreeNode(v);
+    tree.add(node);
+    if (N % 2 == 1)
+        tree.get((N - 1) / 2).left = node;
+    else
+        tree.get((N - 1) / 2).right = node;
+    return tree.get((N - 1) / 2).val;
+}
+
+public TreeNode get_root() {
+    return tree.get(0);
+}
+```
+
