@@ -259,3 +259,13 @@ public void popAll(Collection<? super E> dst) {
 * producer-extends, consumer-super
 * if a type parameter appears only once in a method declaration, replace it with a wildcard.
 * If it’s an unbounded type parameter, replace it with an unbounded wildcard; if it’s a bounded type parameter, replace it with a bounded wildcard.
+
+#### 32 Combine generics and varargs judiciously
+
+* It is unsafe to store a value in a generic varargs array parameter.
+* The `SafeVarargs` annotation constitutes a promise by the author of a method that it is typesafe
+* it is unsafe to give another method access to a generic varargs parameter array
+* a generic varargs methods is safe if:  it doesn’t store anything in the varargs parameter array, and it doesn’t make the array (or a clone) visible to untrusted code.
+
+33 Consider type safe heterogeneous containers
+
